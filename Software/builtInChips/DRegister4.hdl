@@ -5,12 +5,12 @@
  * (the loaded value will be emitted to out from the next time step onward).
  */
 
-CHIP RAM4 {
+CHIP DRegister4 {
     IN in[16], load, address[2];
     OUT out[16];
 
     PARTS:
-    DMux4Way(in=load, sel=address, a=load0, b=load1, c=load2, d=load3); //chosses the register for load operation
+    DMux4Way(in=load, sel=address, a=load0, b=load1, c=load2, d=load3); //chooses the register for load operation
     Register(in=in, load=load0, out=out0);                                                                      
     Register(in=in, load=load1, out=out1);
     Register(in=in, load=load2, out=out2);

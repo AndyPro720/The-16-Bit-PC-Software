@@ -1,0 +1,26 @@
+/**
+Jump Chip
+*/
+
+CHIP Jump {
+
+	IN zr, ng, jmp[3];
+
+	OUT out;
+
+	PARTS:
+    Or(a=zr, b=ng, out=njgt);
+	Not(in=njgt, out=jgt);    //JGT
+
+	And(a=true, b=zr, out=jeq); //JEQ
+
+	Not(in=ng, out=jge); //JGE
+
+	And(a=true, b=ng, out=jlt); //JLT
+
+	Not(in=zr, out=jne); //JNE
+
+	Or(a=zr, b=ng, out=jle); //JLE
+
+	Mux8Way(a=false ,b=jgt ,c=jeq ,d=jge ,e=jlt ,f=jne ,g=jle ,h=true ,sel=jmp ,out=out);
+}
