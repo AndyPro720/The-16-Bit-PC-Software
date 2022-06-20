@@ -9,4 +9,4 @@ But of course we do have an entire elaborate system of languages that are much m
 
  ## Others: 
  
- Notes and Detials at (Ongoing) [https://scientia72.notion.site/From-Nand-To-Tetris-2-309beb5ead794857a576353da5dba454] 
+ Notes and details at (Ongoing) [https://scientia72.notion.site/From-Nand-To-Tetris-2-309beb5ead794857a576353da5dba454] 
