@@ -1,0 +1,12 @@
+@100
+D=A
+D1=A
+@101
+D2=A
+@102
+D3=A
+@1
+M=D1   //R1 should be 100
+M=D2   //R1 should be 101
+M=D3   //R1 should be 102
+M=D    //R1 should be 100
