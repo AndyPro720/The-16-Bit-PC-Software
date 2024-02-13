@@ -1,10 +1,12 @@
 #include<iostream>
+#include<sstream>
 #include<fstream>
 
 class Parser {
    public:
-   std::string instructions;
-   std::string current_command;
+   std::string instructions; //change to string strem?
+   std::istringstream stream;
+   std::string current_command = "hello";
 
    Parser() { //opens the file and parses the data in a string
       std::string filename;
@@ -52,22 +54,34 @@ class Parser {
    dp = sp = &instructions[0];
 
    do {        //clear empty lines 
-      if(*(&instructions[0]) == '\n') dp++; 
+      if(*(&instructions[0]) == '\r' && *(&instructions[1]) == '\n') {dp++; dp++;}  //deal with this
       while(*dp == '\n' && *(dp-1) == '\n') dp++;    //clear consecutive newlines                                                                      
       i++;
    }while(*sp++ = *dp++);
 
-   instructions.resize(i);
+   instructions.resize(i-2); //deal with /r/n again
    std::cout<<instructions;
-   std::cout<<"\nInstructions cleaned \n"<< "********************** ";
+   stream.str(instructions);
+   std::cout<<"\nInstructions cleaned \n"<< "********************** \n";
    
+  //the next function 
+
    }
-   
+
+bool hasMoreCommands() { //returns 1 if more commands exist, else 0; put commands in CurrentCommand
+    if(std::getline(stream, current_command)) return 1; 
+    else return 0;
+
+}
+
    
 
 };
 
 int main() {
    Parser intial;
+   while(intial.hasMoreCommands()) {
+     std::cout<<"n"; 
+   }
    
 }
