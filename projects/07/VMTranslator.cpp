@@ -74,6 +74,14 @@ bool hasMoreCommands() { //returns 1 if more commands exist, else 0; put command
 
 }
 
+const std::string commandType() {
+    std::string arithmetic [9] = {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"};
+    std::string command = current_command.substr(0, current_command.find(' '));
+    std::cout<<'\n'<<command;
+    if(command == "push") return "C_PUSH";
+    //else return "POP";
+   
+}
    
 
 };
@@ -81,7 +89,8 @@ bool hasMoreCommands() { //returns 1 if more commands exist, else 0; put command
 int main() {
    Parser intial;
    while(intial.hasMoreCommands()) {
-     std::cout<<"n"; 
+     if(intial.commandType() == "C_PUSH") std::cout<<"eagle has landed"; 
+     //else std::cout<<"bleh";
    }
    
 }
