@@ -6,7 +6,7 @@ class Parser {
    public:
    std::string instructions; //change to string strem?
    std::istringstream stream;
-   std::string current_command = "hello";
+   std::string current_command;
 
    Parser() { //opens the file and parses the data in a string
       std::string filename;
@@ -43,7 +43,7 @@ class Parser {
 
         while(*dp == '\r' || *dp == '\f' || *dp == '\v'|| *dp == '\t')  dp++;   //skip through whitespace characters and carriage return
         while(*dp == ' ' && *(dp+1) == ' ') dp++;    //clear consecutive whitespace                                                                      
-        while(*dp == '/' && *(dp+1) == '/') { while(*dp != '\n') dp++; dp++;}      //skip till next line if comments(//)
+        while(*dp == '/' && *(dp+1) == '/') { while(*dp != '\n') dp++; }      //skip till next line if comments(//) <<<<only till comment end as we have inline comments too
         i++;
 
     }while(*sp++ = *dp++);      //puts the character pointed by(*dp) in the location pointed by string pointer(*sp), thus rewriting string.
@@ -55,11 +55,12 @@ class Parser {
 
    do {        //clear empty lines 
       if(*(&instructions[0]) == '\r' && *(&instructions[1]) == '\n') {dp++; dp++;}  //deal with this
+      if(*(&instructions[0]) == '\n') {dp++;}  //deal with this
       while(*dp == '\n' && *(dp-1) == '\n') dp++;    //clear consecutive newlines                                                                      
       i++;
    }while(*sp++ = *dp++);
 
-   instructions.resize(i-2); //deal with /r/n again
+   instructions.resize(i-1); //deal with /n again
    std::cout<<instructions;
    stream.str(instructions);
    std::cout<<"\nInstructions cleaned \n"<< "********************** \n";
@@ -69,7 +70,7 @@ class Parser {
    }
 
 bool hasMoreCommands() { //returns 1 if more commands exist, else 0; put commands in CurrentCommand
-    if(std::getline(stream, current_command)) return 1; 
+    if(std::getline(stream, current_command) && current_command != " ") return 1; 
     else return 0;
 
 }
@@ -77,9 +78,16 @@ bool hasMoreCommands() { //returns 1 if more commands exist, else 0; put command
 const std::string commandType() {
     std::string arithmetic [9] = {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"};
     std::string command = current_command.substr(0, current_command.find(' '));
-    std::cout<<'\n'<<command;
     if(command == "push") return "C_PUSH";
-    //else return "POP";
+    if(command == "pop") return "C_POP";
+    if(command == "label") return "C_LABEL";
+    if(command == "goto") return "C_GOTO";
+    if(command == "if-goto") return "C_IF";
+    if(command == "function") return "C_FUNCTION";
+    if(command == "call") return "C_CALL";
+    if(command == "return") return "C_RETURN";
+    for(int i = 0; i <= sizeof(arithmetic)/sizeof(std::string); i++) { if(command == arithmetic[i]) return "C_ARITHMETIC"; }
+    return "NULL"; //else
    
 }
    
@@ -89,8 +97,8 @@ const std::string commandType() {
 int main() {
    Parser intial;
    while(intial.hasMoreCommands()) {
-     if(intial.commandType() == "C_PUSH") std::cout<<"eagle has landed"; 
-     //else std::cout<<"bleh";
+     std::string print = intial.commandType();
+     std::cout<<'\n'<<intial.current_command<<print;
    }
    
 }
