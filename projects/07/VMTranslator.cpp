@@ -7,6 +7,7 @@ class Parser {
    std::string instructions; //change to string strem?
    std::istringstream stream;
    std::string current_command;
+   std::string arithmetic [9] = {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"};
 
    Parser() { //opens the file and parses the data in a string
       std::string filename;
@@ -70,14 +71,13 @@ class Parser {
    }
 
 bool hasMoreCommands() { //returns 1 if more commands exist, else 0; put commands in CurrentCommand
-    if(std::getline(stream, current_command) && current_command != " ") return 1; 
+    if(std::getline(stream, current_command)) return 1; 
     else return 0;
 
 }
 
 const std::string commandType() {
-    std::string arithmetic [9] = {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"};
-    std::string command = current_command.substr(0, current_command.find(' '));
+    std::string command = current_command.substr(0, current_command.find(' ')); //grab first word
     if(command == "push") return "C_PUSH";
     if(command == "pop") return "C_POP";
     if(command == "label") return "C_LABEL";
@@ -90,15 +90,33 @@ const std::string commandType() {
     return "NULL"; //else
    
 }
+std::string arg1(const std::string type) {
+   if(type == "C_ARITHMETIC") return current_command.substr(0, current_command.find(' '));
+   if(type == "C_LABEL" || type == "C_GOTO" || type == "C_IF") return current_command.substr((current_command.find(' ')+1));
+   if(type == "C_POP" || type == "C_PUSH" || type == "C_FUNCTION" || type == "C_CALL") {
+      std::string temp = current_command.substr((current_command.find(' ')+1));
+      return temp.substr(0, (temp.find(' '))); 
+   } 
+   else return "";
    
+}
+std::string arg2(const std::string type) { //return int
+   if(type == "C_POP" || type == "C_PUSH" || type == "C_FUNCTION" || type == "C_CALL") {
+      std::string temp = current_command.substr((current_command.find(' ')+1));
+      return temp.substr((temp.find(' '))); 
+   } 
+   else return "";
+}   
 
 };
 
 int main() {
    Parser intial;
    while(intial.hasMoreCommands()) {
-     std::string print = intial.commandType();
-     std::cout<<'\n'<<intial.current_command<<print;
+     std::string type = intial.commandType();
+     std::string arg1 = intial.arg1(type);
+     std::string arg2 = intial.arg2(type);
+     std::cout<<type<<" "<<arg1<<" "<<arg2<<"\n";
    }
    
 }
