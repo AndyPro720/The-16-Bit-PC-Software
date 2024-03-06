@@ -30,7 +30,9 @@ namespace write
     {
     public:
         codeWriter(std::string filename);
-        void wrtieArithmetic(std::string commad);
+        void writePushPop(std::string command);
+        void writeArithmetic(std::string commad);
+        int close();
     };
 
 }
