@@ -137,5 +137,5 @@ int parse::Parser::arg2(const std::string type)
         return std::stoi(temp.substr((temp.find(' '))));
     }
     else
-        return NULL;
+        return -1;
 }

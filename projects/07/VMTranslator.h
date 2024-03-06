@@ -1,10 +1,11 @@
 #ifndef VMT_H
 #define VMT_H
 
-namespace parse
-{
 #include <string>
 #include <sstream>
+
+namespace parse
+{
     class Parser
     {
     public:
@@ -21,6 +22,17 @@ namespace parse
         std::string arg1(const std::string type);
         int arg2(const std::string type);
     };
+}
+
+namespace write
+{
+    class codeWriter
+    {
+    public:
+        codeWriter(std::string filename);
+        void wrtieArithmetic(std::string commad);
+    };
+
 }
 
 #endif
