@@ -11,20 +11,21 @@ int main()
    {
       std::string type = input.commandType();
 
-      std::cout << input.current_command << type << std::endl;
+      // std::cout << input.current_command << type << std::endl;
       if (type == "C_ARITHMETIC")
       {
          output.writeArithmetic(input.current_command);
       }
       else if (type == "C_PUSH" || type == "C_POP")
       {
-         output.writePushPop(input.current_command);
+         output.writePushPop(type, input.arg1(type), input.arg2(type));
       }
 
       else if (type == "NULL")
       {
          std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;
          std::cout << "the line is  " << __LINE__ << std::endl;
+         output.close();
          exit(1);
       }
    }

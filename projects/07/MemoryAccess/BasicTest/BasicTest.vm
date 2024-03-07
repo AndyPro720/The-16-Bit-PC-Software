@@ -20,12 +20,12 @@ push constant 510
 pop temp 6
 push local 0
 push that 5
-add
+//add
 push argument 1
-sub
+//sub
 push this 6
 push this 6
-add
-sub
+//add
+//sub
 push temp 6
-add
+//add

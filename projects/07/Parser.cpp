@@ -68,11 +68,13 @@ void parse::Parser::cleaner()
             dp++;
         } // deal with this
         while (*dp == '\n' && *(dp - 1) == '\n')
+        {
             dp++; // clear consecutive newlines
+        }
         i++;
     } while (*sp++ = *dp++);
 
-    instructions.resize(i - 1); // deal with /n again
+    instructions.resize(i - 1); // deal with /n again //needs empty line in vm file for some reason
     // std::cout << instructions;
     stream.str(instructions);
     std::cout << "\nInstructions cleaned \n"

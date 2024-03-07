@@ -2,6 +2,7 @@
 #define VMT_H
 
 #include <string>
+#include <fstream>
 #include <sstream>
 
 namespace parse
@@ -29,8 +30,10 @@ namespace write
     class codeWriter
     {
     public:
+        std::fstream o_file_handle;
+        std::ofstream log;
         codeWriter(std::string filename);
-        void writePushPop(std::string command);
+        void writePushPop(std::string type, std::string segment, int index);
         void writeArithmetic(std::string commad);
         int close();
     };

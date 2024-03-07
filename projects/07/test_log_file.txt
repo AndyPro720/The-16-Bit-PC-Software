@@ -1,0 +1,120 @@
+
+//PUSH constant 10
+@10
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 21
+@21
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 22
+@22
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 36
+@36
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 42
+@42
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 45
+@45
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 510
+@510
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH local 0
+@LCL
+A=A+0
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH that 5
+@THAT
+A=A+5
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH argument 1
+@ARG
+A=A+1
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH this 6
+@
+A=A+6
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH this 6
+@
+A=A+6
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH temp 6
+
+//END LOOP
+(END)
+@END
+0;JMP
