@@ -14,7 +14,7 @@ int main()
       // std::cout << input.current_command << type << std::endl;
       if (type == "C_ARITHMETIC")
       {
-         output.writeArithmetic(input.current_command);
+         output.writeArithmetic(input.arg1(type));
       }
       else if (type == "C_PUSH" || type == "C_POP")
       {
@@ -25,9 +25,8 @@ int main()
       {
          std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;
          std::cout << "the line is  " << __LINE__ << std::endl;
-         output.close();
-         exit(1);
+         output.close(1);
       }
    }
-   return output.close();
+   return output.close(0);
 }

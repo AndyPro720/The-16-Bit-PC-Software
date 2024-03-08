@@ -8,6 +8,14 @@ M=D
 @SP
 M=M+1
 
+//POP local 0
+@SP
+AM=M-1
+D=M
+@LCL
+A=A+0
+M=D
+
 //PUSH constant 21
 @21
 D=A
@@ -26,6 +34,22 @@ M=D
 @SP
 M=M+1
 
+//POP argument 2
+@SP
+AM=M-1
+D=M
+@ARG
+A=A+2
+M=D
+
+//POP argument 1
+@SP
+AM=M-1
+D=M
+@ARG
+A=A+1
+M=D
+
 //PUSH constant 36
 @36
 D=A
@@ -34,6 +58,14 @@ A=M
 M=D
 @SP
 M=M+1
+
+//POP this 6
+@SP
+AM=M-1
+D=M
+@THIS
+A=A+6
+M=D
 
 //PUSH constant 42
 @42
@@ -53,6 +85,22 @@ M=D
 @SP
 M=M+1
 
+//POP that 5
+@SP
+AM=M-1
+D=M
+@THAT
+A=A+5
+M=D
+
+//POP that 2
+@SP
+AM=M-1
+D=M
+@THAT
+A=A+2
+M=D
+
 //PUSH constant 510
 @510
 D=A
@@ -61,6 +109,14 @@ A=M
 M=D
 @SP
 M=M+1
+
+//POP temp 6
+@SP
+AM=M-1
+D=M
+@11
+A=M
+M=D
 
 //PUSH local 0
 @LCL
@@ -93,7 +149,7 @@ M=D
 M=M+1
 
 //PUSH this 6
-@
+@THIS
 A=A+6
 D=M
 @SP
@@ -103,7 +159,7 @@ M=D
 M=M+1
 
 //PUSH this 6
-@
+@THIS
 A=A+6
 D=M
 @SP
@@ -113,6 +169,14 @@ M=D
 M=M+1
 
 //PUSH temp 6
+@11
+A=M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
 
 //END LOOP
 (END)

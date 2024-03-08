@@ -32,10 +32,11 @@ namespace write
     public:
         std::fstream o_file_handle;
         std::ofstream log;
-        codeWriter(std::string filename);
+        std::string filename;
+        codeWriter(std::string file);
         void writePushPop(std::string type, std::string segment, int index);
         void writeArithmetic(std::string commad);
-        int close();
+        int close(bool flag);
     };
 
 }
