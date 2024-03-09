@@ -33,9 +33,11 @@ namespace write
         std::fstream o_file_handle;
         std::ofstream log;
         std::string filename;
+        int count = 0; // for labels
+
         codeWriter(std::string file);
         void writePushPop(std::string type, std::string segment, int index);
-        void writeArithmetic(std::string commad);
+        void writeArithmetic(std::string type);
         int close(bool flag);
     };
 

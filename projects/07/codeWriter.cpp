@@ -9,8 +9,62 @@ write::codeWriter::codeWriter(std::string file)
     o_file_handle.open(filename + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
 }
 
-void write::codeWriter::writeArithmetic(std::string command)
+void write::codeWriter::writeArithmetic(std::string type)
 {
+    std::string command;
+    std::string arith_template = std::string("@SP\n") +
+                                 "AM=M-1\n" +
+                                 "D=M\n" +
+                                 "A=A-1\n";
+    if (type == "add" || type == "sub" || type == "and" || type == "or")
+    {
+        std::string symbol;
+        (type == "add") ? symbol = "+" : (type == "sub") ? symbol = "-"
+                                     : (type == "and")   ? symbol = "&"
+                                     : (type == "or")    ? symbol = "|"
+                                                         : symbol = "";
+
+        command = arith_template + "M=M" + symbol + "D\n";
+    }
+
+    else if (type == "neg" || type == "not")
+    {
+        std::string symbol;
+        (type == "neg") ? symbol = "-" : (type == "not") ? symbol = "!"
+                                                         : symbol = "";
+        command = std::string("@SP\n") +
+                  "A=M-1\n" +
+                  "M=" + symbol + "M\n";
+    }
+
+    else if (type == "eq" || type == "gt" || type == "lt") // return -1 if true and 0 if false
+    {                                                      // create one single (true  after jmp?)
+        std::string symbol;
+        (type == "eq") ? symbol = ";JEQ\n" : (type == "gt") ? symbol = ";JGT\n"
+                                         : (type == "lt")   ? symbol = ";JLT\n"
+                                                            : symbol = "";
+
+        command = arith_template +
+                  "D=M-D\n" + // store diff
+                  "@TRUE." + std::to_string(count) + '\n' +
+                  "D" + symbol +
+
+                  "@SP\n" // if false
+                  "A=M-1\n" +
+                  "M=0\n" +
+                  "@NEXT." + std::to_string(count) + '\n' +
+                  "0;JMP\n" +
+
+                  "(TRUE." + std::to_string(count) + ")\n" + // if true
+                  "@SP\n"
+                  "A=M-1\n" +
+                  "M=-1\n" +
+                  "(NEXT." + std::to_string(count) + ")\n";
+        count++;
+    }
+
+    o_file_handle << command;
+    log << "\n// " + type + '\n' + command;
 }
 
 void write::codeWriter::writePushPop(std::string type, std::string segment, int index)
@@ -38,8 +92,10 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
                                              : (segment == "that")       ? seg = "THAT"
                                                                          : seg = "";
 
-            command = "@" + seg + '\n' +
-                      "A=A+" + std::to_string(index) + '\n' +
+            command = "@" + std::to_string(index) + '\n' +
+                      "D=A\n" +
+                      "@" + seg + '\n' +
+                      "A=M+D\n" +
                       "D=M\n" +
                       push_template;
         }
@@ -55,11 +111,10 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
         {
             if (index > 7)
             {
-                std::cout << "Static index " << index << "is out of scope";
+                std::cout << "Temp index " << index << "is out of scope";
                 close(1);
             }
             command = '@' + std::to_string(5 + index) + '\n' +
-                      "A=M\n" +
                       "D=M\n" +
                       push_template;
         }
@@ -93,7 +148,7 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
     else // if C_POP
     {
         std::string command;
-        std::string pop_template = std::string("@SP\n") + // pushes value to stack and increments stack
+        std::string pop_template = std::string("@SP\n") + // pops value from stack and decrement sp
                                    "AM=M-1\n" +
                                    "D=M\n";
 
@@ -106,10 +161,26 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
                                              : (segment == "that")       ? seg = "THAT"
                                                                          : seg = "";
 
-            command = pop_template +
-                      "@" + seg + '\n' +
-                      "A=A+" + std::to_string(index) + '\n' +
-                      "M=D\n";
+            if (index == 0) // fetch value from stack and push to segment
+            {
+                command = pop_template +
+                          "@" + seg + '\n' +
+                          "A=M\n" +
+                          "M=D\n";
+            }
+            else // fetch value from stack and push to segment offset
+            {
+                command = "@" + std::to_string(index) + '\n' +
+                          "D=A\n" +
+                          "@" + seg + '\n' +
+                          "D=D+M\n" +
+                          "@R13\n" +
+                          "M=D\n" +      // store segment pointer in R13
+                          pop_template + // pop value from stack
+                          "@R13\n"
+                          "A=M\n"
+                          "M=D\n"; // store value in segment pointer
+            }
         }
 
         else if (segment == "static")
@@ -123,12 +194,11 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
         {
             if (index > 7)
             {
-                std::cout << "Static index " << index << "is out of scope";
+                std::cout << "Temp index " << index << "is out of scope";
                 close(1);
             }
             command = pop_template +
                       '@' + std::to_string(5 + index) + '\n' +
-                      "A=M\n" +
                       "M=D\n";
         }
 
