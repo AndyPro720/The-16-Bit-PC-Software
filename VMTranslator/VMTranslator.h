@@ -11,8 +11,8 @@ namespace parse
     {
     public:
         Parser();
-        std::string instructions; // change to string strem?
-        std::string filename;     // to pass to CodeWriter
+        std::string instructions;
+        std::string filename;
         std::istringstream stream;
         std::string current_command;
         std::string arithmetic[9] = {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"};
@@ -33,11 +33,11 @@ namespace write
         std::fstream o_file_handle;
         std::ofstream log;
         std::string filename;
-        int count = 0; // for labels
+        int count = 0; // for labels in writePushPop()
 
         codeWriter(std::string file);
-        void writePushPop(std::string type, std::string segment, int index);
         void writeArithmetic(std::string type);
+        void writePushPop(std::string type, std::string segment, int index);
         int close(bool flag);
     };
 

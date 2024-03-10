@@ -4,7 +4,7 @@
 #include "VMTranslator.h"
 
 parse::Parser::Parser()
-{ // opens the file and parses the data in a string
+{ // opens the file and dumps the data in a string
     std::fstream filehandle;
     do
     { // opens the file
@@ -17,9 +17,9 @@ parse::Parser::Parser()
         filehandle.open(filename + ".vm", std::ifstream::in | std::ifstream::binary);
     } while (!(filehandle.is_open()));
 
-    filehandle.seekg(0, std::ios::end); // grabs file size
-    instructions.resize(filehandle.tellg());
-    filehandle.seekg(std::ios::beg);
+    filehandle.seekg(0, std::ios::end);      // grabs file size
+    instructions.resize(filehandle.tellg()); // resize the string
+    filehandle.seekg(std::ios::beg);         // reset file pointer
 
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
@@ -29,8 +29,8 @@ parse::Parser::Parser()
     parse::Parser::cleaner();
 };
 
-void parse::Parser::cleaner()
-{                  // removes whitespace and comments from the file
+void parse::Parser::cleaner() // removes whitespace and comments from the file
+{
     char *dp, *sp; // destination and string pointer
     int i = 0;
     dp = sp = &instructions[0];
@@ -41,8 +41,8 @@ void parse::Parser::cleaner()
         while (*dp == '\r' || *dp == '\f' || *dp == '\v' || *dp == '\t')
             dp++; // skip through whitespace characters and carriage return
         while (*dp == ' ' && *(dp + 1) == ' ')
-            dp++; // clear consecutive whitespace
-        while (*dp == '/' && *(dp + 1) == '/')
+            dp++;                              // clear consecutive whitespace
+        while (*dp == '/' && *(dp + 1) == '/') // skip comments
         {
             while (*dp != '\n')
                 dp++;
@@ -66,7 +66,7 @@ void parse::Parser::cleaner()
         if (*(&instructions[0]) == '\n')
         {
             dp++;
-        } // deal with this
+        }
         while (*dp == '\n' && *(dp - 1) == '\n')
         {
             dp++; // clear consecutive newlines
@@ -79,8 +79,6 @@ void parse::Parser::cleaner()
     stream.str(instructions);
     std::cout << "\nInstructions cleaned \n"
               << "********************** \n";
-
-    // the next function
 }
 
 bool parse::Parser::hasMoreCommands()
@@ -117,7 +115,7 @@ const std::string parse::Parser::commandType()
     }
     return "NULL"; // else
 }
-std::string parse::Parser::arg1(const std::string type)
+std::string parse::Parser::arg1(const std::string type) // returns first argument
 {
     if (type == "C_ARITHMETIC")
         return current_command.substr(0, current_command.find(' '));
@@ -131,13 +129,8 @@ std::string parse::Parser::arg1(const std::string type)
     else
         return "";
 }
-int parse::Parser::arg2(const std::string type)
+int parse::Parser::arg2(const std::string type) // returns second argument
 {
-    if (type == "C_POP" || type == "C_PUSH" || type == "C_FUNCTION" || type == "C_CALL") // remove this
-    {
-        std::string temp = current_command.substr((current_command.find(' ') + 1));
-        return std::stoi(temp.substr((temp.find(' '))));
-    }
-    else
-        return -1;
+    std::string temp = current_command.substr((current_command.find(' ') + 1));
+    return std::stoi(temp.substr((temp.find(' '))));
 }

@@ -12,7 +12,7 @@ write::codeWriter::codeWriter(std::string file)
 void write::codeWriter::writeArithmetic(std::string type)
 {
     std::string command;
-    std::string arith_template = std::string("@SP\n") +
+    std::string arith_template = std::string("@SP\n") + // Puts the value of stack in D and M registers respectively
                                  "AM=M-1\n" +
                                  "D=M\n" +
                                  "A=A-1\n";
@@ -38,7 +38,7 @@ void write::codeWriter::writeArithmetic(std::string type)
     }
 
     else if (type == "eq" || type == "gt" || type == "lt") // return -1 if true and 0 if false
-    {                                                      // create one single (true  after jmp?)
+    {
         std::string symbol;
         (type == "eq") ? symbol = ";JEQ\n" : (type == "gt") ? symbol = ";JGT\n"
                                          : (type == "lt")   ? symbol = ";JLT\n"
@@ -60,7 +60,7 @@ void write::codeWriter::writeArithmetic(std::string type)
                   "A=M-1\n" +
                   "M=-1\n" +
                   "(NEXT." + std::to_string(count) + ")\n";
-        count++;
+        count++; // to keep each label unique
     }
 
     o_file_handle << command;
@@ -148,11 +148,10 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
     else // if C_POP
     {
         std::string command;
-        std::string pop_template = std::string("@SP\n") + // pops value from stack and decrement sp
+        std::string pop_template = std::string("@SP\n") + // pops value from stack and decrements sp
                                    "AM=M-1\n" +
                                    "D=M\n";
 
-        // empty stack pop; use variable?
         if (segment == "local" || segment == "argument" || segment == "this" || segment == "that")
         {
             std::string seg;
@@ -161,7 +160,7 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
                                              : (segment == "that")       ? seg = "THAT"
                                                                          : seg = "";
 
-            if (index == 0) // fetch value from stack and push to segment
+            if (index == 0) // fetch value from stack and simply push to segment
             {
                 command = pop_template +
                           "@" + seg + '\n' +
@@ -175,11 +174,11 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
                           "@" + seg + '\n' +
                           "D=D+M\n" +
                           "@R13\n" +
-                          "M=D\n" +      // store segment pointer in R13
+                          "M=D\n" +      // store segment pointer with offset in R13
                           pop_template + // pop value from stack
                           "@R13\n"
                           "A=M\n"
-                          "M=D\n"; // store value in segment pointer
+                          "M=D\n"; // pop value in segment pointer
             }
         }
 
@@ -229,11 +228,11 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
     }
 }
 
-int write::codeWriter::close(bool flag) // close the files
+int write::codeWriter::close(bool flag) // close the files or drop translation
 {
     if (flag)
     {
-        std::cout << "\nError found, terminating translation.\nCheck command after last translated from log file\n";
+        std::cout << "\nError found, terminating translation.\nCheck command after last sucessful translation\n";
         o_file_handle.close();
         log.close();
         exit(1);
