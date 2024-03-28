@@ -4,9 +4,8 @@
 
 write::codeWriter::codeWriter(std::string file)
 {
-    filename = file; // for global use
-    log.open(filename + "_log_file.txt", std::ostream::out | std::ostream::binary | std::ofstream::trunc);
-    o_file_handle.open(filename + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
+    log.open(file + "_log_file.txt", std::ostream::out | std::ostream::binary | std::ofstream::trunc);
+    o_file_handle.open(file + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
 }
 
 void write::codeWriter::writeArithmetic(std::string type)
@@ -67,7 +66,7 @@ void write::codeWriter::writeArithmetic(std::string type)
     log << "\n// " + type + '\n' + command;
 }
 
-void write::codeWriter::writePushPop(std::string type, std::string segment, int index)
+void write::codeWriter::writePushPop(std::string type, std::string segment, int index, std::string current_file)
 {
     if (type == "C_PUSH")
     {
@@ -102,7 +101,7 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
 
         else if (segment == "static")
         {
-            command = '@' + filename + '.' + std::to_string(index) + '\n' +
+            command = '@' + current_file + '.' + std::to_string(index) + '\n' +
                       "D=M\n" +
                       push_template;
         }
@@ -185,7 +184,7 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
         else if (segment == "static")
         {
             command = pop_template +
-                      '@' + filename + '.' + std::to_string(index) + '\n' +
+                      '@' + current_file + '.' + std::to_string(index) + '\n' +
                       "M=D\n";
         }
 

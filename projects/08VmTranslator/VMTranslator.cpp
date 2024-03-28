@@ -3,28 +3,32 @@
 
 int main()
 {
-   parse::Parser input; // opens file and cleans it
-
+   parse::Parser input;                      // intializes file/dir
    write::codeWriter output(input.filename); // creates output assembly and logfile
 
-   while (input.hasMoreCommands())
+   do
    {
-      std::string type = input.commandType();
+      std::string current_file = input.fileHandler(); // go to next file
+      while (input.hasMoreCommands())
+      {
+         std::string type = input.commandType();
 
-      if (type == "C_ARITHMETIC")
-      {
-         output.writeArithmetic(input.arg1(type));
-      }
-      else if (type == "C_PUSH" || type == "C_POP")
-      {
-         output.writePushPop(type, input.arg1(type), input.arg2(type));
-      }
+         if (type == "C_ARITHMETIC")
+         {
+            output.writeArithmetic(input.arg1(type));
+         }
+         else if (type == "C_PUSH" || type == "C_POP")
+         {
+            output.writePushPop(type, input.arg1(type), input.arg2(type), current_file);
+         }
 
-      else if (type == "NULL")
-      {
-         std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;
-         output.close(1);
+         else if (type == "NULL")
+         {
+            std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;
+            output.close(1);
+         }
       }
-   }
+      std::cout << "Translated " << current_file << std::endl;
+   } while (--input.files > 0);
    return output.close(0);
 }

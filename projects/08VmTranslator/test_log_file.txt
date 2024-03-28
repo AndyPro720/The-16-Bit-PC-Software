@@ -1,0 +1,23 @@
+
+//PUSH static 0
+@test.0
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH static 2
+@test.2
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//END LOOP
+(END)
+@END
+0;JMP
