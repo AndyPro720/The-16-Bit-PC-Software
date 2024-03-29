@@ -254,8 +254,7 @@ int write::codeWriter::close(bool flag) // close the files or drop translation
 
         o_file_handle.close();
         log.close();
-        std::cout << "File and log_file Assembled with same name successfully \n"
-                  << "********************** \n";
+        std::cout << "File and log_file assembled with same name successfully! \n";
         return 0;
     }
 }

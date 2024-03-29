@@ -58,12 +58,12 @@ const std::string parse::Parser::fileHandler()
 
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
-    std::cout << var << " Read Successfully. \n"
-              << "********************** ";
     parse::Parser::cleaner();
+
     if (files != 0) // if directory
         var = var.substr(var.find('\\') + 2);
     var.resize(var.find('.'));
+    std::cout << var << " read and processed";
 
     return var; // return current filename
 }
@@ -117,8 +117,6 @@ void parse::Parser::cleaner() // removes whitespace and comments from the file
     // std::cout << instructions << std::endl;
     stream.str(instructions);
     stream.clear(); // clears flags to avoid clash with getline()
-    std::cout << "\nInstructions cleaned \n"
-              << "********************** \n";
 }
 
 bool parse::Parser::hasMoreCommands()

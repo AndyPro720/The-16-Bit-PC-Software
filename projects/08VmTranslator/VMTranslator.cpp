@@ -28,7 +28,8 @@ int main()
             output.close(1);
          }
       }
-      std::cout << "Translated " << current_file << std::endl;
+      std::cout << "\nTranslated " << current_file << " successfully"
+                << "\n********************** " << std::endl;
    } while (--input.files > 0);
    return output.close(0);
 }
