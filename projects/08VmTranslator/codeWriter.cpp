@@ -4,8 +4,16 @@
 
 write::codeWriter::codeWriter(std::string file)
 {
-    log.open(file + "_log_file.txt", std::ostream::out | std::ostream::binary | std::ofstream::trunc);
-    o_file_handle.open(file + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
+    if (filename.find(".vm") != std::string::npos)
+    {
+        log.open(file + "_log_file.txt", std::ostream::out | std::ostream::binary | std::ofstream::trunc);
+        o_file_handle.open(file + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
+    }
+    else // if dir, put output within dir
+    {
+        log.open(file + "\\" + file + "_log_file.txt", std::ostream::out | std::ostream::binary | std::ofstream::trunc);
+        o_file_handle.open(file + "\\" + file + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
+    }
 }
 
 void write::codeWriter::writeArithmetic(std::string type)

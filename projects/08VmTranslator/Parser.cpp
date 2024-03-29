@@ -5,7 +5,7 @@
 #include <filesystem>
 
 parse::Parser::Parser()
-{ // opens a file(s) and dumps the data in a string
+{ // intializes file / dir for injection
     std::cout << "\n Enter file name with extension, or directory name to begin translation \n Enter exit to terminate \n ";
     std::getline(std::cin, filename);
     if (filename == "exit")
@@ -21,32 +21,31 @@ parse::Parser::Parser()
     if (filename.find(".vm") != std::string::npos)
     {
         path << filename;
-        filename.resize(filename.find('.'));
+        filename.resize(filename.find('.')); // grab filename
     }
 
     // if dir
     else
     {
         std::string var;
-        for (auto const &dir : std::filesystem::directory_iterator(filename)) // do error checking
+        for (auto const &dir : std::filesystem::directory_iterator(filename))
         {
             stream << dir.path() << std::endl;
             stream.seekg(1, stream.beg);
-            std::getline(stream, var, '"');
-            // stream.seekg(0, stream.beg);
+            std::getline(stream, var, '"'); // deals with quotations around dir fetched by path()
             if (var.find(".vm") != std::string::npos)
             {
                 path << var << std::endl;
-                files++;
+                files++; // maintains counter of .vm files
             }
             stream.str("");
         }
     }
-    std::cout << path.str() << std::endl;
+    std::cout << path.str() << std::endl; // injested dir for reference
 };
 
 const std::string parse::Parser::fileHandler()
-{
+{ // opens a file(s) and dumps the data in a string
     std::string var;
     std::getline(path, var);
     std::fstream filehandle;
@@ -59,7 +58,7 @@ const std::string parse::Parser::fileHandler()
 
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
-    std::cout << "File Read Successfully. \n"
+    std::cout << var << " Read Successfully. \n"
               << "********************** ";
     parse::Parser::cleaner();
     if (files != 0) // if directory
