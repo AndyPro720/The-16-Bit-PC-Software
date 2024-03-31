@@ -1,3 +1,8 @@
+@256
+D=A
+@SP
+M=D
+ (call sys.init0)
 @0
 D=A
 @ARG
