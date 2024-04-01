@@ -14,6 +14,14 @@ write::codeWriter::codeWriter(std::string file)
         log.open(file + "\\" + file + "_log_file.txt", std::ostream::out | std::ostream::binary | std::ofstream::trunc);
         o_file_handle.open(file + "\\" + file + ".asm", std::ofstream::out | std::ostream::binary | std::ofstream::trunc);
     }
+
+    // write init code
+    std::string initCode;
+    initCode = std::string("@256\nD=A\n@SP\nM=D\n") + "//call sys.init0)\n";
+
+    log << "//Bootstrap Code\n"
+        << initCode;
+    o_file_handle << initCode;
 }
 
 void write::codeWriter::writeArithmetic(std::string type)
@@ -233,6 +241,27 @@ void write::codeWriter::writePushPop(std::string type, std::string segment, int 
         o_file_handle << command;
         log << "\n//POP " + segment + ' ' + std::to_string(index) + '\n' + command;
     }
+}
+
+void write::codeWriter::writeLabel(std::string label)
+{ // create a label
+    std::string command = '(' + label + ')' + '\n';
+    o_file_handle << command;
+    log << "\n//Label " + label + '\n' + command;
+}
+
+void write::codeWriter::writeGoto(std::string label)
+{ // unconditional jump to label
+    std::string command = '@' + label + '\n' + "0;JMP\n";
+    o_file_handle << command;
+    log << "\n//goto " + label + '\n' + command;
+}
+
+void write::codeWriter::writeIf(std::string label)
+{ // pops value from stack and jumps to label if value != 0
+    std::string command = std::string("@SP\n") + "AM=M-1\n" + "D=M\n" + '@' + label + '\n' + "D;JNE\n";
+    o_file_handle << command;
+    log << "\n//if-goto " + label + '\n' + command;
 }
 
 int write::codeWriter::close(bool flag) // close the files or drop translation

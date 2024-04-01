@@ -4,7 +4,7 @@
 int main()
 {
    parse::Parser input;                      // intializes file/dir
-   write::codeWriter output(input.filename); // creates output assembly and logfile
+   write::codeWriter output(input.filename); // creates output assembly and log_file
 
    do
    {
@@ -21,7 +21,18 @@ int main()
          {
             output.writePushPop(type, input.arg1(type), input.arg2(type), current_file);
          }
-
+         else if (type == "C_LABEL")
+         {
+            output.writeLabel(input.arg1(type));
+         }
+         else if (type == "C_GOTO")
+         {
+            output.writeGoto(input.arg1(type));
+         }
+         else if (type == "C_IF")
+         {
+            output.writeIf(input.arg1(type));
+         }
          else if (type == "NULL")
          {
             std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;

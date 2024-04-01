@@ -15,7 +15,7 @@ namespace parse
     {
     public:
         Parser();
-        int files = 0;
+        int files = 0; // counter for vm files
         std::string instructions;
         std::string filename;
         std::stringstream stream;
@@ -45,6 +45,9 @@ namespace write
         codeWriter(std::string file);
         void writeArithmetic(std::string type);
         void writePushPop(std::string type, std::string segment, int index, std::string current_file);
+        void writeLabel(std::string label);
+        void writeGoto(std::string label);
+        void writeIf(std::string label);
         int close(bool flag);
     };
 
