@@ -33,6 +33,10 @@ int main()
          {
             output.writeIf(input.arg1(type));
          }
+         else if (type == "C_FUNCTION")
+         {
+            output.writeFunction(input.arg1(type), input.arg2(type));
+         }
          else if (type == "NULL")
          {
             std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;

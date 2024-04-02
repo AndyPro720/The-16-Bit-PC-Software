@@ -48,6 +48,9 @@ namespace write
         void writeLabel(std::string label);
         void writeGoto(std::string label);
         void writeIf(std::string label);
+        void writeFunction(std::string functionName, int numVars);
+        void writeCall(std::string functionName, int numArgs);
+        void Return();
         int close(bool flag);
     };
 

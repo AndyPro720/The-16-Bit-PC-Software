@@ -264,6 +264,18 @@ void write::codeWriter::writeIf(std::string label)
     log << "\n//if-goto " + label + '\n' + command;
 }
 
+void write::codeWriter::writeFunction(std::string functionName, int numVars)
+{ // Declares the function and intializes local variables
+    std::string command = '(' + functionName + ")\n";
+    o_file_handle << command;
+    log << "\n //function " + functionName + ' ' + std::to_string(numVars) + '\n' + command;
+    while (numVars != 0)
+    {
+        writePushPop("C_PUSH", "constant", 0, "");
+        numVars--;
+    }
+}
+
 int write::codeWriter::close(bool flag) // close the files or drop translation
 {
     if (flag)

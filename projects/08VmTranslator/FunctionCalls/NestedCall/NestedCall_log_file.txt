@@ -1,0 +1,376 @@
+//Bootstrap Code
+@256
+D=A
+@SP
+M=D
+//call sys.init0)
+
+ //function Sys.init 0
+(Sys.init)
+
+//PUSH constant 4000
+@4000
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP pointer 0
+@SP
+AM=M-1
+D=M
+@THIS
+M=D
+
+//PUSH constant 5000
+@5000
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP pointer 1
+@SP
+AM=M-1
+D=M
+@THAT
+M=D
+
+//POP temp 1
+@SP
+AM=M-1
+D=M
+@6
+M=D
+
+//Label LOOP
+(LOOP)
+
+//goto LOOP
+@LOOP
+0;JMP
+
+ //function Sys.main 5
+(Sys.main)
+
+//PUSH constant 0
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 0
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 0
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 0
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 0
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 4001
+@4001
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP pointer 0
+@SP
+AM=M-1
+D=M
+@THIS
+M=D
+
+//PUSH constant 5001
+@5001
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP pointer 1
+@SP
+AM=M-1
+D=M
+@THAT
+M=D
+
+//PUSH constant 200
+@200
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP local 1
+@1
+D=A
+@LCL
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+//PUSH constant 40
+@40
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP local 2
+@2
+D=A
+@LCL
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+//PUSH constant 6
+@6
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP local 3
+@3
+D=A
+@LCL
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+//PUSH constant 123
+@123
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP temp 0
+@SP
+AM=M-1
+D=M
+@5
+M=D
+
+//PUSH local 0
+@0
+D=A
+@LCL
+A=M+D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH local 1
+@1
+D=A
+@LCL
+A=M+D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH local 2
+@2
+D=A
+@LCL
+A=M+D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH local 3
+@3
+D=A
+@LCL
+A=M+D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH local 4
+@4
+D=A
+@LCL
+A=M+D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+AM=M-1
+D=M
+A=A-1
+M=M+D
+
+// add
+@SP
+AM=M-1
+D=M
+A=A-1
+M=M+D
+
+// add
+@SP
+AM=M-1
+D=M
+A=A-1
+M=M+D
+
+// add
+@SP
+AM=M-1
+D=M
+A=A-1
+M=M+D
+
+ //function Sys.add12 0
+(Sys.add12)
+
+//PUSH constant 4002
+@4002
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP pointer 0
+@SP
+AM=M-1
+D=M
+@THIS
+M=D
+
+//PUSH constant 5002
+@5002
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP pointer 1
+@SP
+AM=M-1
+D=M
+@THAT
+M=D
+
+//PUSH argument 0
+@0
+D=A
+@ARG
+A=M+D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//PUSH constant 12
+@12
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+AM=M-1
+D=M
+A=A-1
+M=M+D
+
+//END LOOP
+(END)
+@END
+0;JMP
