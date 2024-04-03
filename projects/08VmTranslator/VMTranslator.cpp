@@ -37,6 +37,10 @@ int main()
          {
             output.writeFunction(input.arg1(type), input.arg2(type));
          }
+         else if (type == "C_CALL")
+         {
+            output.writeCall(input.arg1(type), input.arg2(type));
+         }
          else if (type == "NULL")
          {
             std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;

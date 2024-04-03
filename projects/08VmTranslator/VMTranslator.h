@@ -40,7 +40,8 @@ namespace write
         std::fstream o_file_handle;
         std::ofstream log;
         std::string filename;
-        int count = 0; // for labels in writePushPop()
+        int count = 0;       // for labels in writePushPop()
+        int returnCount = 0; // counter for function return address labels
 
         codeWriter(std::string file);
         void writeArithmetic(std::string type);

@@ -17,11 +17,13 @@ write::codeWriter::codeWriter(std::string file)
 
     // write init code
     std::string initCode;
-    initCode = std::string("@256\nD=A\n@SP\nM=D\n") + "//call sys.init0)\n";
+    initCode = std::string("@256\nD=A\n@SP\nM=D\n");
 
     log << "//Bootstrap Code\n"
         << initCode;
     o_file_handle << initCode;
+
+    writeCall("sys.init", 0); // call sys.init
 }
 
 void write::codeWriter::writeArithmetic(std::string type)
@@ -276,6 +278,33 @@ void write::codeWriter::writeFunction(std::string functionName, int numVars)
     }
 }
 
+void write::codeWriter::writeCall(std::string functionName, int numArgs)
+{
+    std::string push_template = std::string("@SP\n") + // pushes value to stack and increments stack
+                                "A=M\n" +
+                                "M=D\n" +
+                                "@SP\n" +
+                                "M=M+1\n";
+    std::string command =
+        "@" + functionName + '.' + std::to_string(returnCount) + '\n' + "D=M\n" + push_template + // push return address to stack
+        "@LCL\n" + "D=M\n" + push_template +                                                      // save frame
+        "@ARG\n" + "D=M\n" + push_template +
+        "@THIS\n" + "D=M\n" + push_template +
+        "@THAT\n" + "D=M\n" + push_template +
+        "@" + std::to_string(5 + numArgs) + '\n' + "D=A\n" + "@SP\n" + "D=A-D\n" +
+        "@ARG\n" + "M=D\n" +                    // ARG = SP-5-numArgs
+        "@SP\n" + "D=M\n" + "@LCL\n" + "M=D\n"; // LCL = SP
+
+    o_file_handle << command;
+    log << "\n//Call" + functionName + std::to_string(numArgs) + " (push return add, save frame, repoint ARG and LCL) \n" + command;
+
+    writeGoto(functionName);
+
+    o_file_handle << "(" + functionName + '.' + std::to_string(returnCount) + ")\n";
+    log << "\n //Return Address Label\n" + std::string("(") + functionName + '.' + std::to_string(returnCount) + ")\n";
+
+    returnCount++;
+}
 int write::codeWriter::close(bool flag) // close the files or drop translation
 {
     if (flag)
