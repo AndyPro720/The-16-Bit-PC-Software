@@ -6,6 +6,8 @@ Now that we have a basic functioning computer as our foundation(we built in [The
 
 But of course we do have an entire elaborate system of languages that are much more user friendly, use significant concepts such as abstraction and modularity, and have an intricate amount of depth built right into their layers to make writing complex programs a breeze(relatively). High Level, Object oriented programming languages offer so much to the table of a software designer and are built upon layers and layers of abstraction which if unpacked ultimately meet our good old assembly language.
 
+We begin by designing a Virtual Machine Language Translator that translates VM files to native assembly. This brings about the notion of memory segments, the stack and functions along with everything we've accumulated over in assembly.
+
 
  ## Others: 
  

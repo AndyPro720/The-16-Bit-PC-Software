@@ -2,20 +2,55 @@
 #include <sstream>
 #include <fstream>
 #include "VMTranslator.h"
+#include <filesystem>
 
 parse::Parser::Parser()
-{ // opens the file and dumps the data in a string
+{ // intializes file / dir for injection
+    std::cout << "\n Enter file name with extension, or directory name to begin translation \n Enter exit to terminate \n ";
+    std::getline(std::cin, filename);
+    if (filename == "exit")
+        exit(0);
+
+    if (!std::filesystem::exists(filename))
+    {
+        std::cout << filename << " doesn't exist as a file or directory, exiting\n";
+        exit(1);
+    }
+
+    // if file
+    if (filename.find(".vm") != std::string::npos)
+    {
+        path << filename;
+        filename.resize(filename.find('.')); // grab filename
+    }
+
+    // if dir
+    else
+    {
+        std::string var;
+        for (auto const &dir : std::filesystem::directory_iterator(filename))
+        {
+            stream << dir.path() << std::endl;
+            stream.seekg(1, stream.beg);
+            std::getline(stream, var, '"'); // deals with quotations around dir fetched by path()
+            if (var.find(".vm") != std::string::npos)
+            {
+                path << var << std::endl;
+                files++; // maintains counter of .vm files
+            }
+            stream.str("");
+        }
+    }
+    std::cout << path.str() << std::endl; // injested dir for reference
+};
+
+const std::string parse::Parser::fileHandler()
+{ // opens a file(s) and dumps the data in a string
+    std::string var;
+    std::getline(path, var);
     std::fstream filehandle;
-    do
-    { // opens the file
 
-        std::cout << "\n Enter file name to translate (without extension), or enter exit \n ";
-        std::getline(std::cin, filename);
-        if (filename == "exit")
-            exit(0);
-
-        filehandle.open(filename + ".vm", std::ifstream::in | std::ifstream::binary);
-    } while (!(filehandle.is_open()));
+    filehandle.open(var, std::ifstream::in | std::ifstream::binary);
 
     filehandle.seekg(0, std::ios::end);      // grabs file size
     instructions.resize(filehandle.tellg()); // resize the string
@@ -23,11 +58,15 @@ parse::Parser::Parser()
 
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
-
-    std::cout << "File Read Successfully. \n"
-              << "********************** ";
     parse::Parser::cleaner();
-};
+
+    if (files != 0) // if directory
+        var = var.substr(var.find('\\') + 2);
+    var.resize(var.find('.'));
+    std::cout << var << " read and processed";
+
+    return var; // return current filename
+}
 
 void parse::Parser::cleaner() // removes whitespace and comments from the file
 {
@@ -75,16 +114,17 @@ void parse::Parser::cleaner() // removes whitespace and comments from the file
     } while (*sp++ = *dp++);
 
     instructions.resize(i - 1); // deal with /n again //needs empty line in vm file for some reason
-    // std::cout << instructions;
+    // std::cout << instructions << std::endl;
     stream.str(instructions);
-    std::cout << "\nInstructions cleaned \n"
-              << "********************** \n";
+    stream.clear(); // clears flags to avoid clash with getline()
 }
 
 bool parse::Parser::hasMoreCommands()
 { // returns 1 if more commands exist, else 0; put commands in CurrentCommand
     if (std::getline(stream, current_command))
+    {
         return 1;
+    }
     else
         return 0;
 }
