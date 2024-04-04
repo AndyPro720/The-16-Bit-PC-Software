@@ -41,6 +41,10 @@ int main()
          {
             output.writeCall(input.arg1(type), input.arg2(type));
          }
+         else if (type == "C_RETURN")
+         {
+            output.Return();
+         }
          else if (type == "NULL")
          {
             std::cout << input.current_command << " is an invalid command, exiting!" << std::endl;

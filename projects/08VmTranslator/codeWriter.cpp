@@ -23,7 +23,7 @@ write::codeWriter::codeWriter(std::string file)
         << initCode;
     o_file_handle << initCode;
 
-    writeCall("sys.init", 0); // call sys.init
+    writeCall("Sys.init", 0); // call Sys.init
 }
 
 void write::codeWriter::writeArithmetic(std::string type)
@@ -279,7 +279,8 @@ void write::codeWriter::writeFunction(std::string functionName, int numVars)
 }
 
 void write::codeWriter::writeCall(std::string functionName, int numArgs)
-{
+{ // saves return address, caller's stack (frame), adjusts ARG and LCL pointers and jumps to called function
+
     std::string push_template = std::string("@SP\n") + // pushes value to stack and increments stack
                                 "A=M\n" +
                                 "M=D\n" +
@@ -291,7 +292,7 @@ void write::codeWriter::writeCall(std::string functionName, int numArgs)
         "@ARG\n" + "D=M\n" + push_template +
         "@THIS\n" + "D=M\n" + push_template +
         "@THAT\n" + "D=M\n" + push_template +
-        "@" + std::to_string(5 + numArgs) + '\n' + "D=A\n" + "@SP\n" + "D=A-D\n" +
+        "@" + std::to_string(5 + numArgs) + '\n' + "D=A\n" + "@SP\n" + "D=M-D\n" +
         "@ARG\n" + "M=D\n" +                    // ARG = SP-5-numArgs
         "@SP\n" + "D=M\n" + "@LCL\n" + "M=D\n"; // LCL = SP
 
@@ -305,6 +306,24 @@ void write::codeWriter::writeCall(std::string functionName, int numArgs)
 
     returnCount++;
 }
+
+void write::codeWriter::Return()
+{ // returns function value, and restores stack to caller's frame
+    std::string command =
+        std::string("@LCL\n") + "D=A\n" + "@endFrame\n" + "M=D\n" +                    // endFrame = LCL
+        "@5\n" + "A=D-A\n" + "D=M\n" + "@retAdd\n" + "M=D\n" +                         // retAdd = *(endframe - 5)
+        "@SP\n" + "AM=M-1\n" + "D=M\n" + "@ARG\n" + "A=M\n" + "M=D\n" +                //*ARG = pop(return value)
+        "@ARG\n" + "D=A+1\n" + "@SP\n" + "M=D\n" +                                     // SP = ARG+1
+        "@endFrame\n" + "A=M-1\n" + "D=M\n" + "@THAT\n" + "M=D\n" +                    // THAT = *(endFrame -1)
+        "@2\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@THIS\n" + "M=D\n" + // THIS = *(endFrame -2)
+        "@3\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@ARG\n" + "M=D\n" +  // ARG = *(endFrame -3)
+        "@4\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@LCL\n" + "M=D\n";   // LCL = *(endFrame -4)
+
+    o_file_handle << command;
+    log << "\n//Return \n" + command;
+    writeGoto("retAdd"); // goto return add
+}
+
 int write::codeWriter::close(bool flag) // close the files or drop translation
 {
     if (flag)
