@@ -6,7 +6,7 @@ M=D
 
 //CallSys.init0 (push return add, save frame, repoint ARG and LCL) 
 @Sys.init.0
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -129,7 +129,7 @@ M=M+1
 
 //Return 
 @LCL
-D=A
+D=M
 @endFrame
 M=D
 @5
@@ -144,7 +144,7 @@ D=M
 A=M
 M=D
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 @endFrame
@@ -173,9 +173,8 @@ A=M-D
 D=M
 @LCL
 M=D
-
-//goto retAdd
 @retAdd
+A=M
 0;JMP
 
 //Label IF_FALSE 
@@ -211,7 +210,7 @@ M=M-D
 
 //CallMain.fibonacci1 (push return add, save frame, repoint ARG and LCL) 
 @Main.fibonacci.1
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -293,7 +292,7 @@ M=M-D
 
 //CallMain.fibonacci1 (push return add, save frame, repoint ARG and LCL) 
 @Main.fibonacci.2
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -354,7 +353,7 @@ M=M+D
 
 //Return 
 @LCL
-D=A
+D=M
 @endFrame
 M=D
 @5
@@ -369,7 +368,7 @@ D=M
 A=M
 M=D
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 @endFrame
@@ -398,9 +397,8 @@ A=M-D
 D=M
 @LCL
 M=D
-
-//goto retAdd
 @retAdd
+A=M
 0;JMP
 
  //function Sys.init 0
@@ -417,7 +415,7 @@ M=M+1
 
 //CallMain.fibonacci1 (push return add, save frame, repoint ARG and LCL) 
 @Main.fibonacci.3
-D=M
+D=A
 @SP
 A=M
 M=D

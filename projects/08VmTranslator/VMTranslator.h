@@ -2,7 +2,7 @@
 #define VMT_H
 
 #if __cplusplus < 201703L
-#error "C++17 or better required for compilation\n"
+#error "C++17 or greater required for compilation\n"
 #endif
 
 #include <string>

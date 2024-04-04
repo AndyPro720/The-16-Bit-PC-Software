@@ -4,9 +4,9 @@ D=A
 @SP
 M=D
 
-//Callsys.init0 (push return add, save frame, repoint ARG and LCL) 
-@sys.init.0
-D=M
+//CallSys.init0 (push return add, save frame, repoint ARG and LCL) 
+@Sys.init.0
+D=A
 @SP
 A=M
 M=D
@@ -43,7 +43,7 @@ M=M+1
 @5
 D=A
 @SP
-D=A-D
+D=M-D
 @ARG
 M=D
 @SP
@@ -51,12 +51,12 @@ D=M
 @LCL
 M=D
 
-//goto sys.init
-@sys.init
+//goto Sys.init
+@Sys.init
 0;JMP
 
  //Return Address Label
-(sys.init.0)
+(Sys.init.0)
 
  //function Sys.init 0
 (Sys.init)
@@ -95,7 +95,7 @@ M=D
 
 //CallSys.main0 (push return add, save frame, repoint ARG and LCL) 
 @Sys.main.1
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -132,7 +132,7 @@ M=M+1
 @5
 D=A
 @SP
-D=A-D
+D=M-D
 @ARG
 M=D
 @SP
@@ -321,7 +321,7 @@ M=M+1
 
 //CallSys.add121 (push return add, save frame, repoint ARG and LCL) 
 @Sys.add12.2
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -358,7 +358,7 @@ M=M+1
 @6
 D=A
 @SP
-D=A-D
+D=M-D
 @ARG
 M=D
 @SP
@@ -470,7 +470,7 @@ M=M+D
 
 //Return 
 @LCL
-D=A
+D=M
 @endFrame
 M=D
 @5
@@ -485,7 +485,7 @@ D=M
 A=M
 M=D
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 @endFrame
@@ -514,9 +514,8 @@ A=M-D
 D=M
 @LCL
 M=D
-
-//goto retAdd
 @retAdd
+A=M
 0;JMP
 
  //function Sys.add12 0
@@ -584,7 +583,7 @@ M=M+D
 
 //Return 
 @LCL
-D=A
+D=M
 @endFrame
 M=D
 @5
@@ -599,7 +598,7 @@ D=M
 A=M
 M=D
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 @endFrame
@@ -628,9 +627,8 @@ A=M-D
 D=M
 @LCL
 M=D
-
-//goto retAdd
 @retAdd
+A=M
 0;JMP
 
 //END LOOP

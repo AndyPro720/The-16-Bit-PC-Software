@@ -287,7 +287,7 @@ void write::codeWriter::writeCall(std::string functionName, int numArgs)
                                 "@SP\n" +
                                 "M=M+1\n";
     std::string command =
-        "@" + functionName + '.' + std::to_string(returnCount) + '\n' + "D=M\n" + push_template + // push return address to stack
+        "@" + functionName + '.' + std::to_string(returnCount) + '\n' + "D=A\n" + push_template + // push return address to stack
         "@LCL\n" + "D=M\n" + push_template +                                                      // save frame
         "@ARG\n" + "D=M\n" + push_template +
         "@THIS\n" + "D=M\n" + push_template +
@@ -308,27 +308,27 @@ void write::codeWriter::writeCall(std::string functionName, int numArgs)
 }
 
 void write::codeWriter::Return()
-{ // returns function value, and restores stack to caller's frame
+{ // returns function value, restores stack to caller's frame, and moves execution to after function call
     std::string command =
-        std::string("@LCL\n") + "D=A\n" + "@endFrame\n" + "M=D\n" +                    // endFrame = LCL
+        std::string("@LCL\n") + "D=M\n" + "@endFrame\n" + "M=D\n" +                    // endFrame = LCL
         "@5\n" + "A=D-A\n" + "D=M\n" + "@retAdd\n" + "M=D\n" +                         // retAdd = *(endframe - 5)
         "@SP\n" + "AM=M-1\n" + "D=M\n" + "@ARG\n" + "A=M\n" + "M=D\n" +                //*ARG = pop(return value)
-        "@ARG\n" + "D=A+1\n" + "@SP\n" + "M=D\n" +                                     // SP = ARG+1
+        "@ARG\n" + "D=M+1\n" + "@SP\n" + "M=D\n" +                                     // SP = ARG+1
         "@endFrame\n" + "A=M-1\n" + "D=M\n" + "@THAT\n" + "M=D\n" +                    // THAT = *(endFrame -1)
         "@2\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@THIS\n" + "M=D\n" + // THIS = *(endFrame -2)
         "@3\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@ARG\n" + "M=D\n" +  // ARG = *(endFrame -3)
-        "@4\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@LCL\n" + "M=D\n";   // LCL = *(endFrame -4)
+        "@4\n" + "D=A\n" + "@endFrame\n" + "A=M-D\n" + "D=M\n" + "@LCL\n" + "M=D\n" +  // LCL = *(endFrame -4)
+        "@retAdd\n" + "A=M\n" + "0;JMP\n";                                             // goto return address
 
     o_file_handle << command;
     log << "\n//Return \n" + command;
-    writeGoto("retAdd"); // goto return add
 }
 
 int write::codeWriter::close(bool flag) // close the files or drop translation
 {
     if (flag)
     {
-        std::cout << "\nError found, terminating translation.\nCheck command after last sucessful translation\n";
+        std::cout << "\nError found, terminating translation.\nCheck command after last sucessful translation in log\n";
         o_file_handle.close();
         log.close();
         exit(1);
@@ -343,7 +343,7 @@ int write::codeWriter::close(bool flag) // close the files or drop translation
 
         o_file_handle.close();
         log.close();
-        std::cout << "File and log_file assembled with same name successfully! \n";
+        std::cout << "File and log_file translated with same name successfully! \n";
         return 0;
     }
 }

@@ -1,3 +1,9 @@
+/* VMTranslator takes input a Virtual Machine Language(.vm) file / directory of files and provides
+translated assembly output
+
+Intended to be run on Hack, the custom 16-Bit-PC
+*/
+
 #include <iostream>
 #include "VMTranslator.h"
 
@@ -6,7 +12,7 @@ int main()
    parse::Parser input;                      // intializes file/dir
    write::codeWriter output(input.filename); // creates output assembly and log_file
 
-   do
+   do // translates instructions across files and writes to output file
    {
       std::string current_file = input.fileHandler(); // go to next file
       while (input.hasMoreCommands())

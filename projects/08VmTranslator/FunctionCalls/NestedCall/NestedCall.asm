@@ -2,8 +2,8 @@
 D=A
 @SP
 M=D
-@sys.init.0
-D=M
+@Sys.init.0
+D=A
 @SP
 A=M
 M=D
@@ -40,16 +40,16 @@ M=M+1
 @5
 D=A
 @SP
-D=A-D
+D=M-D
 @ARG
 M=D
 @SP
 D=M
 @LCL
 M=D
-@sys.init
+@Sys.init
 0;JMP
-(sys.init.0)
+(Sys.init.0)
 (Sys.init)
 @4000
 D=A
@@ -76,7 +76,7 @@ D=M
 @THAT
 M=D
 @Sys.main.1
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -113,7 +113,7 @@ M=M+1
 @5
 D=A
 @SP
-D=A-D
+D=M-D
 @ARG
 M=D
 @SP
@@ -256,7 +256,7 @@ M=D
 @SP
 M=M+1
 @Sys.add12.2
-D=M
+D=A
 @SP
 A=M
 M=D
@@ -293,7 +293,7 @@ M=M+1
 @6
 D=A
 @SP
-D=A-D
+D=M-D
 @ARG
 M=D
 @SP
@@ -379,7 +379,7 @@ D=M
 A=A-1
 M=M+D
 @LCL
-D=A
+D=M
 @endFrame
 M=D
 @5
@@ -394,7 +394,7 @@ D=M
 A=M
 M=D
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 @endFrame
@@ -424,6 +424,7 @@ D=M
 @LCL
 M=D
 @retAdd
+A=M
 0;JMP
 (Sys.add12)
 @4002
@@ -473,7 +474,7 @@ D=M
 A=A-1
 M=M+D
 @LCL
-D=A
+D=M
 @endFrame
 M=D
 @5
@@ -488,7 +489,7 @@ D=M
 A=M
 M=D
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 @endFrame
@@ -518,6 +519,7 @@ D=M
 @LCL
 M=D
 @retAdd
+A=M
 0;JMP
 (END)
 @END
