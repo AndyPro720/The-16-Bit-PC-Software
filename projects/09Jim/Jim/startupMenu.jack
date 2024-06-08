@@ -1,0 +1,142 @@
+class startupMenu {
+
+field boolean key;
+
+constructor startupMenu new() {
+    do Output.moveCursor(9, 13);
+    do startup();
+    return this;
+}
+
+method void startup() {
+    do Output.printString("Welcome to J m, the Jack text editor!"); 
+    //do startupMenu.animateipos0(800);
+    do Output.moveCursor(11, 5);
+    do Output.printString("Press [] key to [O]pen file, [N]ew file, [H]elp, [Q]uit"); 
+    return;
+}
+
+method void help() {
+  do Output.printString("PRINT HELP TEXT");
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function void animateipos0(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 3);
+	do Memory.poke(memAddress +64, 3);
+	do Memory.poke(memAddress +96, 3);
+	do Memory.poke(memAddress +128, 3);
+	do Memory.poke(memAddress +160, 3);
+	do Memory.poke(memAddress +192, 3);
+	do Memory.poke(memAddress +224, 3);
+	do Memory.poke(memAddress +256, 3);
+	do Memory.poke(memAddress +288, 3);
+  do startupMenu.animateipos1(800);
+	return;
+}
+
+function void animateipos1(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 6);
+	do Memory.poke(memAddress +64, 6);
+	do Memory.poke(memAddress +96, 6);
+	do Memory.poke(memAddress +128, 6);
+	do Memory.poke(memAddress +160, 6);
+	do Memory.poke(memAddress +192, 6);
+	do Memory.poke(memAddress +224, 6);
+	do Memory.poke(memAddress +256, 6);
+	do Memory.poke(memAddress +288, 6);
+  do startupMenu.animateipos2(800);
+	return;
+}
+
+function void animateipos2(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 12);
+	do Memory.poke(memAddress +64, 12);
+	do Memory.poke(memAddress +96, 12);
+	do Memory.poke(memAddress +128, 12);
+	do Memory.poke(memAddress +160, 12);
+	do Memory.poke(memAddress +192, 12);
+	do Memory.poke(memAddress +224, 12);
+	do Memory.poke(memAddress +256, 12);
+	do Memory.poke(memAddress +288, 12);
+  do startupMenu.animateipos3(800);
+	return;
+}
+
+function void animateipos3(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 24);
+	do Memory.poke(memAddress +64, 24);
+	do Memory.poke(memAddress +96, 24);
+	do Memory.poke(memAddress +128, 24);
+	do Memory.poke(memAddress +160, 24);
+	do Memory.poke(memAddress +192, 24);
+	do Memory.poke(memAddress +224, 24);
+	do Memory.poke(memAddress +256, 24);
+	do Memory.poke(memAddress +288, 24);
+  do startupMenu.animateipos4(800);
+	return;
+}
+
+function void animateipos4(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 48);
+	do Memory.poke(memAddress +64, 48);
+	do Memory.poke(memAddress +96, 48);
+	do Memory.poke(memAddress +128, 48);
+	do Memory.poke(memAddress +160, 48);
+	do Memory.poke(memAddress +192, 48);
+	do Memory.poke(memAddress +224, 48);
+	do Memory.poke(memAddress +256, 48);
+	do Memory.poke(memAddress +288, 48);
+	return;
+}
+
+method void dispose() {
+  do Memory.deAlloc(this);
+  return;
+}
+
+}
