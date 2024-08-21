@@ -53,6 +53,7 @@ int main()
     do
     {
         analyzer::JackTokenizer token(input.path);
+        token.hasMoreTokens();
 
     } while (--input.fileCount != 0); // if directory
 

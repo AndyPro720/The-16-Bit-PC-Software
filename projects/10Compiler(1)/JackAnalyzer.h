@@ -26,8 +26,12 @@ namespace analyzer
     {
     public:
         JackTokenizer(std::stringstream &path);
+        std::stringstream input;
+        char current_token[50]{};
+        char *fp, *sp, *wp;
         std::string instructions;
-        std::stringstream tokens;
+
+        bool hasMoreTokens();
     };
 }
 
