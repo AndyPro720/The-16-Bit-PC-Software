@@ -6,13 +6,12 @@
 // (identical to projects/09/Average/Main.jack)
 /** Computes the average of a sequence of integers. */
 class Main 
-2cl
 {
     function void main() {
         var Array a;
         var int length;
         var int i, sum;
-	
+
 	let length = Keyboard.readInt("HOW MANY NUMBERS? ");
 	let a = Array.new(length);
 	let i = 0;

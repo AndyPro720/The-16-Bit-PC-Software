@@ -1,11 +1,12 @@
 #include "JackAnalyzer.h"
 #include <fstream>
 #include <sstream>
+#include <string>
 
 namespace // private functions declaration
 {
     bool isSymbol(char c);
-    bool isKeyword(char keyword[]);
+    bool isKeyword(const std::string keyword);
     bool isIdentifier(char id[]);
 }
 
@@ -28,7 +29,7 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
     fileName = fileName.substr(fileName.find('\\') + 2);
     fileName.resize(fileName.find('.'));
     std::cout << fileName << " read and processed" << std::endl;
-    sp = fp = &instructions[0];
+    fp = &instructions[0];
 }
 
 bool analyzer::JackTokenizer::hasMoreTokens()
@@ -42,7 +43,6 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         {
             while (*fp != '\n')
                 fp++;
-            sp = fp;
             continue;
         }
 
@@ -52,7 +52,6 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             while (*fp != '/' && *(fp - 1) != '*')
                 fp++;
             fp++; // skip newline
-            sp = fp;
             continue;
         }
 
@@ -61,6 +60,8 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             fp++;
             while (*(fp) != '\"')
                 *wp++ = *fp++;
+            fp++;
+            type = "STRING_CONST";
             break;
         }
 
@@ -70,7 +71,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             continue;
         }
 
-        if (*fp == ' ') // ignore whitespace
+        if (*fp == ' ' || *fp == '\r' || *fp == '\f' || *fp == '\v' || *fp == '\t') // ignore whitespace
         {
             fp++;
             continue;
@@ -79,6 +80,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         else if (isSymbol(*fp)) // if symbol
         {
             *wp++ = *fp++;
+            type = "SYMBOL";
             break;
         }
 
@@ -88,30 +90,48 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             {
                 *wp++ = *fp++;
             } while (isdigit(*fp));
+            type = "INT_CONST";
             break;
         }
 
-        do // grab a string
+        do // grab a token
         {
             *wp++ = *fp++;
-        } while (*fp != ' ');
+        } while (*fp != ' ' && !(isSymbol(*fp)));
 
         if (isKeyword(current_token))
+        {
+            type = "KEYWORD";
             break;
+        }
         if (isIdentifier(current_token))
+        {
+            type = "IDENTIFIER";
             break;
+        }
 
-        else
-            std::cout << "Error processing token " << current_token << "or" << *fp << std::endl;
+#if 0
+
+        std::cout << "Error processing token " << current_token << "or " << *fp << std::endl;
         return 1;
-
         fp++; // if none
+#endif
 
     } while (*fp);
+    if (!(*fp)) // if EOF
+        return 1;
 
-    std::cout << ":" << current_token << ":" << std::endl;
+    std::cout << ":" << current_token << ":";
+    std::cout << tokenType() << std::endl;
 
+    std::fill(current_token, current_token + 100, 0);
+    // fix multi-file, garabage value tokens eroor and see if whitespace is needed to be checked
     return 0;
+}
+
+const std::string analyzer::JackTokenizer::tokenType()
+{
+    return type;
 }
 
 namespace
@@ -119,13 +139,13 @@ namespace
 
     bool isSymbol(char c)
     {
-        if (c == '{' || c == '}' || c == '(' || c == ')' || c == '[' || c == '.' || c == ',' || c == ';' || c == '+' || c == '-' || c == '*' || c == '/' || c == '&' || c == '|' || c == '|' || c == '<' || c == '>' || c == '=' || c == '~')
+        if (c == '{' || c == '}' || c == '(' || c == ')' || c == '[' || c == '.' || c == ',' || c == ';' || c == '+' || c == '-' || c == '*' || c == '/' || c == '&' || c == '|' || c == '|' || c == '<' || c == '>' || c == '=' || c == '~' || c == ']')
             return true;
         else
             return false;
     }
 
-    bool isKeyword(char keyword[])
+    bool isKeyword(const std::string keyword)
     {
         if (keyword == "class" || keyword == "constructor" || keyword == "function" || keyword == "method" || keyword == "field" || keyword == "static" || keyword == "var" || keyword == "int" || keyword == "char" || keyword == "boolean" || keyword == "void" || keyword == "true" || keyword == "false" || keyword == "null" || keyword == "this" || keyword == "let" || keyword == "do" || keyword == "if" || keyword == "else" || keyword == "while" || keyword == "return")
             return true;
