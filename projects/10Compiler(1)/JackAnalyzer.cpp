@@ -52,10 +52,12 @@ int main()
     analyzer::JackAnalyzer input;
     do
     {
+        std::string test;
         analyzer::JackTokenizer token(input.path);
         while (!token.hasMoreTokens())
             token.hasMoreTokens();
         std::cout << "here";
+        std::cin >> test;
 
     } while (--input.fileCount != 0); // if directory
 

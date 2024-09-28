@@ -35,9 +35,8 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
 bool analyzer::JackTokenizer::hasMoreTokens()
 {
     wp = &current_token[0];
-    do // break for each token
+    while (*fp) // break for each token
     {
-        // std::cout << "ran" << std::endl;
 
         if (*fp == '/' && *(fp + 1) == '/') // ignore line comments
         {
@@ -49,7 +48,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         else if (*fp == '/' && *(fp + 1) == '*' && *(fp + 2) == '*') // ignore multi-line commends
         {
             fp = fp + 4;
-            while (*fp != '/' && *(fp - 1) != '*')
+            while (!(*fp == '/' && *(fp - 1) == '*'))
                 fp++;
             fp++; // skip newline
             continue;
@@ -97,7 +96,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         do // grab a token
         {
             *wp++ = *fp++;
-        } while (*fp != ' ' && !(isSymbol(*fp)));
+        } while (!(*fp == ' ' || isSymbol(*fp)));
 
         if (isKeyword(current_token))
         {
@@ -109,23 +108,15 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             type = "IDENTIFIER";
             break;
         }
-
-#if 0
-
-        std::cout << "Error processing token " << current_token << "or " << *fp << std::endl;
-        return 1;
-        fp++; // if none
-#endif
-
-    } while (*fp);
-    if (!(*fp)) // if EOF
+    }
+    if ((*fp) == '\0') // if EOF
         return 1;
 
     std::cout << ":" << current_token << ":";
     std::cout << tokenType() << std::endl;
 
     std::fill(current_token, current_token + 100, 0);
-    // fix multi-file, garabage value tokens eroor and see if whitespace is needed to be checked
+    // fix multi-file, garabage value tokens error and see if whitespace is needed to be checked
     return 0;
 }
 
