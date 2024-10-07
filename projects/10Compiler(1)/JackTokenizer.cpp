@@ -26,6 +26,7 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
     // input.str(instructions);
     filehandle.close();
 
+    filename_g = fileName;
     fileName = fileName.substr(fileName.find('\\') + 2);
     fileName.resize(fileName.find('.'));
     std::cout << fileName << " read and processed" << std::endl;
@@ -112,11 +113,13 @@ bool analyzer::JackTokenizer::hasMoreTokens()
     if ((*fp) == '\0') // if EOF
         return 1;
 
+#if 0
     std::cout << ":" << current_token << ":";
     std::cout << tokenType() << std::endl;
+    // see whitespace is needed to be checked
+#endif
 
-    std::fill(current_token, current_token + 100, 0);
-    // fix multi-file, garabage value tokens error and see if whitespace is needed to be checked
+    std::fill(current_token, current_token + 100, 0); // clear string
     return 0;
 }
 

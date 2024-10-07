@@ -26,13 +26,22 @@ namespace analyzer
     {
     public:
         JackTokenizer(std::stringstream &path);
-        std::stringstream input;
+        std::string filename_g;
         char current_token[100]{};
         char *fp, *sp, *wp;
         std::string instructions, type;
 
         bool hasMoreTokens();
         const std::string tokenType();
+    };
+
+    class CompilationEngine
+    {
+    public:
+        CompilationEngine(std::string path);
+        std::fstream filehandle;
+
+        void Close(bool flag);
     };
 }
 
