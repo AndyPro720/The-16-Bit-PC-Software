@@ -111,7 +111,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         }
     }
     if ((*fp) == '\0') // if EOF
-        return 1;
+        return false;
 
 #if 0
     std::cout << ":" << current_token << ":";
@@ -120,7 +120,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
 #endif
 
     std::fill(current_token, current_token + 100, 0); // clear string
-    return 0;
+    return true;
 }
 
 const std::string analyzer::JackTokenizer::tokenType()

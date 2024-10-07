@@ -38,9 +38,10 @@ namespace analyzer
     class CompilationEngine
     {
     public:
-        CompilationEngine(std::string path);
+        CompilationEngine(std::stringstream &path);
         std::fstream filehandle;
 
+        void CompileClass();
         void Close(bool flag);
     };
 }
