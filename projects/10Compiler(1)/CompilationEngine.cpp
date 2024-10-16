@@ -1,24 +1,25 @@
 #include "JackAnalyzer.h"
 #include <fstream>
 
-analyzer::CompilationEngine::CompilationEngine(std::stringstream &path)
-{
+// inhertiance not vs share object as private member
 
-    analyzer::JackTokenizer token(path);
+analyzer::CompilationEngine::CompilationEngine(std::stringstream &path) : token(path)
+{
     std::string filename = token.filename_g;
 
     filename.resize(filename.find('.'));
     filehandle.open(filename + "_c" + ".xml", std::ofstream::out | std::ofstream::trunc);
 
     filehandle << "<token>\n";
-    while (token.hasMoreTokens())
-        token.hasMoreTokens();
+    CompileClass();
 
     std::cout << "here";
 }
 
 void analyzer::CompilationEngine::CompileClass()
 {
+    while (token.hasMoreTokens())
+        std::cout << token.current_token << std::endl;
 }
 
 void analyzer::CompilationEngine::Close(bool flag)

@@ -35,6 +35,7 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
 
 bool analyzer::JackTokenizer::hasMoreTokens()
 {
+    std::fill(current_token, current_token + 100, 0); // clear string
     wp = &current_token[0];
     while (*fp) // break for each token
     {
@@ -116,10 +117,8 @@ bool analyzer::JackTokenizer::hasMoreTokens()
 #if 0
     std::cout << ":" << current_token << ":";
     std::cout << tokenType() << std::endl;
-    // see whitespace is needed to be checked
 #endif
 
-    std::fill(current_token, current_token + 100, 0); // clear string
     return true;
 }
 

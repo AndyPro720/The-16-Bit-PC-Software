@@ -37,6 +37,9 @@ namespace analyzer
 
     class CompilationEngine
     {
+    private:
+        analyzer::JackTokenizer token;
+
     public:
         CompilationEngine(std::stringstream &path);
         std::fstream filehandle;
