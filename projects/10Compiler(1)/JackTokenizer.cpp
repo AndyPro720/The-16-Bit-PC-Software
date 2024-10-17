@@ -102,7 +102,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
 
         if (isKeyword(current_token))
         {
-            type = "KEYWORD";
+            type = "keyword";
             break;
         }
         if (isIdentifier(current_token))

@@ -3,9 +3,10 @@
 
 namespace
 {
+    std::fstream *handle; // using this as aren't multi-threading(instances)
     int indentLevel = 0;
-    void writeData(const std::string &type, std::string data, std::string angleString, std::fstream &handle);
-    void indent(std::fstream &handle, bool indent);
+    void writeData(const std::string &type, std::string data, std::string angleString);
+    void indent(int indent);
 
 } // namespace
 
@@ -15,25 +16,22 @@ analyzer::CompilationEngine::CompilationEngine(std::stringstream &path) : token(
 
     filename.resize(filename.find('.'));
     filehandle.open(filename + "_c" + ".xml", std::ofstream::out | std::ofstream::trunc);
+    handle = &filehandle;
 
     CompileClass();
 }
 
 void analyzer::CompilationEngine::CompileClass()
 {
-#if 0
-    while (token.hasMoreTokens())
-        std::cout << token.current_token << '#' << std::endl;
-    std::cout << token.current_token;
-#endif
-    if (token.hasMoreTokens())
+    if (token.hasMoreTokens() && std::string(token.current_token) == "class")
     {
-        writeData("angled", " ", token.current_token, filehandle);
-        indent(filehandle, 1);
-        writeData("angled-data", " name of class ", token.current_token, filehandle);
-        indent(filehandle, 0);
-        writeData("close", " name of class ", token.current_token, filehandle);
+
+        writeData("angled", " ", token.current_token);
+        indent(1);
+        writeData("angled-data", token.current_token, token.tokenType());
     }
+    indent(-1);
+    writeData("close", "", "class");
 }
 
 void analyzer::CompilationEngine::Close(bool flag)
@@ -44,34 +42,38 @@ void analyzer::CompilationEngine::Close(bool flag)
 
 namespace
 {
-    void writeData(const std::string &type, std::string data, std::string angleString, std::fstream &handle)
+    void writeData(const std::string &type, std::string data, std::string angleString)
     {
+        indent(0);
         if (type == "angled")
-            handle << '<' + angleString + ">\n";
+            *handle << '<' + angleString + ">\n";
 
         else if (type == "angled-data")
         {
-            handle << '<' + angleString + ">";
-            handle << ' ' + data + ' ';
-            handle << '<' + angleString + ">\n";
+            *handle << '<' + angleString + ">";
+            *handle << ' ' + data + ' ';
+            *handle << '<' + angleString + ">\n";
         }
         else if (type == "close")
-            handle << "</" + angleString + ">\n";
+            *handle << "</" + angleString + ">\n";
 
         else
-            handle << data + '\n';
+            *handle << data + '\n';
     }
 
-    void indent(std::fstream &handle, bool indent)
+    void indent(int indent) // 1 to increment, -1 to decrement, 0 to write
     {
-        if (indent)
+        if (indent == 1)
             indentLevel++;
-        else
+        else if (indent == -1)
             indentLevel--;
-
-        for (int i = indentLevel; i > 0; i--)
+        else
         {
-            handle << '\t';
+
+            for (int i = indentLevel; i > 0; i--)
+            {
+                *handle << '\t';
+            }
         }
     }
 }
