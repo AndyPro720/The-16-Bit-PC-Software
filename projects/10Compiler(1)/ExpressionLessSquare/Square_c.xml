@@ -3,15 +3,13 @@
 	<IDENTIFIER> Square <IDENTIFIER>
 	<SYMBOL> { <SYMBOL>
 	<classVarDec>
+		<keyword> field <keyword>
 		<keyword> int <keyword>
 		<IDENTIFIER> x <IDENTIFIER>
-		<SYMBOL> , <SYMBOL>
-		<IDENTIFIER> y <IDENTIFIER>
-		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
 	<classVarDec>
+		<keyword> field <keyword>
 		<keyword> int <keyword>
 		<IDENTIFIER> size <IDENTIFIER>
-		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
 </class>

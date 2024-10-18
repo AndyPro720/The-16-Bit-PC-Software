@@ -3,13 +3,13 @@
 	<IDENTIFIER> SquareGame <IDENTIFIER>
 	<SYMBOL> { <SYMBOL>
 	<classVarDec>
+		<keyword> field <keyword>
 		<IDENTIFIER> Square <IDENTIFIER>
 		<IDENTIFIER> square <IDENTIFIER>
-		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
 	<classVarDec>
+		<keyword> field <keyword>
 		<keyword> int <keyword>
 		<IDENTIFIER> direction <IDENTIFIER>
-		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
 </class>

@@ -45,6 +45,8 @@ namespace analyzer
         std::fstream filehandle;
 
         void CompileClass();
+        void CompileClassVarDec();
+        void CompileSubroutineDec();
         void Close(bool flag);
     };
 }

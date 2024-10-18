@@ -1,2 +1,5 @@
-<token>
-</token>
+<class>
+	<keyword> class <keyword>
+	<IDENTIFIER> Main <IDENTIFIER>
+	<SYMBOL> { <SYMBOL>
+</class>

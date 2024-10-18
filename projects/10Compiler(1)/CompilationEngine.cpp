@@ -29,13 +29,56 @@ void analyzer::CompilationEngine::CompileClass()
         writeData("angled", " ", token.current_token);
         indent(1);
         writeData("angled-data", token.current_token, token.tokenType());
+        token.hasMoreTokens(); //  class name
+        writeData("angled-data", token.current_token, token.tokenType());
+        token.hasMoreTokens(); //  {
+        writeData("angled-data", token.current_token, token.tokenType());
     }
+    else
+        Close(0); // throw error
+
+    while (token.hasMoreTokens() && std::string(token.current_token) != "}")
+    {
+        if (std::string(token.current_token) == "static" || std::string(token.current_token) == "field")
+            CompileClassVarDec();
+        else
+            CompileSubroutineDec();
+    }
+
     indent(-1);
     writeData("close", "", "class");
 }
 
+void analyzer::CompilationEngine::CompileClassVarDec()
+{
+
+    writeData("angled", "", "classVarDec");
+    indent(1);
+    writeData("angled-data", token.current_token, token.tokenType()); // static || field
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); //  var name
+
+    while (token.hasMoreTokens() && std::string(token.current_token) == ",")
+    {
+        writeData("angled-data", token.current_token, token.tokenType()); // ,
+        token.hasMoreTokens();
+        writeData("angled-data", token.current_token, token.tokenType()); //  var name
+    }
+
+    writeData("angled-data", token.current_token, token.tokenType()); // ;
+    indent(-1);
+    writeData("close", "", "classVarDec");
+}
+
+void analyzer::CompilationEngine::CompileSubroutineDec()
+{
+}
+
 void analyzer::CompilationEngine::Close(bool flag)
 {
+
+    if (flag == 0)
+        std::cout << "Error with Syntax, aborting" << std::endl;
 
     filehandle.close();
 }
