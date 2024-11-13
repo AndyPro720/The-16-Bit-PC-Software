@@ -6,10 +6,138 @@
 		<keyword> field <keyword>
 		<IDENTIFIER> Square <IDENTIFIER>
 		<IDENTIFIER> square <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
 	<classVarDec>
 		<keyword> field <keyword>
 		<keyword> int <keyword>
 		<IDENTIFIER> direction <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
+	<subroutineDec>
+		<keyword> constructor <keyword>
+		<IDENTIFIER> SquareGame <IDENTIFIER>
+		<IDENTIFIER> new <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> { <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> let <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> square <IDENTIFIER>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> square <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> let <keyword>
+		<SubroutineBody>
+			<IDENTIFIER> direction <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> = <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> direction <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> return <keyword>
+		<IDENTIFIER> square <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> } <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> method <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> void <keyword>
+		<IDENTIFIER> dispose <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<SYMBOL> ) <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> { <SYMBOL>
+		<SubroutineBody>
+			<keyword> do <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> square <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> dispose <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<SYMBOL> ) <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<keyword> do <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> Memory <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> deAlloc <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<IDENTIFIER> square <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> ; <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> return <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> method <keyword>
+		<keyword> void <keyword>
+		<ParameterList>
+			<keyword> void <keyword>
+			<IDENTIFIER> moveSquare <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> { <SYMBOL>
+		<SubroutineBody>
+			<keyword> if <keyword>
+			<statements>
+			</statements>
+			<SYMBOL> ( <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> direction <IDENTIFIER>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> { <SYMBOL>
+		<keyword> do <keyword>
+		<ParameterList>
+			<keyword> do <keyword>
+			<IDENTIFIER> square <IDENTIFIER>
+			<SYMBOL> . <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ( <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
 </class>

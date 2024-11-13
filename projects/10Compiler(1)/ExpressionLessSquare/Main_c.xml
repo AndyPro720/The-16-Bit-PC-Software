@@ -6,5 +6,203 @@
 		<keyword> static <keyword>
 		<keyword> boolean <keyword>
 		<IDENTIFIER> test <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> bleh <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
+	<subroutineDec>
+		<keyword> function <keyword>
+		<keyword> void <keyword>
+		<IDENTIFIER> main <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> { <SYMBOL>
+			<VarDec>
+				<keyword> var <keyword>
+				<IDENTIFIER> SquareGame <IDENTIFIER>
+				<IDENTIFIER> game <IDENTIFIER>
+				<SYMBOL> ; <SYMBOL>
+			</VarDec>
+			<statements>
+			</statements>
+			<keyword> let <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> game <IDENTIFIER>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> game <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> do <keyword>
+		<SubroutineBody>
+			<IDENTIFIER> game <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> . <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> run <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> ; <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> do <keyword>
+		<SubroutineBody>
+			<IDENTIFIER> game <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> . <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> dispose <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> ; <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> return <keyword>
+		<SubroutineBody>
+			<SYMBOL> ; <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> } <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> function <keyword>
+		<keyword> void <keyword>
+		<IDENTIFIER> test <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> { <SYMBOL>
+			<VarDec>
+				<keyword> var <keyword>
+				<keyword> int <keyword>
+				<IDENTIFIER> i <IDENTIFIER>
+				<SYMBOL> , <SYMBOL>
+			</VarDec>
+			<statements>
+			</statements>
+			<IDENTIFIER> j <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> var <keyword>
+		<IDENTIFIER> String <IDENTIFIER>
+		<IDENTIFIER> s <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<keyword> var <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> Array <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> a <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> if <keyword>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> i <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> { <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> let <keyword>
+		<IDENTIFIER> s <IDENTIFIER>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> i <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<keyword> let <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> s <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> j <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> let <keyword>
+		<ParameterList>
+			<keyword> let <keyword>
+			<IDENTIFIER> a <IDENTIFIER>
+			<SYMBOL> [ <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ] <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> = <SYMBOL>
+			<statements>
+			</statements>
+			<IDENTIFIER> j <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> else <keyword>
+		<SYMBOL> { <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> let <keyword>
+		<SubroutineBody>
+			<IDENTIFIER> i <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> = <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> i <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> let <keyword>
+		<IDENTIFIER> j <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> = <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> j <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> let <keyword>
+		<IDENTIFIER> i <IDENTIFIER>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> i <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> | <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> j <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
 </class>

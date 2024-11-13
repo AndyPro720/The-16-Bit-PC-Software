@@ -1,17 +1,78 @@
-<class>
-	<keyword> class <keyword>
-	<IDENTIFIER> Square <IDENTIFIER>
-	<SYMBOL> { <SYMBOL>
-	<classVarDec>
-		<keyword> int <keyword>
-		<IDENTIFIER> x <IDENTIFIER>
-		<SYMBOL> , <SYMBOL>
-		<IDENTIFIER> y <IDENTIFIER>
-		<SYMBOL> ; <SYMBOL>
-	</classVarDec>
-	<classVarDec>
-		<keyword> int <keyword>
-		<IDENTIFIER> size <IDENTIFIER>
-		<SYMBOL> ; <SYMBOL>
-	</classVarDec>
-</class>
+																									<class>
+																										<keyword> class <keyword>
+																										<IDENTIFIER> Square <IDENTIFIER>
+																										<SYMBOL> { <SYMBOL>
+																										<classVarDec>
+																											<keyword> field <keyword>
+																											<keyword> int <keyword>
+																											<IDENTIFIER> x <IDENTIFIER>
+																										</classVarDec>
+																										<subroutineDec>
+																											<SYMBOL> , <SYMBOL>
+																											<IDENTIFIER> y <IDENTIFIER>
+																											<SYMBOL> ; <SYMBOL>
+																											<keyword> field <keyword>
+																											<ParameterList>
+																												<keyword> field <keyword>
+																												<keyword> int <keyword>
+																												<IDENTIFIER> size <IDENTIFIER>
+																												</ParameterList>
+																											<subroutineDec>
+																												<keyword> constructor <keyword>
+																												<IDENTIFIER> Square <IDENTIFIER>
+																												<IDENTIFIER> new <IDENTIFIER>
+																												<SYMBOL> ( <SYMBOL>
+																												<ParameterList>
+																													</ParameterList>
+																												<subroutineDec>
+																													<keyword> int <keyword>
+																													<IDENTIFIER> Ax <IDENTIFIER>
+																													<SYMBOL> , <SYMBOL>
+																													<keyword> int <keyword>
+																													<ParameterList>
+																														<keyword> int <keyword>
+																														<IDENTIFIER> Ay <IDENTIFIER>
+																														<SYMBOL> , <SYMBOL>
+																														<keyword> int <keyword>
+																														<IDENTIFIER> Asize <IDENTIFIER>
+																														<SYMBOL> ) <SYMBOL>
+																														</ParameterList>
+																													<subroutineDec>
+																														<keyword> let <keyword>
+																														<IDENTIFIER> x <IDENTIFIER>
+																														<SYMBOL> = <SYMBOL>
+																														<IDENTIFIER> Ax <IDENTIFIER>
+																														<ParameterList>
+																															</ParameterList>
+																														<subroutineDec>
+																															<SYMBOL> ; <SYMBOL>
+																															<keyword> let <keyword>
+																															<IDENTIFIER> y <IDENTIFIER>
+																															<SYMBOL> = <SYMBOL>
+																															<ParameterList>
+																																</ParameterList>
+																															<subroutineDec>
+																																<IDENTIFIER> Ay <IDENTIFIER>
+																																<SYMBOL> ; <SYMBOL>
+																																<keyword> let <keyword>
+																																<IDENTIFIER> size <IDENTIFIER>
+																																<ParameterList>
+																																	</ParameterList>
+																																<subroutineDec>
+																																	<SYMBOL> = <SYMBOL>
+																																	<IDENTIFIER> Asize <IDENTIFIER>
+																																	<SYMBOL> ; <SYMBOL>
+																																	<keyword> do <keyword>
+																																	<ParameterList>
+																																		<keyword> do <keyword>
+																																		<IDENTIFIER> draw <IDENTIFIER>
+																																		<SYMBOL> ( <SYMBOL>
+																																		</ParameterList>
+																																	<subroutineDec>
+																																		<SYMBOL> ; <SYMBOL>
+																																		<keyword> return <keyword>
+																																		<keyword> this <keyword>
+																																		<SYMBOL> ; <SYMBOL>
+																																		<ParameterList>
+																																			</ParameterList>
+																																	</class>

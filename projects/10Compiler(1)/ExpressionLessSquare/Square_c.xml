@@ -6,10 +6,475 @@
 		<keyword> field <keyword>
 		<keyword> int <keyword>
 		<IDENTIFIER> x <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
 	<classVarDec>
 		<keyword> field <keyword>
 		<keyword> int <keyword>
 		<IDENTIFIER> size <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
 	</classVarDec>
+	<subroutineDec>
+		<keyword> constructor <keyword>
+		<IDENTIFIER> Square <IDENTIFIER>
+		<IDENTIFIER> new <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> int <keyword>
+		<SubroutineBody>
+			<IDENTIFIER> Ax <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> , <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> int <keyword>
+		<IDENTIFIER> Ay <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<keyword> int <keyword>
+		<ParameterList>
+			<keyword> int <keyword>
+			<IDENTIFIER> Asize <IDENTIFIER>
+		</ParameterList>
+		<SYMBOL> { <SYMBOL>
+		<SubroutineBody>
+			<keyword> let <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> x <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> Ax <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> let <keyword>
+		<ParameterList>
+			<keyword> let <keyword>
+			<IDENTIFIER> y <IDENTIFIER>
+			<SYMBOL> = <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<keyword> let <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> size <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> Asize <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> do <keyword>
+		<ParameterList>
+			<keyword> do <keyword>
+			<IDENTIFIER> draw <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<keyword> return <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> x <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> method <keyword>
+		<keyword> void <keyword>
+		<ParameterList>
+			<keyword> void <keyword>
+			<IDENTIFIER> dispose <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> { <SYMBOL>
+		<SubroutineBody>
+			<keyword> do <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> Memory <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> deAlloc <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<keyword> this <keyword>
+		<ParameterList>
+			<keyword> this <keyword>
+			<SYMBOL> ) <SYMBOL>
+			<SYMBOL> ; <SYMBOL>
+			<keyword> return <keyword>
+			<SYMBOL> ; <SYMBOL>
+			<SYMBOL> } <SYMBOL>
+			<keyword> method <keyword>
+			<keyword> void <keyword>
+			<IDENTIFIER> draw <IDENTIFIER>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> { <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> do <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> setColor <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> do <keyword>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> drawRectangle <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ( <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> x <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> , <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> return <keyword>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> method <keyword>
+		<ParameterList>
+			<keyword> method <keyword>
+			<keyword> void <keyword>
+			<IDENTIFIER> erase <IDENTIFIER>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> { <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> do <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> setColor <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> do <keyword>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> drawRectangle <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ( <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> x <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> , <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> return <keyword>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> method <keyword>
+		<ParameterList>
+			<keyword> method <keyword>
+			<keyword> void <keyword>
+			<IDENTIFIER> incSize <IDENTIFIER>
+		</ParameterList>
+		<SYMBOL> ) <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> { <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> if <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ( <SYMBOL>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> { <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<keyword> do <keyword>
+		<SubroutineBody>
+			<IDENTIFIER> erase <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> ( <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> let <keyword>
+		<IDENTIFIER> size <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> = <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> size <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> do <keyword>
+		<IDENTIFIER> draw <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<SYMBOL> ) <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> } <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> return <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> method <keyword>
+		<keyword> void <keyword>
+		<ParameterList>
+			<keyword> void <keyword>
+			<IDENTIFIER> decSize <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> { <SYMBOL>
+		<SubroutineBody>
+			<keyword> if <keyword>
+			<statements>
+			</statements>
+			<SYMBOL> ( <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> size <IDENTIFIER>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> { <SYMBOL>
+		<keyword> do <keyword>
+		<ParameterList>
+			<keyword> do <keyword>
+			<IDENTIFIER> erase <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<keyword> let <keyword>
+			<statements>
+			</statements>
+			<IDENTIFIER> size <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> = <SYMBOL>
+		<IDENTIFIER> size <IDENTIFIER>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> do <keyword>
+		<ParameterList>
+			<keyword> do <keyword>
+			<IDENTIFIER> draw <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ; <SYMBOL>
+		<SubroutineBody>
+			<SYMBOL> } <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> return <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<SYMBOL> } <SYMBOL>
+		<keyword> method <keyword>
+		<keyword> void <keyword>
+		<ParameterList>
+			<keyword> void <keyword>
+			<IDENTIFIER> moveUp <IDENTIFIER>
+			<SYMBOL> ( <SYMBOL>
+		</ParameterList>
+		<SYMBOL> { <SYMBOL>
+		<SubroutineBody>
+			<keyword> if <keyword>
+			<statements>
+			</statements>
+			<SYMBOL> ( <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> ) <SYMBOL>
+		<SYMBOL> { <SYMBOL>
+		<keyword> do <keyword>
+		<ParameterList>
+			<keyword> do <keyword>
+			<IDENTIFIER> Screen <IDENTIFIER>
+			<SYMBOL> . <SYMBOL>
+		</ParameterList>
+		<SYMBOL> ( <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> x <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> ) <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> do <keyword>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> drawRectangle <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ( <SYMBOL>
+			<statements>
+			</statements>
+			<IDENTIFIER> x <IDENTIFIER>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> x <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> , <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> y <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> ) <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<SYMBOL> ; <SYMBOL>
+		<keyword> let <keyword>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> = <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ; <SYMBOL>
+			<statements>
+			</statements>
+			<keyword> do <keyword>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> setColor <IDENTIFIER>
+		<SYMBOL> ( <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> do <keyword>
+		<IDENTIFIER> Screen <IDENTIFIER>
+		<SYMBOL> . <SYMBOL>
+		<IDENTIFIER> drawRectangle <IDENTIFIER>
+		<ParameterList>
+		</ParameterList>
+		<SYMBOL> ( <SYMBOL>
+		<SubroutineBody>
+			<IDENTIFIER> x <IDENTIFIER>
+			<statements>
+			</statements>
+			<SYMBOL> , <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<IDENTIFIER> x <IDENTIFIER>
+		<SYMBOL> , <SYMBOL>
+		<ParameterList>
+		</ParameterList>
+		<IDENTIFIER> y <IDENTIFIER>
+		<SubroutineBody>
+			<SYMBOL> ) <SYMBOL>
+			<statements>
+			</statements>
+			<SYMBOL> ; <SYMBOL>
+		</SubroutineBody>
+	</subroutineDec>
 </class>

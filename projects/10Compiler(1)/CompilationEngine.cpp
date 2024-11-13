@@ -1,6 +1,8 @@
 #include "JackAnalyzer.h"
 #include <fstream>
 
+// change token.currenttoken comparisons to string(token...)
+// continute working on statements
 namespace
 {
     std::fstream *handle; // using this as aren't multi-threading(instances)
@@ -56,7 +58,9 @@ void analyzer::CompilationEngine::CompileClassVarDec()
     indent(1);
     writeData("angled-data", token.current_token, token.tokenType()); // static || field
     token.hasMoreTokens();
-    writeData("angled-data", token.current_token, token.tokenType()); //  var name
+    writeData("angled-data", token.current_token, token.tokenType()); // type
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // var name
 
     while (token.hasMoreTokens() && std::string(token.current_token) == ",")
     {
@@ -72,6 +76,94 @@ void analyzer::CompilationEngine::CompileClassVarDec()
 
 void analyzer::CompilationEngine::CompileSubroutineDec()
 {
+    writeData("angled", "", "subroutineDec");
+    indent(1);
+    writeData("angled-data", token.current_token, token.tokenType()); // constructor || function || method
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // void || type
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // name
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // (
+
+    CompileParameterList();
+    if (token.current_token != ")")
+        token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // )
+
+    token.hasMoreTokens();
+    CompileSubroutineBody();
+
+    indent(-1);
+    writeData("close", "", "subroutineDec");
+}
+
+void analyzer::CompilationEngine::CompileParameterList()
+{
+
+    writeData("angled", "", "ParameterList");
+    indent(1);
+    while (token.tokenType() == "keyword")
+    {
+        writeData("angled-data", token.current_token, token.tokenType()); // type
+        token.hasMoreTokens();
+        writeData("angled-data", token.current_token, token.tokenType()); // name
+        token.hasMoreTokens();
+        if (std::string(token.current_token) == ")")
+            break;
+        writeData("angled-data", token.current_token, token.tokenType()); // ,
+        token.hasMoreTokens();
+    }
+    indent(-1);
+    writeData("close", "", "ParameterList");
+}
+
+void analyzer::CompilationEngine::CompileSubroutineBody()
+{
+    writeData("angled", "", "SubroutineBody");
+    indent(1);
+    writeData("angled-data", token.current_token, token.tokenType()); // {
+    token.hasMoreTokens();
+    while (std::string(token.current_token) == "var")
+    {
+        CompileVarDec();
+        token.hasMoreTokens();
+    }
+
+    CompileStatements();
+    writeData("angled-data", token.current_token, token.tokenType()); // }
+    indent(-1);
+    writeData("close", "", "SubroutineBody");
+}
+
+void analyzer::CompilationEngine::CompileVarDec()
+{
+
+    writeData("angled", "", "VarDec");
+    indent(1);
+    writeData("angled-data", token.current_token, token.tokenType()); // var
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // type
+    token.hasMoreTokens();
+    writeData("angled-data", token.current_token, token.tokenType()); // varName
+    token.hasMoreTokens();
+    while (token.current_token == ",")
+    {
+        writeData("angled-data", token.current_token, token.tokenType()); // varName
+        token.hasMoreTokens();
+    }
+    writeData("angled-data", token.current_token, token.tokenType()); // ;
+    indent(-1);
+    writeData("close", "", "VarDec");
+}
+
+void analyzer::CompilationEngine::CompileStatements()
+{
+    writeData("angled", "", "statements");
+    indent(1);
+
+    indent(-1);
+    writeData("close", "", "statements");
 }
 
 void analyzer::CompilationEngine::Close(bool flag)

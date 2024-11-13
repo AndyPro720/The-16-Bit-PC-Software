@@ -47,6 +47,10 @@ namespace analyzer
         void CompileClass();
         void CompileClassVarDec();
         void CompileSubroutineDec();
+        void CompileParameterList();
+        void CompileSubroutineBody();
+        void CompileVarDec();
+        void CompileStatements();
         void Close(bool flag);
     };
 }
