@@ -33,10 +33,20 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
     fp = &instructions[0];
 }
 
-bool analyzer::JackTokenizer::hasMoreTokens()
+bool analyzer::JackTokenizer::hasMoreTokens(int flag)
 {
     std::fill(current_token, current_token + 100, 0); // clear string
     wp = &current_token[0];
+
+    if (flag == 1) // store state
+        bp = fp;
+
+    else if (flag == 2) // backtrack to last state
+    {
+        fp = bp;
+        return true;
+    }
+
     while (*fp) // break for each token
     {
 
@@ -62,13 +72,13 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             while (*(fp) != '\"')
                 *wp++ = *fp++;
             fp++;
-            type = "STRING_CONST";
+            type = "stringConstant";
             break;
         }
 
         if (*fp == '\n' || *fp == '\r') // ignore line breaks
         {
-            *fp++;
+            *fp++; // remove asterik!?
             continue;
         }
 
@@ -81,7 +91,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         else if (isSymbol(*fp)) // if symbol
         {
             *wp++ = *fp++;
-            type = "SYMBOL";
+            type = "symbol";
             break;
         }
 
@@ -91,7 +101,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
             {
                 *wp++ = *fp++;
             } while (isdigit(*fp));
-            type = "INT_CONST";
+            type = "integerConstant";
             break;
         }
 
@@ -107,7 +117,7 @@ bool analyzer::JackTokenizer::hasMoreTokens()
         }
         if (isIdentifier(current_token))
         {
-            type = "IDENTIFIER";
+            type = "identifier";
             break;
         }
     }
@@ -132,7 +142,7 @@ namespace
 
     bool isSymbol(char c)
     {
-        if (c == '{' || c == '}' || c == '(' || c == ')' || c == '[' || c == '.' || c == ',' || c == ';' || c == '+' || c == '-' || c == '*' || c == '/' || c == '&' || c == '|' || c == '|' || c == '<' || c == '>' || c == '=' || c == '~' || c == ']')
+        if (c == '{' || c == '}' || c == '(' || c == ')' || c == '[' || c == '.' || c == ',' || c == ';' || c == '+' || c == '-' || c == '*' || c == '/' || c == '&' || c == '|' || c == '<' || c == '>' || c == '=' || c == '~' || c == ']')
             return true;
         else
             return false;

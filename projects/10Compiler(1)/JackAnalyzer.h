@@ -28,10 +28,10 @@ namespace analyzer
         JackTokenizer(std::stringstream &path);
         std::string filename_g;
         char current_token[100]{};
-        char *fp, *sp, *wp;
+        char *fp, *bp, *wp;
         std::string instructions, type;
 
-        bool hasMoreTokens();
+        bool hasMoreTokens(int flag = 0);
         const std::string tokenType();
     };
 
@@ -51,6 +51,14 @@ namespace analyzer
         void CompileSubroutineBody();
         void CompileVarDec();
         void CompileStatements();
+        void CompileLet();
+        void CompileIf();
+        void CompileWhile();
+        void CompileDo();
+        void CompileReturn();
+        void CompileExpression();
+        void CompileTerm();
+        void CompileExpressionList();
         void Close(bool flag);
     };
 }

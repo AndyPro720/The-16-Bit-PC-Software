@@ -1,203 +1,238 @@
 <class>
-	<keyword> class <keyword>
-	<IDENTIFIER> Main <IDENTIFIER>
-	<SYMBOL> { <SYMBOL>
+	<keyword> class </keyword>
+	<identifier> Main </identifier>
+	<symbol> { </symbol>
 	<classVarDec>
-		<keyword> static <keyword>
-		<keyword> boolean <keyword>
-		<IDENTIFIER> test <IDENTIFIER>
+		<keyword> static </keyword>
+		<keyword> boolean </keyword>
+		<identifier> test </identifier>
+		<symbol> ; </symbol>
 	</classVarDec>
 	<subroutineDec>
-		<SYMBOL> ; <SYMBOL>
-		<keyword> function <keyword>
-		<keyword> void <keyword>
-		<IDENTIFIER> main <IDENTIFIER>
-		<ParameterList>
-			</ParameterList>
-		<subroutineDec>
-			<SYMBOL> ( <SYMBOL>
-			<SYMBOL> ) <SYMBOL>
-			<SYMBOL> { <SYMBOL>
-			<keyword> var <keyword>
-			<ParameterList>
-				<keyword> var <keyword>
-				<IDENTIFIER> SquareGame <IDENTIFIER>
-				<IDENTIFIER> game <IDENTIFIER>
-				</ParameterList>
-			<subroutineDec>
-				<keyword> let <keyword>
-				<IDENTIFIER> game <IDENTIFIER>
-				<SYMBOL> = <SYMBOL>
-				<IDENTIFIER> SquareGame <IDENTIFIER>
-				<ParameterList>
-					</ParameterList>
-				<subroutineDec>
-					<SYMBOL> . <SYMBOL>
-					<IDENTIFIER> new <IDENTIFIER>
-					<SYMBOL> ( <SYMBOL>
-					<SYMBOL> ) <SYMBOL>
-					<ParameterList>
-						</ParameterList>
-					<subroutineDec>
-						<SYMBOL> ; <SYMBOL>
-						<keyword> do <keyword>
-						<IDENTIFIER> game <IDENTIFIER>
-						<SYMBOL> . <SYMBOL>
-						<ParameterList>
-							</ParameterList>
-						<subroutineDec>
-							<IDENTIFIER> run <IDENTIFIER>
-							<SYMBOL> ( <SYMBOL>
-							<SYMBOL> ) <SYMBOL>
-							<SYMBOL> ; <SYMBOL>
-							<ParameterList>
-								</ParameterList>
-							<subroutineDec>
-								<keyword> do <keyword>
-								<IDENTIFIER> game <IDENTIFIER>
-								<SYMBOL> . <SYMBOL>
-								<IDENTIFIER> dispose <IDENTIFIER>
-								<ParameterList>
-									</ParameterList>
-								<subroutineDec>
-									<SYMBOL> ( <SYMBOL>
-									<SYMBOL> ) <SYMBOL>
-									<SYMBOL> ; <SYMBOL>
-									<keyword> return <keyword>
-									<ParameterList>
-										<keyword> return <keyword>
-										<SYMBOL> ; <SYMBOL>
-										<SYMBOL> } <SYMBOL>
-										<keyword> function <keyword>
-										<keyword> void <keyword>
-										<IDENTIFIER> test <IDENTIFIER>
-										</ParameterList>
-									<subroutineDec>
-										<SYMBOL> ) <SYMBOL>
-										<SYMBOL> { <SYMBOL>
-										<keyword> var <keyword>
-										<keyword> int <keyword>
-										<ParameterList>
-											<keyword> int <keyword>
-											<IDENTIFIER> i <IDENTIFIER>
-											<SYMBOL> , <SYMBOL>
-											</ParameterList>
-										<subroutineDec>
-											<SYMBOL> ; <SYMBOL>
-											<keyword> var <keyword>
-											<IDENTIFIER> String <IDENTIFIER>
-											<IDENTIFIER> s <IDENTIFIER>
-											<ParameterList>
-												</ParameterList>
-											<subroutineDec>
-												<SYMBOL> ; <SYMBOL>
-												<keyword> var <keyword>
-												<IDENTIFIER> Array <IDENTIFIER>
-												<IDENTIFIER> a <IDENTIFIER>
-												<ParameterList>
-													</ParameterList>
-												<subroutineDec>
-													<SYMBOL> ; <SYMBOL>
-													<keyword> if <keyword>
-													<SYMBOL> ( <SYMBOL>
-													<keyword> false <keyword>
-													<ParameterList>
-														<keyword> false <keyword>
-														<SYMBOL> ) <SYMBOL>
-														<SYMBOL> { <SYMBOL>
-														<keyword> let <keyword>
-														<IDENTIFIER> s <IDENTIFIER>
-														<SYMBOL> = <SYMBOL>
-														</ParameterList>
-													<subroutineDec>
-														<SYMBOL> ; <SYMBOL>
-														<keyword> let <keyword>
-														<IDENTIFIER> s <IDENTIFIER>
-														<SYMBOL> = <SYMBOL>
-														<ParameterList>
-															</ParameterList>
-														<subroutineDec>
-															<keyword> null <keyword>
-															<SYMBOL> ; <SYMBOL>
-															<keyword> let <keyword>
-															<IDENTIFIER> a <IDENTIFIER>
-															<ParameterList>
-																</ParameterList>
-															<subroutineDec>
-																<SYMBOL> [ <SYMBOL>
-																<INT_CONST> 1 <INT_CONST>
-																<SYMBOL> ] <SYMBOL>
-																<SYMBOL> = <SYMBOL>
-																<ParameterList>
-																	</ParameterList>
-																<subroutineDec>
-																	<IDENTIFIER> a <IDENTIFIER>
-																	<SYMBOL> [ <SYMBOL>
-																	<INT_CONST> 2 <INT_CONST>
-																	<SYMBOL> ] <SYMBOL>
-																	<ParameterList>
-																		</ParameterList>
-																	<subroutineDec>
-																		<SYMBOL> ; <SYMBOL>
-																		<SYMBOL> } <SYMBOL>
-																		<keyword> else <keyword>
-																		<SYMBOL> { <SYMBOL>
-																		<ParameterList>
-																			</ParameterList>
-																		<subroutineDec>
-																			<keyword> let <keyword>
-																			<IDENTIFIER> i <IDENTIFIER>
-																			<SYMBOL> = <SYMBOL>
-																			<IDENTIFIER> i <IDENTIFIER>
-																			<ParameterList>
-																				</ParameterList>
-																			<subroutineDec>
-																				<SYMBOL> * <SYMBOL>
-																				<SYMBOL> ( <SYMBOL>
-																				<SYMBOL> - <SYMBOL>
-																				<IDENTIFIER> j <IDENTIFIER>
-																				<ParameterList>
-																					</ParameterList>
-																				<subroutineDec>
-																					<SYMBOL> ) <SYMBOL>
-																					<SYMBOL> ; <SYMBOL>
-																					<keyword> let <keyword>
-																					<IDENTIFIER> j <IDENTIFIER>
-																					<ParameterList>
-																						</ParameterList>
-																					<subroutineDec>
-																						<SYMBOL> = <SYMBOL>
-																						<IDENTIFIER> j <IDENTIFIER>
-																						<SYMBOL> / <SYMBOL>
-																						<SYMBOL> ( <SYMBOL>
-																						<ParameterList>
-																							</ParameterList>
-																						<subroutineDec>
-																							<SYMBOL> - <SYMBOL>
-																							<INT_CONST> 2 <INT_CONST>
-																							<SYMBOL> ) <SYMBOL>
-																							<SYMBOL> ; <SYMBOL>
-																							<ParameterList>
-																								</ParameterList>
-																							<subroutineDec>
-																								<keyword> let <keyword>
-																								<IDENTIFIER> i <IDENTIFIER>
-																								<SYMBOL> = <SYMBOL>
-																								<IDENTIFIER> i <IDENTIFIER>
-																								<ParameterList>
-																									</ParameterList>
-																								<subroutineDec>
-																									<SYMBOL> | <SYMBOL>
-																									<IDENTIFIER> j <IDENTIFIER>
-																									<SYMBOL> ; <SYMBOL>
-																									<SYMBOL> } <SYMBOL>
-																									<ParameterList>
-																										</ParameterList>
-																									<subroutineDec>
-																										<keyword> return <keyword>
-																										<SYMBOL> ; <SYMBOL>
-																										<SYMBOL> } <SYMBOL>
-																										<SYMBOL> } <SYMBOL>
-																										<ParameterList>
-																											</ParameterList>
-																									</class>
+		<keyword> function </keyword>
+		<keyword> void </keyword>
+		<identifier> main </identifier>
+		<symbol> ( </symbol>
+		<parameterList>
+		</parameterList>
+		<symbol> ) </symbol>
+		<subroutineBody>
+			<symbol> { </symbol>
+			<varDec>
+				<keyword> var </keyword>
+				<identifier> SquareGame </identifier>
+				<identifier> game </identifier>
+				<symbol> ; </symbol>
+			</varDec>
+			<statements>
+				<letStatement>
+					<keyword> let </keyword>
+					<identifier> game </identifier>
+					<symbol> = </symbol>
+					<expression>
+						<term>
+							<identifier> SquareGame </identifier>
+							<symbol> . </symbol>
+							<identifier> new </identifier>
+							<symbol> ( </symbol>
+							<symbol> ) </symbol>
+						</term>
+					</expression>
+					<symbol> ; </symbol>
+				</letStatement>
+				<doStatement>
+					<keyword> do </keyword>
+					<identifier> game </identifier>
+					<symbol> . </symbol>
+					<identifier> run </identifier>
+					<symbol> ( </symbol>
+					<symbol> ) </symbol>
+					<symbol> ; </symbol>
+				</doStatement>
+				<doStatement>
+					<keyword> do </keyword>
+					<identifier> game </identifier>
+					<symbol> . </symbol>
+					<identifier> dispose </identifier>
+					<symbol> ( </symbol>
+					<symbol> ) </symbol>
+					<symbol> ; </symbol>
+				</doStatement>
+				<returnStatement>
+					<keyword> return </keyword>
+					<symbol> ; </symbol>
+				</returnStatement>
+			</statements>
+			<symbol> } </symbol>
+		</subroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> function </keyword>
+		<keyword> void </keyword>
+		<identifier> test </identifier>
+		<symbol> ( </symbol>
+		<parameterList>
+		</parameterList>
+		<symbol> ) </symbol>
+		<subroutineBody>
+			<symbol> { </symbol>
+			<varDec>
+				<keyword> var </keyword>
+				<keyword> int </keyword>
+				<identifier> i </identifier>
+				<symbol> , </symbol>
+				<identifier> j </identifier>
+				<symbol> ; </symbol>
+			</varDec>
+			<varDec>
+				<keyword> var </keyword>
+				<identifier> String </identifier>
+				<identifier> s </identifier>
+				<symbol> ; </symbol>
+			</varDec>
+			<varDec>
+				<keyword> var </keyword>
+				<identifier> Array </identifier>
+				<identifier> a </identifier>
+				<symbol> ; </symbol>
+			</varDec>
+			<statements>
+				<ifStatement>
+					<keyword> if </keyword>
+					<symbol> ( </symbol>
+					<expression>
+						<term>
+							<keyword> false </keyword>
+						</term>
+					</expression>
+					<symbol> ) </symbol>
+					<symbol> { </symbol>
+					<statements>
+						<letStatement>
+							<keyword> let </keyword>
+							<identifier> s </identifier>
+							<symbol> = </symbol>
+							<expression>
+								<term>
+									<stringConstant> string constant </stringConstant>
+								</term>
+							</expression>
+							<symbol> ; </symbol>
+						</letStatement>
+						<letStatement>
+							<keyword> let </keyword>
+							<identifier> s </identifier>
+							<symbol> = </symbol>
+							<expression>
+								<term>
+									<keyword> null </keyword>
+								</term>
+							</expression>
+							<symbol> ; </symbol>
+						</letStatement>
+						<letStatement>
+							<keyword> let </keyword>
+							<identifier> a </identifier>
+							<symbol> [ </symbol>
+							<expression>
+								<term>
+									<integerConstant> 1 </integerConstant>
+								</term>
+							</expression>
+							<symbol> ] </symbol>
+							<symbol> = </symbol>
+							<expression>
+								<term>
+									<identifier> a </identifier>
+									<symbol> [ </symbol>
+									<expression>
+										<term>
+											<integerConstant> 2 </integerConstant>
+										</term>
+									</expression>
+									<symbol> ] </symbol>
+								</term>
+							</expression>
+							<symbol> ; </symbol>
+						</letStatement>
+					</statements>
+					<symbol> } </symbol>
+					<keyword> else </keyword>
+					<symbol> { </symbol>
+					<statements>
+						<letStatement>
+							<keyword> let </keyword>
+							<identifier> i </identifier>
+							<symbol> = </symbol>
+							<expression>
+								<term>
+									<identifier> i </identifier>
+								</term>
+								<symbol> * </symbol>
+								<term>
+									<symbol> ( </symbol>
+									<expression>
+										<term>
+											<symbol> - </symbol>
+											<term>
+												<identifier> j </identifier>
+											</term>
+										</term>
+									</expression>
+									<symbol> ) </symbol>
+								</term>
+							</expression>
+							<symbol> ; </symbol>
+						</letStatement>
+						<letStatement>
+							<keyword> let </keyword>
+							<identifier> j </identifier>
+							<symbol> = </symbol>
+							<expression>
+								<term>
+									<identifier> j </identifier>
+								</term>
+								<symbol> / </symbol>
+								<term>
+									<symbol> ( </symbol>
+									<expression>
+										<term>
+											<symbol> - </symbol>
+											<term>
+												<integerConstant> 2 </integerConstant>
+											</term>
+										</term>
+									</expression>
+									<symbol> ) </symbol>
+								</term>
+							</expression>
+							<symbol> ; </symbol>
+						</letStatement>
+						<letStatement>
+							<keyword> let </keyword>
+							<identifier> i </identifier>
+							<symbol> = </symbol>
+							<expression>
+								<term>
+									<identifier> i </identifier>
+								</term>
+								<symbol> | </symbol>
+								<term>
+									<identifier> j </identifier>
+								</term>
+							</expression>
+							<symbol> ; </symbol>
+						</letStatement>
+					</statements>
+					<symbol> } </symbol>
+				</ifStatement>
+				<returnStatement>
+					<keyword> return </keyword>
+					<symbol> ; </symbol>
+				</returnStatement>
+			</statements>
+			<symbol> } </symbol>
+		</subroutineBody>
+	</subroutineDec>
+	<symbol> } </symbol>
+</class>

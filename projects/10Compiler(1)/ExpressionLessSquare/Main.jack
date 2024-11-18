@@ -29,7 +29,7 @@ class Main {
         else {              // There is no else keyword in the Square files.
             let i = i;
             let j = j;
-            let i = i | j;
+            let i = i;
         }
         return;
     }

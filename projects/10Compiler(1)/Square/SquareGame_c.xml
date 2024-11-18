@@ -1,142 +1,79 @@
-																																	<class>
-																																		<keyword> class <keyword>
-																																		<IDENTIFIER> SquareGame <IDENTIFIER>
-																																		<SYMBOL> { <SYMBOL>
-																																		<classVarDec>
-																																			<keyword> field <keyword>
-																																			<IDENTIFIER> Square <IDENTIFIER>
-																																			<IDENTIFIER> square <IDENTIFIER>
-																																		</classVarDec>
-																																		<subroutineDec>
-																																			<SYMBOL> ; <SYMBOL>
-																																			<keyword> field <keyword>
-																																			<keyword> int <keyword>
-																																			<IDENTIFIER> direction <IDENTIFIER>
-																																			<ParameterList>
-																																				</ParameterList>
-																																			<subroutineDec>
-																																				<SYMBOL> ; <SYMBOL>
-																																				<keyword> constructor <keyword>
-																																				<IDENTIFIER> SquareGame <IDENTIFIER>
-																																				<IDENTIFIER> new <IDENTIFIER>
-																																				<ParameterList>
-																																					</ParameterList>
-																																				<subroutineDec>
-																																					<SYMBOL> ( <SYMBOL>
-																																					<SYMBOL> ) <SYMBOL>
-																																					<SYMBOL> { <SYMBOL>
-																																					<keyword> let <keyword>
-																																					<ParameterList>
-																																						<keyword> let <keyword>
-																																						<IDENTIFIER> square <IDENTIFIER>
-																																						<SYMBOL> = <SYMBOL>
-																																						</ParameterList>
-																																					<subroutineDec>
-																																						<SYMBOL> . <SYMBOL>
-																																						<IDENTIFIER> new <IDENTIFIER>
-																																						<SYMBOL> ( <SYMBOL>
-																																						<INT_CONST> 0 <INT_CONST>
-																																						<ParameterList>
-																																							</ParameterList>
-																																						<subroutineDec>
-																																							<SYMBOL> , <SYMBOL>
-																																							<INT_CONST> 0 <INT_CONST>
-																																							<SYMBOL> , <SYMBOL>
-																																							<INT_CONST> 30 <INT_CONST>
-																																							<ParameterList>
-																																								</ParameterList>
-																																							<subroutineDec>
-																																								<SYMBOL> ) <SYMBOL>
-																																								<SYMBOL> ; <SYMBOL>
-																																								<keyword> let <keyword>
-																																								<IDENTIFIER> direction <IDENTIFIER>
-																																								<ParameterList>
-																																									</ParameterList>
-																																								<subroutineDec>
-																																									<SYMBOL> = <SYMBOL>
-																																									<INT_CONST> 0 <INT_CONST>
-																																									<SYMBOL> ; <SYMBOL>
-																																									<keyword> return <keyword>
-																																									<ParameterList>
-																																										<keyword> return <keyword>
-																																										<keyword> this <keyword>
-																																										<SYMBOL> ; <SYMBOL>
-																																										</ParameterList>
-																																									<subroutineDec>
-																																										<keyword> method <keyword>
-																																										<keyword> void <keyword>
-																																										<IDENTIFIER> dispose <IDENTIFIER>
-																																										<SYMBOL> ( <SYMBOL>
-																																										<ParameterList>
-																																											</ParameterList>
-																																										<subroutineDec>
-																																											<SYMBOL> ) <SYMBOL>
-																																											<SYMBOL> { <SYMBOL>
-																																											<keyword> do <keyword>
-																																											<IDENTIFIER> square <IDENTIFIER>
-																																											<ParameterList>
-																																												</ParameterList>
-																																											<subroutineDec>
-																																												<SYMBOL> . <SYMBOL>
-																																												<IDENTIFIER> dispose <IDENTIFIER>
-																																												<SYMBOL> ( <SYMBOL>
-																																												<SYMBOL> ) <SYMBOL>
-																																												<ParameterList>
-																																													</ParameterList>
-																																												<subroutineDec>
-																																													<SYMBOL> ; <SYMBOL>
-																																													<keyword> do <keyword>
-																																													<IDENTIFIER> Memory <IDENTIFIER>
-																																													<SYMBOL> . <SYMBOL>
-																																													<ParameterList>
-																																														</ParameterList>
-																																													<subroutineDec>
-																																														<IDENTIFIER> deAlloc <IDENTIFIER>
-																																														<SYMBOL> ( <SYMBOL>
-																																														<keyword> this <keyword>
-																																														<SYMBOL> ) <SYMBOL>
-																																														<ParameterList>
-																																															</ParameterList>
-																																														<subroutineDec>
-																																															<SYMBOL> ; <SYMBOL>
-																																															<keyword> return <keyword>
-																																															<SYMBOL> ; <SYMBOL>
-																																															<SYMBOL> } <SYMBOL>
-																																															<ParameterList>
-																																																</ParameterList>
-																																															<subroutineDec>
-																																																<keyword> method <keyword>
-																																																<keyword> void <keyword>
-																																																<IDENTIFIER> moveSquare <IDENTIFIER>
-																																																<SYMBOL> ( <SYMBOL>
-																																																<ParameterList>
-																																																	</ParameterList>
-																																																<subroutineDec>
-																																																	<SYMBOL> ) <SYMBOL>
-																																																	<SYMBOL> { <SYMBOL>
-																																																	<keyword> if <keyword>
-																																																	<SYMBOL> ( <SYMBOL>
-																																																	<ParameterList>
-																																																		</ParameterList>
-																																																	<subroutineDec>
-																																																		<IDENTIFIER> direction <IDENTIFIER>
-																																																		<SYMBOL> = <SYMBOL>
-																																																		<INT_CONST> 1 <INT_CONST>
-																																																		<SYMBOL> ) <SYMBOL>
-																																																		<ParameterList>
-																																																			</ParameterList>
-																																																		<subroutineDec>
-																																																			<SYMBOL> { <SYMBOL>
-																																																			<keyword> do <keyword>
-																																																			<IDENTIFIER> square <IDENTIFIER>
-																																																			<SYMBOL> . <SYMBOL>
-																																																			<ParameterList>
-																																																				</ParameterList>
-																																																			<subroutineDec>
-																																																				<IDENTIFIER> moveUp <IDENTIFIER>
-																																																				<SYMBOL> ( <SYMBOL>
-																																																				<SYMBOL> ) <SYMBOL>
-																																																				<SYMBOL> ; <SYMBOL>
-																																																				<ParameterList>
-																																																					</ParameterList>
-																																																			</class>
+<class>
+	<keyword> class </keyword>
+	<identifier> SquareGame </identifier>
+	<symbol> { </symbol>
+	<classVarDec>
+		<keyword> field </keyword>
+		<identifier> Square </identifier>
+		<identifier> square </identifier>
+		<symbol> ; </symbol>
+	</classVarDec>
+	<classVarDec>
+		<keyword> field </keyword>
+		<keyword> int </keyword>
+		<identifier> direction </identifier>
+		<symbol> ; </symbol>
+	</classVarDec>
+	<subroutineDec>
+		<keyword> constructor </keyword>
+		<identifier> SquareGame </identifier>
+		<identifier> new </identifier>
+		<symbol> ( </symbol>
+		<parameterList>
+		</parameterList>
+		<symbol> ) </symbol>
+		<subroutineBody>
+			<symbol> { </symbol>
+			<statements>
+				<letStatement>
+					<keyword> let </keyword>
+					<identifier> square </identifier>
+					<symbol> = </symbol>
+					<expression>
+						<term>
+							<identifier> Square </identifier>
+							<symbol> . </symbol>
+							<identifier> new </identifier>
+							<symbol> ( </symbol>
+							<expressionList>
+								<expression>
+									<term>
+										<integerConstant> 0 </integerConstant>
+									</term>
+								</expression>
+								<symbol> , </symbol>
+								<expression>
+									<term>
+										<symbol> , </symbol>
+										<term>
+											<integerConstant> 0 </integerConstant>
+										</term>
+									</term>
+								</expression>
+							</expressionList>
+							<integerConstant> 30 </integerConstant>
+						</term>
+					</expression>
+					<symbol> ) </symbol>
+				</letStatement>
+			</statements>
+			<symbol> ; </symbol>
+		</subroutineBody>
+	</subroutineDec>
+	<subroutineDec>
+		<keyword> let </keyword>
+		<identifier> direction </identifier>
+		<symbol> = </symbol>
+		<integerConstant> 0 </integerConstant>
+		<parameterList>
+		</parameterList>
+		<keyword> return </keyword>
+		<subroutineBody>
+			<keyword> this </keyword>
+			<statements>
+			</statements>
+			<symbol> ; </symbol>
+		</subroutineBody>
+	</subroutineDec>
+	<symbol> } </symbol>
+</class>
