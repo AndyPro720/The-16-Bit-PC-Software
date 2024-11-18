@@ -1,3 +1,9 @@
+/* Jack Tokenizer extracts tokens from supplied Jack files, along with few other nifity functions
+ * Run via JackAnalyzer.exe
+
+Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
+*/
+
 #include "JackAnalyzer.h"
 #include <fstream>
 #include <sstream>
@@ -23,7 +29,6 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
     filehandle.seekg(std::ios::beg);         // reset file pointer
 
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
-    // input.str(instructions);
     filehandle.close();
 
     filename_g = fileName;
@@ -78,7 +83,7 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
 
         if (*fp == '\n' || *fp == '\r') // ignore line breaks
         {
-            *fp++; // remove asterik!?
+            fp++; // remove asterik!?
             continue;
         }
 
@@ -90,7 +95,30 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
 
         else if (isSymbol(*fp)) // if symbol
         {
-            *wp++ = *fp++;
+
+            std::string placeholder = "null";
+
+            if (*fp == '<')
+                placeholder = "&lt;";
+
+            else if (*fp == '>')
+                placeholder = "&gt;";
+#if 0
+            else if (*fp == '\"')
+                placeholder = "&quot;";
+#endif
+            else if (*fp == '&')
+                placeholder = "&amp;";
+
+            if (placeholder != "null")
+            {
+                placeholder.copy(current_token, sizeof(current_token) - 1);
+                current_token[sizeof(current_token) - 1] = '\0';
+                fp++;
+            }
+            else
+                *wp++ = *fp++;
+
             type = "symbol";
             break;
         }

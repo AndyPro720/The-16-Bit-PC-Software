@@ -1,6 +1,7 @@
-/* VMTranslator takes input a Jack language file / directory of files and provides parsed/analyzed output in XML files
+/* JackAnalyzer takes input a Jack file / directory and provides parsed/analyzed output in XML files
+ * Run via JackAnalyzer.exe
 
-Intended to be run for Hack, the custom 16-Bit-PC
+Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
 #include <filesystem>
