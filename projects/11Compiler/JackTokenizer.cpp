@@ -1,10 +1,10 @@
 /* Jack Tokenizer extracts tokens from supplied Jack files, along with few other nifity functions
- * Run via JackAnalyzer.exe
+ * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
-#include "JackAnalyzer.h"
+#include "JackCompiler.h"
 #include <fstream>
 #include <sstream>
 #include <string>

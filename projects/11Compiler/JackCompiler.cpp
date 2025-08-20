@@ -1,13 +1,13 @@
-/* JackAnalyzer takes input a Jack file / directory and provides parsed/analyzed output in XML files
- * Run via JackAnalyzer.exe
+/* JackCompiler takes input a Jack file / directory and provides parsed/analyzed output in XML files
+ * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
 #include <filesystem>
-#include "JackAnalyzer.h"
+#include "JackCompiler.h"
 
-analyzer::JackAnalyzer::JackAnalyzer()
+analyzer::JackCompiler::JackCompiler()
 { // intializes file / dir for injection
     std::string filename;
     std::cout << "\n Enter file name with extension, or directory name to begin translation \n Enter exit to terminate \n ";
@@ -50,7 +50,7 @@ analyzer::JackAnalyzer::JackAnalyzer()
 
 int main()
 {
-    analyzer::JackAnalyzer input;
+    analyzer::JackCompiler input;
     do
     {
         analyzer::CompilationEngine parser(input.path);

@@ -1,10 +1,10 @@
 /* Compilation Engine invokes the tokenizer and creates a processed xml parse tree from all the tokens, output as filename_c.xml
- * Run via JackAnalyzer.exe
+ * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
-#include "JackAnalyzer.h"
+#include "JackCompiler.h"
 #include <fstream>
 
 namespace

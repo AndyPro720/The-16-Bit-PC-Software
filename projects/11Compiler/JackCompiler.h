@@ -1,11 +1,11 @@
-/* JackAnalyzer.exe takes input a Jack file / directory and provides parsed/analyzed output in XML files
+/* JackCompiler.exe takes input a Jack file / directory and provides parsed/analyzed output in XML files
  * this header file provides a good overview of the structure of the project
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
-#ifndef JACK_ANAYLYZER
-#define JACK_ANAYLYZER
+#ifndef JACK_COMPILER
+#define JACK_COMPILER
 
 #if __cplusplus < 201703L
 #error "C++17 or greater required for compilation\n"
@@ -17,12 +17,12 @@ Intended to be run for Jack the object oriented language, created in tandem with
 #include <sstream>
 #include <unordered_map>
 
-namespace analyzer
+namespace analyzer // redundant from jackanalyzer.cpp
 {
-    class JackAnalyzer
+    class JackCompiler
     {
     public:
-        JackAnalyzer();
+        JackCompiler();
         std::stringstream path;
         int fileCount = 0;
 
@@ -89,19 +89,19 @@ namespace analyzer
         };
         std::unordered_map<std::string, symbolInfo> classSymbols;
         std::unordered_map<std::string, symbolInfo> subroutineSymbols;
-        int staticCount = 0;
-        int fieldCount = 0;
-        int argCount = 0;
-        int varCount = 0;
+        int staticCount;
+        int fieldCount;
+        int argCount;
+        int varCount;
 
     public:
         SymbolTable();
-        void startSubroutine();
-        void define(const std::string &name, const std::string &type, symbolKind kind);
-        int varCount(symbolKind kind);
-        symbolKind kindOf(const std::string &name);
-        std::string typeOf(const std::string &name);
-        int indexOf(const std::string &name);
+        void StartSubroutine();
+        void Define(const std::string &name, const std::string &type, symbolKind kind);
+        int VarCount(symbolKind kind);
+        symbolKind KindOf(const std::string &name);
+        std::string TypeOf(const std::string &name);
+        int IndexOf(const std::string &name);
     };
 }
 #endif
