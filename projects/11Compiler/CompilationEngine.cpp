@@ -18,7 +18,7 @@ namespace
 
 analyzer::CompilationEngine::CompilationEngine(std::stringstream &path) : token(path)
 {
-    std::string filename = token.filename_g;
+    std::string filename = token.filename_g; // loads file
 
     filename.resize(filename.find('.'));
     filehandle.open(filename + "_c" + ".xml", std::ofstream::out | std::ofstream::trunc);

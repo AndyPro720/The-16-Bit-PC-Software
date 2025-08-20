@@ -15,6 +15,7 @@ Intended to be run for Jack the object oriented language, created in tandem with
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
 
 namespace analyzer
 {
@@ -67,6 +68,40 @@ namespace analyzer
         void CompileExpressionList();
         void Close(bool flag);
     };
-}
 
+    enum class symbolKind
+    {
+        STATIC,
+        FIELD,
+        ARG,
+        VAR,
+        NONE
+    };
+
+    class SymbolTable
+    {
+    private:
+        struct symbolInfo
+        {
+            std::string type;
+            symbolKind kind;
+            int index;
+        };
+        std::unordered_map<std::string, symbolInfo> classSymbols;
+        std::unordered_map<std::string, symbolInfo> subroutineSymbols;
+        int staticCount = 0;
+        int fieldCount = 0;
+        int argCount = 0;
+        int varCount = 0;
+
+    public:
+        SymbolTable();
+        void startSubroutine();
+        void define(const std::string &name, const std::string &type, symbolKind kind);
+        int varCount(symbolKind kind);
+        symbolKind kindOf(const std::string &name);
+        std::string typeOf(const std::string &name);
+        int indexOf(const std::string &name);
+    };
+}
 #endif
