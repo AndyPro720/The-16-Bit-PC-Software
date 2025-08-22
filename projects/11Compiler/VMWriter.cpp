@@ -6,8 +6,11 @@ Intended to be run for Jack the object oriented language, created in tandem with
 
 #include "JackCompiler.h"
 
-analyzer::VMWriter::VMWriter(std::string &outputFile)
-{
+analyzer::VMWriter::VMWriter(const std::string &inputFile)
+{ // creates output file for writing VM commands
+
+    std::string outputFile = inputFile;
+    outputFile.resize(outputFile.find('.'));
 
     fhandle.open(outputFile + "_c" + ".vm", std::ofstream::out | std::ofstream::trunc);
 }

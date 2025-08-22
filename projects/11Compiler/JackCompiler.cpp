@@ -49,15 +49,20 @@ analyzer::JackCompiler::JackCompiler()
 }
 
 int main()
-{
+{ // Sends files to tokenizer and vmwriter, while also sets up compilation engine
     analyzer::JackCompiler input;
     do
     {
-        analyzer::CompilationEngine parser(input.path);
+        std::string fileName;
+        std::getline(input.path, fileName); // fetch next file (string pointer mainains state)
 
-        parser.Close(1);
+        analyzer::JackTokenizer tokenizer(fileName);
+        analyzer::VMWriter vmWriter(fileName);
+        analyzer::CompilationEngine engine(tokenizer, vmWriter);
 
-    } while (--input.fileCount != 0); // if directory
+        vmWriter.Close();
+
+    } while (--input.fileCount != 0); // for directory
 
     return 0;
 }

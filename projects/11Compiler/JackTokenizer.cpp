@@ -16,10 +16,8 @@ namespace // private functions declaration
     bool isIdentifier(char id[]);
 }
 
-analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
+analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
 { // opens a file(s) and dumps the data in a string
-    std::string fileName;
-    std::getline(path, fileName);
     std::fstream filehandle;
 
     filehandle.open(fileName, std::ifstream::in | std::ifstream::binary);
@@ -31,10 +29,11 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
 
-    filename_g = fileName;
-    fileName = fileName.substr(fileName.find('\\') + 2);
-    fileName.resize(fileName.find('.'));
-    std::cout << fileName << " read and processed" << std::endl;
+    // print name for reference
+    std::string name = fileName;
+    name = name.substr(name.find('\\') + 2);
+    name.resize(name.find('.'));
+    std::cout << name << " read and processed" << std::endl;
     fp = &instructions[0];
 }
 

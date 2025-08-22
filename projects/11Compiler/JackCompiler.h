@@ -1,6 +1,5 @@
 /* JackCompiler.exe takes input a Jack file / directory and provides parsed/analyzed output in XML files
  * this header file provides a good overview of the structure of the project
-
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
@@ -32,8 +31,8 @@ namespace analyzer // redundant from jackanalyzer.cpp
     class JackTokenizer
     {
     public:
-        JackTokenizer(std::stringstream &path);
-        std::string filename_g;
+        JackTokenizer(const std::string inputFile);
+        std::string fileName;
         char current_token[100]{};
         char *fp, *bp, *wp;
         std::string instructions, type;
@@ -45,13 +44,12 @@ namespace analyzer // redundant from jackanalyzer.cpp
     class CompilationEngine
     {
     private:
-        analyzer::JackTokenizer token;
+        analyzer::JackTokenizer &token;
+        analyzer::SymbolTable symbolTable;
+        analyzer::VMWriter &vmWriter;
 
     public:
-        std::string filename;
-        CompilationEngine(std::stringstream &path);
-        std::fstream filehandle;
-
+        CompilationEngine(JackTokenizer &token, VMWriter &vmWriter);
         void CompileClass();
         void CompileClassVarDec();
         void CompileSubroutineDec();
@@ -67,7 +65,6 @@ namespace analyzer // redundant from jackanalyzer.cpp
         void CompileExpression();
         void CompileTerm();
         void CompileExpressionList();
-        void Close(bool flag);
     };
 
     enum class symbolKind
@@ -135,7 +132,7 @@ namespace analyzer // redundant from jackanalyzer.cpp
 
     public:
         std::fstream fhandle;
-        VMWriter(std::string &outputFile);
+        VMWriter(const std::string &inputFile);
 
         void WritePush(segment seg, int index);
         void WritePop(segment seg, int index);

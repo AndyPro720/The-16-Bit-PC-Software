@@ -1,4 +1,4 @@
-/* Compilation Engine invokes the tokenizer and creates a processed xml parse tree from all the tokens, output as filename_c.xml
+/* Compilation Engine invokes the tokenizer and in tandem with symbol table and VMWriter, compiles a .jack file into a .vm file
  * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
@@ -16,28 +16,18 @@ namespace
 
 } // namespace
 
-analyzer::CompilationEngine::CompilationEngine(std::stringstream &path) : token(path)
-{
-    filename = token.filename_g; // loads file
-    filename.resize(filename.find('.'));
-    CompileClass();
+analyzer::CompilationEngine::CompilationEngine(JackTokenizer &token, VMWriter &VMWriter) : token(token), vmWriter(VMWriter)
+{ // dependency injection
 }
 
 void analyzer::CompilationEngine::CompileClass()
 {
     if (token.hasMoreTokens() && std::string(token.current_token) == "class")
     {
-
-        writeData("angled", " ", token.current_token);
-        indent(1);
-        writeData("angled-inline", token.current_token, token.tokenType());
-        token.hasMoreTokens(); //  class name
-        writeData("angled-inline", token.current_token, token.tokenType());
-        token.hasMoreTokens(); //  {
-        writeData("angled-inline", token.current_token, token.tokenType());
+        vmWriter.WriteFunction(filename, 0); // write function header
     }
     else
-        Close(0); // throw error
+        vmWriter.Close(); // throw error
 
     while (token.hasMoreTokens() && std::string(token.current_token) != "}")
     {
@@ -444,15 +434,6 @@ void analyzer::CompilationEngine::CompileExpressionList()
 
     indent(-1);
     writeData("close", "", "expressionList");
-}
-
-void analyzer::CompilationEngine::Close(bool flag)
-{
-
-    if (flag == 0)
-        std::cout << "Error with Syntax, aborting" << std::endl;
-
-    filehandle.close();
 }
 
 namespace
