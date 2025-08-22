@@ -48,6 +48,7 @@ namespace analyzer // redundant from jackanalyzer.cpp
         analyzer::JackTokenizer token;
 
     public:
+        std::string filename;
         CompilationEngine(std::stringstream &path);
         std::fstream filehandle;
 
@@ -102,6 +103,50 @@ namespace analyzer // redundant from jackanalyzer.cpp
         symbolKind KindOf(const std::string &name);
         std::string TypeOf(const std::string &name);
         int IndexOf(const std::string &name);
+    };
+
+    class VMWriter
+    {
+    private:
+        enum class segment
+        {
+            CONST,
+            ARG,
+            LOCAL,
+            STATIC,
+            THIS,
+            THAT,
+            POINTER,
+            TEMP
+        };
+
+        enum class arithmetic
+        {
+            ADD,
+            SUB,
+            NEG,
+            EQ,
+            GT,
+            LT,
+            AND,
+            OR,
+            NOT
+        };
+
+    public:
+        std::fstream fhandle;
+        VMWriter(std::string &outputFile);
+
+        void WritePush(segment seg, int index);
+        void WritePop(segment seg, int index);
+        void WriteArithmetic(arithmetic command);
+        void WriteLabel(const std::string &label);
+        void WriteGoto(const std::string &label);
+        void WriteIf(const std::string &label);
+        void WriteCall(const std::string &name, int nArgs);
+        void WriteFunction(const std::string &name, int nLocals);
+        void WriteReturn();
+        void Close();
     };
 }
 #endif

@@ -9,7 +9,7 @@ Intended to be run for Jack the object oriented language, created in tandem with
 
 namespace
 {
-    std::fstream *handle; // using this as aren't multi-threading(instances)
+    //    std::fstream *handle; // using this as aren't multi-threading(instances)
     int indentLevel = 0;
     void writeData(const std::string &type, std::string data, std::string angleString);
     void indent(int indent);
@@ -18,12 +18,8 @@ namespace
 
 analyzer::CompilationEngine::CompilationEngine(std::stringstream &path) : token(path)
 {
-    std::string filename = token.filename_g; // loads file
-
+    filename = token.filename_g; // loads file
     filename.resize(filename.find('.'));
-    filehandle.open(filename + "_c" + ".xml", std::ofstream::out | std::ofstream::trunc);
-    handle = &filehandle;
-
     CompileClass();
 }
 

@@ -4,7 +4,6 @@
 
 Intended to be run for Jack the object oriented language, created in tandem with Hack, the custom 16-Bit-PC
 */
-// rename all to JackCompiler
 
 #include "JackCompiler.h"
 
@@ -27,7 +26,7 @@ void analyzer::SymbolTable::Define(const std::string &name, const std::string &t
     {
 
     case symbolKind::STATIC:
-        inserted = classSymbols.emplace(name, symbolInfo{type, kind, staticCount++}).second;
+        inserted = classSymbols.emplace(name, symbolInfo{type, kind, staticCount++}).second; // using emplace to avoid unnecessary copies
         break;
 
     case symbolKind::FIELD:
