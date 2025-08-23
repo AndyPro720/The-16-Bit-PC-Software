@@ -47,6 +47,7 @@ namespace analyzer // redundant from jackanalyzer.cpp
         analyzer::JackTokenizer &token;
         analyzer::SymbolTable symbolTable;
         analyzer::VMWriter &vmWriter;
+        std::string className;
 
     public:
         CompilationEngine(JackTokenizer &token, VMWriter &vmWriter);
@@ -102,34 +103,33 @@ namespace analyzer // redundant from jackanalyzer.cpp
         int IndexOf(const std::string &name);
     };
 
+    enum class segment
+    {
+        CONST,
+        ARG,
+        LOCAL,
+        STATIC,
+        THIS,
+        THAT,
+        POINTER,
+        TEMP
+    };
+
+    enum class arithmetic
+    {
+        ADD,
+        SUB,
+        NEG,
+        EQ,
+        GT,
+        LT,
+        AND,
+        OR,
+        NOT
+    };
+
     class VMWriter
     {
-    private:
-        enum class segment
-        {
-            CONST,
-            ARG,
-            LOCAL,
-            STATIC,
-            THIS,
-            THAT,
-            POINTER,
-            TEMP
-        };
-
-        enum class arithmetic
-        {
-            ADD,
-            SUB,
-            NEG,
-            EQ,
-            GT,
-            LT,
-            AND,
-            OR,
-            NOT
-        };
-
     public:
         std::fstream fhandle;
         VMWriter(const std::string &inputFile);

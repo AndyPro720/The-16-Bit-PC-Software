@@ -17,146 +17,135 @@ namespace
 } // namespace
 
 analyzer::CompilationEngine::CompilationEngine(JackTokenizer &token, VMWriter &VMWriter) : token(token), vmWriter(VMWriter)
-{ // dependency injection
+{ // dependency injection and begin compilation
+    CompileClass();
 }
 
 void analyzer::CompilationEngine::CompileClass()
 {
     if (token.hasMoreTokens() && std::string(token.current_token) == "class")
     {
-        vmWriter.WriteFunction(filename, 0); // write function header
+        token.hasMoreTokens(); // class, ignore
+        token.hasMoreTokens(); // class name
+        className = token.current_token;
     }
     else
         vmWriter.Close(); // throw error
 
     while (token.hasMoreTokens() && std::string(token.current_token) != "}")
-    {
+    { // ignore { ;compile class or subroutine dec
         if (std::string(token.current_token) == "static" || std::string(token.current_token) == "field")
             CompileClassVarDec();
         else
             CompileSubroutineDec();
     }
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // }
+    //    writeData("angled-inline", token.current_token, token.tokenType()); // }
 
-    indent(-1);
-    writeData("close", "", "class");
+    //   indent(-1);
+    //  writeData("close", "", "class");
 }
 
 void analyzer::CompilationEngine::CompileClassVarDec()
-{
+{ // store class var in symbol table
 
-    writeData("angled", "", "classVarDec");
-    indent(1);
-    writeData("angled-inline", token.current_token, token.tokenType()); // static || field
+    symbolKind kind = (token.current_token == "static") ? symbolKind::STATIC : symbolKind::FIELD; // static || field
     token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // type
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // var name
-
-    while (token.hasMoreTokens() && std::string(token.current_token) == ",")
+    std::string type = token.current_token; // type int || char || boolean || *className
+    do
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); // ,
         token.hasMoreTokens();
-        writeData("angled-inline", token.current_token, token.tokenType()); //  var name
-    }
+        std::string varName = token.current_token; // var name
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // ;
-    indent(-1);
-    writeData("close", "", "classVarDec");
+        symbolTable.Define(varName, type, kind);
+        token.hasMoreTokens(); // , || ;
+
+    } while (token.current_token == ",");
 }
 
 void analyzer::CompilationEngine::CompileSubroutineDec()
-{
-    writeData("angled", "", "subroutineDec");
-    indent(1);
-    writeData("angled-inline", token.current_token, token.tokenType()); // constructor || function || method
+{ // initalize constructor, function, method
+
+    symbolTable.StartSubroutine();                    // clear subroutine scope
+    std::string subroutineType = token.current_token; // constructor || function || method
+    if (subroutineType == "method")
+        symbolTable.Define("this", className, symbolKind::ARG); // method has implicit this arg
+
     token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // void || type
+    std::string type = token.current_token; // type/class name
     token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // name
+    std::string subroutine = token.current_token; // subroutine name
     token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // (
 
     CompileParameterList();
-    if (std::string(token.current_token) != ")")
-        token.hasMoreTokens();
+    token.hasMoreTokens(); // skip )
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // )
+    token.hasMoreTokens();                            // skip {
+    while (std::string(token.current_token) == "var") // fetch nVars for function label
+    {
+        CompileVarDec();
+        token.hasMoreTokens(); // skip ;
+    }
+    vmWriter.WriteFunction(className + "." + subroutine, symbolTable.VarCount(symbolKind::VAR)); // function className.functionName nlocals
 
-    token.hasMoreTokens();
+    if (subroutineType == "constructor") // setup the object
+    {
+        vmWriter.WritePush(segment::CONST, symbolTable.VarCount(symbolKind::FIELD)); // push const nfield
+        vmWriter.WriteCall("Memory.alloc", 1);                                       // call Memory.alloc 1
+        vmWriter.WritePop(segment::POINTER, 0);                                      // pop pointer 0, this = base address
+    }
+
+    else if (subroutineType == "method") // fetch object of caller
+    {
+        vmWriter.WritePush(segment::ARG, 0);    // push arg 0
+        vmWriter.WritePop(segment::POINTER, 0); // pop pointer 0, this = arg 0
+    }
+
+    // no intalization for function
     CompileSubroutineBody();
-
-    indent(-1);
-    writeData("close", "", "subroutineDec");
 }
 
 void analyzer::CompilationEngine::CompileParameterList()
 {
 
-    writeData("angled", "", "parameterList");
-    indent(1);
-    token.hasMoreTokens();
+    token.hasMoreTokens(); // skip (
     while (token.tokenType() == "keyword")
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); // type
-        token.hasMoreTokens();
-        writeData("angled-inline", token.current_token, token.tokenType()); // name
+        std::string type = token.current_token; // type
+        token.hasMoreTokens();                  // varName
+        symbolTable.Define(token.current_token, type, symbolKind::ARG);
+
         token.hasMoreTokens();
         if (std::string(token.current_token) == ")")
             break;
-        writeData("angled-inline", token.current_token, token.tokenType()); // ,
-        token.hasMoreTokens();
+        token.hasMoreTokens(); // skip ,
     }
-    indent(-1);
-    writeData("close", "", "parameterList");
 }
 
 void analyzer::CompilationEngine::CompileSubroutineBody()
 {
-    writeData("angled", "", "subroutineBody");
-    indent(1);
-    writeData("angled-inline", token.current_token, token.tokenType()); // {
-    token.hasMoreTokens();
-    while (std::string(token.current_token) == "var")
-    {
-        CompileVarDec();
-        token.hasMoreTokens();
-    }
 
     if (std::string(token.current_token) != "}")
     {
         CompileStatements();
     }
-    if (std::string(token.current_token) != "}")
-        std::cout << "error in compilation, current token is " << token.current_token << std::endl;
+    // if (std::string(token.current_token) != "}")   REDUNDANT
+    //     std::cout << "error in compilation, current token is " << token.current_token << std::endl;
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // }
-    indent(-1);
-    writeData("close", "", "subroutineBody");
+    // } dealt with in CompileClass
 }
 
 void analyzer::CompilationEngine::CompileVarDec()
-{
+{ // adds var to symbol table
 
-    writeData("angled", "", "varDec");
-    indent(1);
-    writeData("angled-inline", token.current_token, token.tokenType()); // var
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // type
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // varName
-    token.hasMoreTokens();
-    while (std::string(token.current_token) == ",")
+    token.hasMoreTokens();                  // skip var
+    std::string type = token.current_token; // type
+    do
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); // ,
-        token.hasMoreTokens();
-        writeData("angled-inline", token.current_token, token.tokenType()); // varName
-        token.hasMoreTokens();
-    }
-    writeData("angled-inline", token.current_token, token.tokenType()); // ;
-    indent(-1);
-    writeData("close", "", "varDec");
+        token.hasMoreTokens();                                          // varName
+        symbolTable.Define(token.current_token, type, symbolKind::VAR); // add to symbol table
+        token.hasMoreTokens();                                          // , || ;
+    } while (std::string(token.current_token) == ",");
 }
 
 void analyzer::CompilationEngine::CompileStatements()
