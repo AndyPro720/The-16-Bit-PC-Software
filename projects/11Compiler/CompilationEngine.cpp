@@ -150,9 +150,6 @@ void analyzer::CompilationEngine::CompileVarDec()
 
 void analyzer::CompilationEngine::CompileStatements()
 { // also fetches next token
-    writeData("angled", "", "statements");
-    indent(1);
-
     while (1)
     {
         if (std::string(token.current_token) == "let")
@@ -169,36 +166,46 @@ void analyzer::CompilationEngine::CompileStatements()
             break;
         token.hasMoreTokens();
     }
-    indent(-1);
-    writeData("close", "", "statements");
 }
 
 void analyzer::CompilationEngine::CompileLet()
-{
-    writeData("angled", "", "letStatement");
-    indent(1);
+{ // let varName[expression]? = expression;
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // let
+    token.hasMoreTokens(); // skip let
     token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // varName
-    token.hasMoreTokens();
+    std::string varName = token.current_token;
 
-    if (std::string(token.current_token) == "[")
+    segment seg = (symbolTable.KindOf(varName) == symbolKind::ARG)      ? segment::ARG
+                  : (symbolTable.KindOf(varName) == symbolKind::FIELD)  ? segment::THIS
+                  : (symbolTable.KindOf(varName) == symbolKind::STATIC) ? segment::STATIC
+                  : (symbolTable.KindOf(varName) == symbolKind::VAR)    ? segment::LOCAL
+                                                                        : throw std::runtime_error("Undefined variable: " + varName);
+
+    token.hasMoreTokens(); // [ || =
+
+    if (std::string(token.current_token) == "[") // should I do array logic in compileterm / expression or here
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); // [
-        token.hasMoreTokens();
+        vmWriter.WritePush(seg, symbolTable.IndexOf(varName)); // push array base address
         CompileExpression();
-        writeData("angled-inline", token.current_token, token.tokenType()); // ]
-        token.hasMoreTokens();
+        vmWriter.WriteArithmetic(arithmetic::ADD); // add base address + offset
+        token.hasMoreTokens();                     // skip ] CONFIRM if consumed in compileexpression
+        token.hasMoreTokens();                     // skip =
+        CompileExpression();
+        vmWriter.WritePop(segment::TEMP, 0);    // pop expression result to temp 0 (as that pointer may have been changed if e2 had array)
+        vmWriter.WritePop(segment::POINTER, 1); // pop base+offset to pointer 1 (that)
+        vmWriter.WritePush(segment::TEMP, 0);   // push expression result back to stack
+        vmWriter.WritePop(segment::THAT, 0);    // pop expression result to that 0 (that 0 is that base + offset)
     }
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // =
-    token.hasMoreTokens();
-    CompileExpression();
-    writeData("angled-inline", token.current_token, token.tokenType()); // ;
+    else
+    {
 
-    indent(-1);
-    writeData("close", "", "letStatement");
+        token.hasMoreTokens(); // skip =
+        CompileExpression();
+        vmWriter.WritePop(seg, symbolTable.IndexOf(varName)); // pop varName
+    }
+
+    // ; skipped by compileStatements
 }
 
 void analyzer::CompilationEngine::CompileIf()
