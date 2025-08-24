@@ -48,6 +48,7 @@ namespace analyzer // redundant from jackanalyzer.cpp
         analyzer::SymbolTable symbolTable;
         analyzer::VMWriter &vmWriter;
         std::string className;
+        int labelCount = 0;
 
     public:
         CompilationEngine(JackTokenizer &token, VMWriter &vmWriter);

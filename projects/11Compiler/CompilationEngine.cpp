@@ -210,35 +210,43 @@ void analyzer::CompilationEngine::CompileLet()
 
 void analyzer::CompilationEngine::CompileIf()
 {
-    writeData("angled", "", "ifStatement");
-    indent(1);
+    // expression
+    // NOT
+    // if-goto l1
+    // statement 1
+    // goto l2
+    //(l1)
+    // statement 2
+    // (l2)
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // if
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // (
+    token.hasMoreTokens(); // skip (
     token.hasMoreTokens();
     CompileExpression();
-    writeData("angled-inline", token.current_token, token.tokenType()); // )
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // {
-    token.hasMoreTokens();
-    CompileStatements();
-    writeData("angled-inline", token.current_token, token.tokenType()); // }
+    token.hasMoreTokens(); // skip )
+
+    vmWriter.WriteArithmetic(analyzer::arithmetic::NOT); // NOT
+    std::string falseLabel = ("IF_FALSE" + std::to_string(labelCount++));
+    vmWriter.WriteIf(falseLabel); // if-goto l1
+    token.hasMoreTokens();        // skip {
+    CompileStatements();          // statement 1
+    token.hasMoreTokens();        // skip }
 
     if (token.hasMoreTokens(1) && std::string(token.current_token) == "else")
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); // else
+        std::string endIf = ("ENDIF" + std::to_string(labelCount++));
+        vmWriter.WriteGoto(endIf);       // goto l2
+        vmWriter.WriteLabel(falseLabel); // (l1)
         token.hasMoreTokens();
-        writeData("angled-inline", token.current_token, token.tokenType()); // {
-        token.hasMoreTokens();
-        CompileStatements();
-        writeData("angled-inline", token.current_token, token.tokenType()); // }
+        token.hasMoreTokens();      // skip {
+        CompileStatements();        // statement 2
+        token.hasMoreTokens();      // skip }
+        vmWriter.WriteLabel(endIf); // (l2)
     }
     else
-        token.hasMoreTokens(2);
-
-    indent(-1);
-    writeData("close", "", "ifStatement");
+    {
+        token.hasMoreTokens(2);          // backtrack (else not present)
+        vmWriter.WriteLabel(falseLabel); // (l1)
+    }
 }
 
 void analyzer::CompilationEngine::CompileWhile()
@@ -320,7 +328,7 @@ void analyzer::CompilationEngine::CompileReturn()
 }
 
 void analyzer::CompilationEngine::CompileExpression()
-{ // also fetchesj next token
+{ // also fetches next token
     writeData("angled", "", "expression");
     indent(1);
 
