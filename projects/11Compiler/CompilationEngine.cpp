@@ -251,23 +251,30 @@ void analyzer::CompilationEngine::CompileIf()
 
 void analyzer::CompilationEngine::CompileWhile()
 {
-    writeData("angled", "", "whileStatement");
-    indent(1);
+    // label L1
+    // compile expression
+    // not
+    // if goto L2
+    // statements
+    // goto L1
+    // label L2
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // while
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // (
-    token.hasMoreTokens();
+    std::string whileLabel = ("WHILE" + std::to_string(labelCount++));
+    std::string endWhile = ("END_WHILE" + std::to_string(labelCount++));
+
+    token.hasMoreTokens();           // skip while
+    vmWriter.WriteLabel(whileLabel); // label L1
+    token.hasMoreTokens();           // skip (
     CompileExpression();
-    writeData("angled-inline", token.current_token, token.tokenType()); // )
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // {
-    token.hasMoreTokens();
-    CompileStatements();
-    writeData("angled-inline", token.current_token, token.tokenType()); // }
+    token.hasMoreTokens();                               // skip )
+    vmWriter.WriteArithmetic(analyzer::arithmetic::NOT); // not
 
-    indent(-1);
-    writeData("close", "", "whileStatement");
+    vmWriter.Writeif(endWhile);     // if goto L2
+    token.hasMoreTokens();          // skip {
+    CompileStatements();            // statements
+    token.hasMoreTokens();          // skip }
+    vmWriter.WriteGoto(whileLabel); // goto L1
+    vmWriter.WriteLabel(endWhile);  // label L2
 }
 
 void analyzer::CompilationEngine::CompileDo()
