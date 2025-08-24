@@ -278,60 +278,27 @@ void analyzer::CompilationEngine::CompileWhile()
 }
 
 void analyzer::CompilationEngine::CompileDo()
-{
-    writeData("angled", "", "doStatement");
-    indent(1);
+{ // do subroutineName(expression) || class/var.subroutineName(expression)
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // do
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // subroutineName || class || var name
-    token.hasMoreTokens();
-    // subroutineCall
-    if (std::string(token.current_token) == "(")
-    {
-        writeData("angled-inline", token.current_token, token.tokenType()); // (
-        token.hasMoreTokens();
-        if (std::string(token.current_token) != ")")
-            CompileExpressionList();
-        writeData("angled-inline", token.current_token, token.tokenType()); // )
-    }
-    else
-    {
-        writeData("angled-inline", token.current_token, token.tokenType()); // .
-        token.hasMoreTokens();
-        writeData("angled-inline", token.current_token, token.tokenType()); // subroutineName
-        token.hasMoreTokens();
-        writeData("angled-inline", token.current_token, token.tokenType()); // (
-        token.hasMoreTokens();
-        if (std::string(token.current_token) != ")")
-            CompileExpressionList();
-        writeData("angled-inline", token.current_token, token.tokenType()); // )
-    }
-
-    token.hasMoreTokens();
-    writeData("angled-inline", token.current_token, token.tokenType()); // ;
-
-    indent(-1);
-    writeData("close", "", "doStatement");
+    token.hasMoreTokens();               // skip do
+    CompileTerm();                       // handles subroutine call
+    token.hasMoreTokens();               // skip ;
+    vmWriter.WritePop(segment::TEMP, 0); // discard return value
 }
 
 void analyzer::CompilationEngine::CompileReturn()
-{
-    writeData("angled", "", "returnStatement");
-    indent(1);
+{ // return expression?;
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // return
     token.hasMoreTokens();
 
     if (std::string(token.current_token) != ";")
-    {
         CompileExpression();
-    }
 
-    writeData("angled-inline", token.current_token, token.tokenType()); // ;
+    else                                       // void return
+        vmWriter.WritePush(segment::CONST, 0); // push 0 for void return
 
-    indent(-1);
-    writeData("close", "", "returnStatement");
+    vmWriter.WriteReturn();
+    token.hasMoreTokens(); // skip ;
 }
 
 void analyzer::CompilationEngine::CompileExpression()
