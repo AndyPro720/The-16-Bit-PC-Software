@@ -302,26 +302,31 @@ void analyzer::CompilationEngine::CompileReturn()
 }
 
 void analyzer::CompilationEngine::CompileExpression()
-{ // also fetches next token
-    writeData("angled", "", "expression");
-    indent(1);
+{ // term (op term)*
 
     CompileTerm();
-    token.hasMoreTokens();
 
-    char c = token.current_token[0];
+    char op = token.current_token[0];
 
-    while (c == '+' || c == '-' || c == '*' || c == '/' || c == '&' || c == '|' || c == '=') //<> is handled by &(gt/lt) conversion
+    while (op == '+' || op == '-' || op == '*' || op == '/' || op == '&' || op == '|' || op == '=' || op == '<' || op == '>') //<> is handled by &(gt/lt) conversion
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); // op
-        token.hasMoreTokens();
-        CompileTerm();
-        token.hasMoreTokens();
-        c = token.current_token[0];
-    }
 
-    indent(-1);
-    writeData("close", "", "expression");
+        token.hasMoreTokens(); // term
+        CompileTerm();
+
+        (op == '+')   ? vmWriter.WriteArithmetic(arithmetic::ADD)
+        : (op == '-') ? vmWriter.WriteArithmetic(arithmetic::SUB)
+        : (op == '*') ? vmWriter.WriteCall("Math.multiply", 2)
+        : (op == '/') ? vmWriter.WriteCall("Math.divide", 2)
+        : (op == '&') ? vmWriter.WriteArithmetic(arithmetic::AND)
+        : (op == '|') ? vmWriter.WriteArithmetic(arithmetic::OR)
+        : (op == '=') ? vmWriter.WriteArithmetic(arithmetic::EQ)
+        : (op == '<') ? vmWriter.WriteArithmetic(arithmetic::LT)
+        : (op == '>') ? vmWriter.WriteArithmetic(arithmetic::GT)
+                      : throw std::runtime_error("Unknown operator" + std::string(1, op));
+
+        op = token.current_token[0]; // compileterm auto advances to next token
+    }
 }
 
 void analyzer::CompilationEngine::CompileTerm()

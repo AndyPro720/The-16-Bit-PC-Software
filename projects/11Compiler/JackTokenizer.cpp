@@ -48,6 +48,7 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
     else if (flag == 2) // backtrack to last stored state
     {
         fp = bp;
+        hasMoreTokens(); //  update current_token
         return true;
     }
 
