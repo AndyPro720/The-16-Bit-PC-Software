@@ -183,12 +183,13 @@ void analyzer::CompilationEngine::CompileLet()
 
     token.hasMoreTokens(); // [ || =
 
-    if (std::string(token.current_token) == "[") // should I do array logic in compileterm / expression or here
+    if (std::string(token.current_token) == "[")
     {
+        token.hasMoreTokens();                                 // skip [
         vmWriter.WritePush(seg, symbolTable.IndexOf(varName)); // push array base address
         CompileExpression();
         vmWriter.WriteArithmetic(arithmetic::ADD); // add base address + offset
-        token.hasMoreTokens();                     // skip ] CONFIRM if consumed in compileexpression
+        token.hasMoreTokens();                     // skip ]
         token.hasMoreTokens();                     // skip =
         CompileExpression();
         vmWriter.WritePop(segment::TEMP, 0);    // pop expression result to temp 0 (as that pointer may have been changed if e2 had array)
@@ -269,7 +270,7 @@ void analyzer::CompilationEngine::CompileWhile()
     token.hasMoreTokens();                               // skip )
     vmWriter.WriteArithmetic(analyzer::arithmetic::NOT); // not
 
-    vmWriter.Writeif(endWhile);     // if goto L2
+    vmWriter.WriteIf(endWhile);     // if goto L2
     token.hasMoreTokens();          // skip {
     CompileStatements();            // statements
     token.hasMoreTokens();          // skip }
@@ -331,40 +332,84 @@ void analyzer::CompilationEngine::CompileExpression()
 
 void analyzer::CompilationEngine::CompileTerm()
 {
-    writeData("angled", "", "term");
-    indent(1);
     std::string type = token.tokenType();
 
-    if (type == "integerConstant" || type == "stringConstant" || type == "keywordConstant")
-        writeData("angled-inline", token.current_token, token.tokenType()); //  term
+    if (type == "integerConstant")
+    {
+        vmWriter.WritePush(segment::CONST, std::stoi(token.current_token)); // push constant int
+        token.hasMoreTokens();
+    }
+
+    else if (type == "stringConstant")
+    {
+        std::string str = token.current_token;
+        vmWriter.WritePush(segment::CONST, str.length()); // push constant length
+        vmWriter.WriteCall("String.new", 1);              // String.new length
+
+        for (char c : str)
+        {
+            vmWriter.WritePush(segment::CONST, c);      // push constant char
+            vmWriter.WriteCall("String.appendChar", 2); // String.appendChar  this + char
+        }
+        token.hasMoreTokens();
+    }
+
+    else if (type == "keywordConstant") // true, false, null, this
+    {
+        if (std::string(token.current_token) == "true")
+        {
+            vmWriter.WritePush(segment::CONST, 0);     // push 0
+            vmWriter.WriteArithmetic(arithmetic::NOT); // NOT to get -1 (all bits high)
+        }
+        else if (std::string(token.current_token) == "false" || std::string(token.current_token) == "null")
+            vmWriter.WritePush(segment::CONST, 0); // push 0
+        else if (std::string(token.current_token) == "this")
+            vmWriter.WritePush(segment::POINTER, 0); // push pointer 0 (this)
+
+        token.hasMoreTokens();
+    }
 
     else if (std::string(token.current_token) == "(") //(expression)
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); //  (
-        token.hasMoreTokens();
+        token.hasMoreTokens(); // skip (
         CompileExpression();
-        writeData("angled-inline", token.current_token, token.tokenType()); //  )
+        token.hasMoreTokens(); // skip )
     }
 
-    else if (type == "symbol") // unaryOp term
+    else if (type == "symbol" && (token.current_token == "-" || token.current_token == "~")) // unaryOp term, remove && if not recursive call to symbol type
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); //  - | ~
-        token.hasMoreTokens();
+        std::string op = token.current_token;
+        token.hasMoreTokens(); // skip unaryOp
         CompileTerm();
+
+        if (op == "-")
+            vmWriter.WriteArithmetic(arithmetic::NEG);
+        else if (op == "~") // simple else works too
+            vmWriter.WriteArithmetic(arithmetic::NOT);
+        else
+            throw std::runtime_error("Unknown unary operator: " + std::string(token.current_token));
     }
 
     else
     {
-        writeData("angled-inline", token.current_token, token.tokenType()); //  identifer
-        token.hasMoreTokens(1);
-        std::string current = std::string(token.current_token);
+        std::string identifier = token.current_token;
+        token.hasMoreTokens(1); // peek
+        std::string peek = token.current_token;
 
-        if (current == "[") // array
+        if (peek == "[") // array
         {
-            writeData("angled-inline", token.current_token, token.tokenType()); //  [
             token.hasMoreTokens();
+            segment seg = (symbolTable.KindOf(identifier) == symbolKind::ARG)      ? segment::ARG
+                          : (symbolTable.KindOf(identifier) == symbolKind::FIELD)  ? segment::THIS
+                          : (symbolTable.KindOf(identifier) == symbolKind::STATIC) ? segment::STATIC
+                          : (symbolTable.KindOf(identifier) == symbolKind::VAR)    ? segment::LOCAL
+                                                                                   : throw std::runtime_error("Undefined variable: " + identifier);
+            vmWriter.WritePush(seg, symbolTable.IndexOf(identifier)); // push array base address
             CompileExpression();
-            writeData("angled-inline", token.current_token, token.tokenType()); //  ]
+            vmWriter.WriteArithmetic(arithmetic::ADD); // add base address + offset
+            vmWriter.WritePop(segment::POINTER, 1);    // set that to base+offset
+            vmWriter.WritePush(segment::THAT, 0);      // access (*that) and push to stack
+            token.hasMoreTokens();                     // skip ]
         }
         // subroutine call
 
