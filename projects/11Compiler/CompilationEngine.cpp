@@ -72,7 +72,7 @@ void analyzer::CompilationEngine::CompileSubroutineDec()
         symbolTable.Define("this", className, symbolKind::ARG); // method has implicit this arg
 
     token.hasMoreTokens();
-    std::string type = token.current_token; // type/class name
+    std::string type = token.current_token; // return_type/class/void
     token.hasMoreTokens();
     std::string subroutine = token.current_token; // subroutine name
     token.hasMoreTokens();
@@ -101,7 +101,7 @@ void analyzer::CompilationEngine::CompileSubroutineDec()
         vmWriter.WritePop(segment::POINTER, 0); // pop pointer 0, this = arg 0
     }
 
-    // no intalization for function
+    // no seperate intalization for function
     CompileSubroutineBody();
 }
 
@@ -411,55 +411,91 @@ void analyzer::CompilationEngine::CompileTerm()
             vmWriter.WritePush(segment::THAT, 0);      // access (*that) and push to stack
             token.hasMoreTokens();                     // skip ]
         }
+
         // subroutine call
 
-        else if (current == "(") //  foo(x)
+        else if (peek == "(") // method call  foo(x)
         {
-            writeData("angled-inline", token.current_token, token.tokenType()); //  (
-            token.hasMoreTokens();
+            int nArgs = 0;
+            token.hasMoreTokens();                   // consume (
+            vmWriter.WritePush(segment::POINTER, 0); // push this as current object
             if (std::string(token.current_token) != ")")
-                CompileExpressionList();
-            writeData("angled-inline", token.current_token, token.tokenType()); //  )
+                nArgs = CompileExpressionList();
+            token.hasMoreTokens(); // consume )
+
+            vmWriter.WriteCall(identifier, nArgs + 1); // call functionName nArgs + this
         }
 
-        else if (current == ".") // foo.test(x)
+        else if (peek == ".") // foo.test(x)
         {
-            writeData("angled-inline", token.current_token, token.tokenType()); //  .
-            token.hasMoreTokens();
-            writeData("angled-inline", token.current_token, token.tokenType()); // subroutineName
-            token.hasMoreTokens();
-            writeData("angled-inline", token.current_token, token.tokenType()); // (
-            token.hasMoreTokens();
-            if (std::string(token.current_token) != ")")
-                CompileExpressionList();
-            writeData("angled-inline", token.current_token, token.tokenType()); //  )
+            // class.foo = function or constructor
+            //  var.foo = method
+
+            int nArgs = 0;
+            if (symbolTable.KindOf(identifier) == symbolKind::NONE) // function or constructor
+            {
+                token.hasMoreTokens(); // skip .
+                token.hasMoreTokens(); // subroutineName
+                identifier = identifier + "." + token.current_token;
+
+                token.hasMoreTokens(); // skip (
+                if (std::string(token.current_token) != ")")
+                    nArgs = CompileExpressionList();
+                token.hasMoreTokens(); // skip )
+            }
+
+            else // method
+            {
+                segment seg = (symbolTable.KindOf(identifier) == symbolKind::ARG)      ? segment::ARG
+                              : (symbolTable.KindOf(identifier) == symbolKind::FIELD)  ? segment::THIS
+                              : (symbolTable.KindOf(identifier) == symbolKind::STATIC) ? segment::STATIC
+                              : (symbolTable.KindOf(identifier) == symbolKind::VAR)    ? segment::LOCAL
+                                                                                       : throw std::runtime_error("Undefined variable: " + identifier);
+                vmWriter.WritePush(seg, symbolTable.IndexOf(identifier)); // push var as current object aka this
+                token.hasMoreTokens();                                    // skip .
+                token.hasMoreTokens();                                    // subroutineName
+                identifier = symbolTable.TypeOf(identifier) + "." + token.current_token;
+
+                token.hasMoreTokens(); // skip (
+                if (std::string(token.current_token) != ")")
+                    nArgs = CompileExpressionList();
+                nArgs++;               // +1 for this
+                token.hasMoreTokens(); // skip )
+            }
+            vmWriter.WriteCall(identifier, nArgs); // call functionName nArgs
         }
 
-        else
+        else // var name
         {
-            token.hasMoreTokens(2); // backtrack
+            symbolKind kind = symbolTable.KindOf(identifier);
+            segment seg = (kind == symbolKind::ARG)      ? segment::ARG
+                          : (kind == symbolKind::FIELD)  ? segment::THIS
+                          : (kind == symbolKind::STATIC) ? segment::STATIC
+                          : (kind == symbolKind::VAR)    ? segment::LOCAL
+                                                         : throw std::runtime_error("Undefined variable: " + identifier);
+            vmWriter.WritePush(seg, symbolTable.IndexOf(identifier)); // push varName
+                                                                      // no need to adv token as already peeked
         }
     }
-
-    indent(-1);
-    writeData("close", "", "term");
 }
 
-void analyzer::CompilationEngine::CompileExpressionList()
+int analyzer::CompilationEngine::CompileExpressionList()
 {
     writeData("angled", "", "expressionList");
     indent(1);
+    int nArgs = 1;
 
     CompileExpression();
     // token.hasMoreTokens(1);
     while (std::string(token.current_token) == ",")
     {
+        nArgs++;
         writeData("angled-inline", token.current_token, token.tokenType()); //  ,
         token.hasMoreTokens();
         CompileExpression();
     }
     // token.hasMoreTokens(2); // backtrack (redundant as step fwd not done againj)
-
+    return nArgs;
     indent(-1);
     writeData("close", "", "expressionList");
 }

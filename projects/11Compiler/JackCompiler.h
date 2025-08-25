@@ -66,7 +66,7 @@ namespace analyzer // redundant from jackanalyzer.cpp
         void CompileReturn();
         void CompileExpression();
         void CompileTerm();
-        void CompileExpressionList();
+        int CompileExpressionList();
     };
 
     enum class symbolKind
