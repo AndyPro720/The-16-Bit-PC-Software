@@ -7,18 +7,10 @@ Intended to be run for Jack the object oriented language, created in tandem with
 #include "JackCompiler.h"
 #include <fstream>
 
-namespace
-{
-    //    std::fstream *handle; // using this as aren't multi-threading(instances)
-    int indentLevel = 0;
-    void writeData(const std::string &type, std::string data, std::string angleString);
-    void indent(int indent);
-
-} // namespace
-
 analyzer::CompilationEngine::CompilationEngine(JackTokenizer &token, VMWriter &VMWriter) : token(token), vmWriter(VMWriter)
 { // dependency injection and begin compilation
     CompileClass();
+    labelCount = 0;
 }
 
 void analyzer::CompilationEngine::CompileClass()
@@ -39,11 +31,7 @@ void analyzer::CompilationEngine::CompileClass()
         else
             CompileSubroutineDec();
     }
-
-    //    writeData("angled-inline", token.current_token, token.tokenType()); // }
-
-    //   indent(-1);
-    //  writeData("close", "", "class");
+    vmWriter.Close(); // close file handle
 }
 
 void analyzer::CompilationEngine::CompileClassVarDec()
@@ -61,6 +49,7 @@ void analyzer::CompilationEngine::CompileClassVarDec()
         token.hasMoreTokens(); // , || ;
 
     } while (token.current_token == ",");
+    token.hasMoreTokens(); // skip ;
 }
 
 void analyzer::CompilationEngine::CompileSubroutineDec()
@@ -84,7 +73,6 @@ void analyzer::CompilationEngine::CompileSubroutineDec()
     while (std::string(token.current_token) == "var") // fetch nVars for function label
     {
         CompileVarDec();
-        token.hasMoreTokens(); // skip ;
     }
     vmWriter.WriteFunction(className + "." + subroutine, symbolTable.VarCount(symbolKind::VAR)); // function className.functionName nlocals
 
@@ -103,13 +91,13 @@ void analyzer::CompilationEngine::CompileSubroutineDec()
 
     // no seperate intalization for function
     CompileSubroutineBody();
+    token.hasMoreTokens(); // skip } for subroutine
 }
 
 void analyzer::CompilationEngine::CompileParameterList()
 {
-
     token.hasMoreTokens(); // skip (
-    while (token.tokenType() == "keyword")
+    while (token.current_token != ")")
     {
         std::string type = token.current_token; // type
         token.hasMoreTokens();                  // varName
@@ -129,10 +117,6 @@ void analyzer::CompilationEngine::CompileSubroutineBody()
     {
         CompileStatements();
     }
-    // if (std::string(token.current_token) != "}")   REDUNDANT
-    //     std::cout << "error in compilation, current token is " << token.current_token << std::endl;
-
-    // } dealt with in CompileClass
 }
 
 void analyzer::CompilationEngine::CompileVarDec()
@@ -146,6 +130,7 @@ void analyzer::CompilationEngine::CompileVarDec()
         symbolTable.Define(token.current_token, type, symbolKind::VAR); // add to symbol table
         token.hasMoreTokens();                                          // , || ;
     } while (std::string(token.current_token) == ",");
+    token.hasMoreTokens(); // skip ;
 }
 
 void analyzer::CompilationEngine::CompileStatements()
@@ -164,7 +149,6 @@ void analyzer::CompilationEngine::CompileStatements()
             CompileReturn();
         else
             break;
-        token.hasMoreTokens();
     }
 }
 
@@ -205,8 +189,7 @@ void analyzer::CompilationEngine::CompileLet()
         CompileExpression();
         vmWriter.WritePop(seg, symbolTable.IndexOf(varName)); // pop varName
     }
-
-    // ; skipped by compileStatements
+    token.hasMoreTokens(); // skip ;
 }
 
 void analyzer::CompilationEngine::CompileIf()
@@ -232,7 +215,7 @@ void analyzer::CompilationEngine::CompileIf()
     CompileStatements();          // statement 1
     token.hasMoreTokens();        // skip }
 
-    if (token.hasMoreTokens(1) && std::string(token.current_token) == "else")
+    if (token.hasMoreTokens() && std::string(token.current_token) == "else")
     {
         std::string endIf = ("ENDIF" + std::to_string(labelCount++));
         vmWriter.WriteGoto(endIf);       // goto l2
@@ -245,7 +228,7 @@ void analyzer::CompilationEngine::CompileIf()
     }
     else
     {
-        token.hasMoreTokens(2);          // backtrack (else not present)
+        // already on next token
         vmWriter.WriteLabel(falseLabel); // (l1)
     }
 }
@@ -309,7 +292,7 @@ void analyzer::CompilationEngine::CompileExpression()
 
     char op = token.current_token[0];
 
-    while (op == '+' || op == '-' || op == '*' || op == '/' || op == '&' || op == '|' || op == '=' || op == '<' || op == '>') //<> is handled by &(gt/lt) conversion
+    while (op == '+' || op == '-' || op == '*' || op == '/' || op == '&' || op == '|' || op == '=' || op == '<' || op == '>')
     {
 
         token.hasMoreTokens(); // term
@@ -376,7 +359,7 @@ void analyzer::CompilationEngine::CompileTerm()
         token.hasMoreTokens(); // skip )
     }
 
-    else if (type == "symbol" && (token.current_token == "-" || token.current_token == "~")) // unaryOp term, remove && if not recursive call to symbol type
+    else if (type == "symbol" && (token.current_token == "-" || token.current_token == "~")) // redundant check for symbols
     {
         std::string op = token.current_token;
         token.hasMoreTokens(); // skip unaryOp
@@ -393,7 +376,7 @@ void analyzer::CompilationEngine::CompileTerm()
     else
     {
         std::string identifier = token.current_token;
-        token.hasMoreTokens(1); // peek
+        token.hasMoreTokens(); // peek  (not needed as we don't backtrack)
         std::string peek = token.current_token;
 
         if (peek == "[") // array
@@ -480,60 +463,15 @@ void analyzer::CompilationEngine::CompileTerm()
 }
 
 int analyzer::CompilationEngine::CompileExpressionList()
-{
-    writeData("angled", "", "expressionList");
-    indent(1);
+{ // (expression (, expression)*)?
     int nArgs = 1;
 
     CompileExpression();
-    // token.hasMoreTokens(1);
     while (std::string(token.current_token) == ",")
     {
         nArgs++;
-        writeData("angled-inline", token.current_token, token.tokenType()); //  ,
-        token.hasMoreTokens();
+        token.hasMoreTokens(); // skip ,
         CompileExpression();
     }
-    // token.hasMoreTokens(2); // backtrack (redundant as step fwd not done againj)
     return nArgs;
-    indent(-1);
-    writeData("close", "", "expressionList");
-}
-
-namespace
-{
-    void writeData(const std::string &type, std::string data, std::string angleString)
-    {
-        indent(0);
-        if (type == "angled")
-            *handle << '<' + angleString + ">\n";
-
-        else if (type == "angled-inline") // inline angled or similar change?
-        {
-            *handle << '<' + angleString + ">";
-            *handle << ' ' + data + ' ';
-            *handle << "</" + angleString + ">\n";
-        }
-        else if (type == "close")
-            *handle << "</" + angleString + ">\n";
-
-        else
-            *handle << data + '\n';
-    }
-
-    void indent(int indent) // 1 to increment, -1 to decrement, 0 to write
-    {
-        if (indent == 1)
-            indentLevel++;
-        else if (indent == -1)
-            indentLevel--;
-        else
-        {
-
-            for (int i = indentLevel; i > 0; i--)
-            {
-                *handle << "  ";
-            }
-        }
-    }
 }
