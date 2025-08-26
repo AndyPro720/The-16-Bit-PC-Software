@@ -34,11 +34,11 @@ void analyzer::SymbolTable::Define(const std::string &name, const std::string &t
         break;
 
     case symbolKind::ARG:
-        inserted = classSymbols.emplace(name, symbolInfo{type, kind, argCount++}).second;
+        inserted = subroutineSymbols.emplace(name, symbolInfo{type, kind, argCount++}).second;
         break;
 
     case symbolKind::VAR:
-        inserted = classSymbols.emplace(name, symbolInfo{type, kind, varCount++}).second;
+        inserted = subroutineSymbols.emplace(name, symbolInfo{type, kind, varCount++}).second;
         break;
     }
 

@@ -60,9 +60,10 @@ int main()
         analyzer::VMWriter vmWriter(fileName);
         analyzer::CompilationEngine engine(tokenizer, vmWriter);
 
-        vmWriter.Close();
+        std::cout << fileName << " Compiled successfully" << std::endl;
 
     } while (--input.fileCount != 0); // for directory
 
+    std::cout << "All files compiled successfully, stored in the same directory" << std::endl;
     return 0;
 }

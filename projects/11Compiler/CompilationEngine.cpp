@@ -24,8 +24,9 @@ void analyzer::CompilationEngine::CompileClass()
     else
         vmWriter.Close(); // throw error
 
+    token.hasMoreTokens(); // skip {
     while (token.hasMoreTokens() && std::string(token.current_token) != "}")
-    { // ignore { ;compile class or subroutine dec
+    { // compile class or subroutine dec
         if (std::string(token.current_token) == "static" || std::string(token.current_token) == "field")
             CompileClassVarDec();
         else
@@ -376,7 +377,7 @@ void analyzer::CompilationEngine::CompileTerm()
     else
     {
         std::string identifier = token.current_token;
-        token.hasMoreTokens(); // peek  (not needed as we don't backtrack)
+        token.hasMoreTokens();
         std::string peek = token.current_token;
 
         if (peek == "[") // array
@@ -464,8 +465,11 @@ void analyzer::CompilationEngine::CompileTerm()
 
 int analyzer::CompilationEngine::CompileExpressionList()
 { // (expression (, expression)*)?
-    int nArgs = 1;
 
+    if (std::string(token.current_token) == ")") // redundant check
+        return 0;
+
+    int nArgs = 1;
     CompileExpression();
     while (std::string(token.current_token) == ",")
     {

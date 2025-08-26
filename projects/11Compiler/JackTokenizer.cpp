@@ -96,28 +96,7 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
         else if (isSymbol(*fp)) // if symbol
         {
 
-            std::string placeholder = "null";
-
-            if (*fp == '<')
-                placeholder = "&lt;";
-
-            else if (*fp == '>')
-                placeholder = "&gt;";
-#if 0
-            else if (*fp == '\"')
-                placeholder = "&quot;";
-#endif
-            else if (*fp == '&')
-                placeholder = "&amp;";
-
-            if (placeholder != "null")
-            {
-                placeholder.copy(current_token, sizeof(current_token) - 1);
-                current_token[sizeof(current_token) - 1] = '\0';
-                fp++;
-            }
-            else
-                *wp++ = *fp++;
+            *wp++ = *fp++; // grab a symbol
 
             type = "symbol";
             break;
