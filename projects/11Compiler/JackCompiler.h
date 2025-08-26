@@ -18,6 +18,10 @@ Intended to be run for Jack the object oriented language, created in tandem with
 
 namespace analyzer // redundant from jackanalyzer.cpp
 {
+    enum class symbolKind;
+    enum class segment;
+    enum class arithmetic;
+
     class JackCompiler
     {
     public:
@@ -32,13 +36,56 @@ namespace analyzer // redundant from jackanalyzer.cpp
     {
     public:
         JackTokenizer(const std::string inputFile);
-        std::string fileName;
         char current_token[100]{};
         char *fp, *bp, *wp;
         std::string instructions, type;
 
         bool hasMoreTokens(int flag = 0);
         const std::string tokenType();
+    };
+
+    class SymbolTable
+    {
+    private:
+        struct symbolInfo
+        {
+            std::string type;
+            symbolKind kind;
+            int index;
+        };
+        std::unordered_map<std::string, symbolInfo> classSymbols;
+        std::unordered_map<std::string, symbolInfo> subroutineSymbols;
+        int staticCount;
+        int fieldCount;
+        int argCount;
+        int varCount;
+
+    public:
+        SymbolTable();
+        void StartSubroutine();
+        void Define(const std::string &name, const std::string &type, symbolKind kind);
+        int VarCount(symbolKind kind);
+        symbolKind KindOf(const std::string &name);
+        std::string TypeOf(const std::string &name);
+        int IndexOf(const std::string &name);
+    };
+
+    class VMWriter
+    {
+    public:
+        std::fstream fhandle;
+        VMWriter(const std::string &inputFile);
+
+        void WritePush(segment seg, int index);
+        void WritePop(segment seg, int index);
+        void WriteArithmetic(arithmetic command);
+        void WriteLabel(const std::string &label);
+        void WriteGoto(const std::string &label);
+        void WriteIf(const std::string &label);
+        void WriteCall(const std::string &name, int nArgs);
+        void WriteFunction(const std::string &name, int nLocals);
+        void WriteReturn();
+        void Close();
     };
 
     class CompilationEngine
@@ -78,32 +125,6 @@ namespace analyzer // redundant from jackanalyzer.cpp
         NONE
     };
 
-    class SymbolTable
-    {
-    private:
-        struct symbolInfo
-        {
-            std::string type;
-            symbolKind kind;
-            int index;
-        };
-        std::unordered_map<std::string, symbolInfo> classSymbols;
-        std::unordered_map<std::string, symbolInfo> subroutineSymbols;
-        int staticCount;
-        int fieldCount;
-        int argCount;
-        int varCount;
-
-    public:
-        SymbolTable();
-        void StartSubroutine();
-        void Define(const std::string &name, const std::string &type, symbolKind kind);
-        int VarCount(symbolKind kind);
-        symbolKind KindOf(const std::string &name);
-        std::string TypeOf(const std::string &name);
-        int IndexOf(const std::string &name);
-    };
-
     enum class segment
     {
         CONST,
@@ -129,22 +150,5 @@ namespace analyzer // redundant from jackanalyzer.cpp
         NOT
     };
 
-    class VMWriter
-    {
-    public:
-        std::fstream fhandle;
-        VMWriter(const std::string &inputFile);
-
-        void WritePush(segment seg, int index);
-        void WritePop(segment seg, int index);
-        void WriteArithmetic(arithmetic command);
-        void WriteLabel(const std::string &label);
-        void WriteGoto(const std::string &label);
-        void WriteIf(const std::string &label);
-        void WriteCall(const std::string &name, int nArgs);
-        void WriteFunction(const std::string &name, int nLocals);
-        void WriteReturn();
-        void Close();
-    };
 }
 #endif

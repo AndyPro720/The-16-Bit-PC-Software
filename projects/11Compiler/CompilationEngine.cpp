@@ -9,8 +9,8 @@ Intended to be run for Jack the object oriented language, created in tandem with
 
 analyzer::CompilationEngine::CompilationEngine(JackTokenizer &token, VMWriter &VMWriter) : token(token), vmWriter(VMWriter)
 { // dependency injection and begin compilation
-    CompileClass();
     labelCount = 0;
+    CompileClass();
 }
 
 void analyzer::CompilationEngine::CompileClass()
@@ -18,11 +18,13 @@ void analyzer::CompilationEngine::CompileClass()
     if (token.hasMoreTokens() && std::string(token.current_token) == "class")
     {
         token.hasMoreTokens(); // class, ignore
-        token.hasMoreTokens(); // class name
         className = token.current_token;
     }
     else
-        vmWriter.Close(); // throw error
+    {
+        throw std::runtime_error("Expected 'class' keyword at start of class");
+        vmWriter.Close();
+    }
 
     token.hasMoreTokens(); // skip {
     while (token.hasMoreTokens() && std::string(token.current_token) != "}")
@@ -38,8 +40,9 @@ void analyzer::CompilationEngine::CompileClass()
 void analyzer::CompilationEngine::CompileClassVarDec()
 { // store class var in symbol table
 
-    symbolKind kind = (token.current_token == "static") ? symbolKind::STATIC : symbolKind::FIELD; // static || field
+    symbolKind kind = (std::string(token.current_token) == "static") ? symbolKind::STATIC : symbolKind::FIELD; // static || field
     token.hasMoreTokens();
+
     std::string type = token.current_token; // type int || char || boolean || *className
     do
     {
@@ -49,7 +52,7 @@ void analyzer::CompilationEngine::CompileClassVarDec()
         symbolTable.Define(varName, type, kind);
         token.hasMoreTokens(); // , || ;
 
-    } while (token.current_token == ",");
+    } while (std::string(token.current_token) == ",");
     token.hasMoreTokens(); // skip ;
 }
 
@@ -98,7 +101,7 @@ void analyzer::CompilationEngine::CompileSubroutineDec()
 void analyzer::CompilationEngine::CompileParameterList()
 {
     token.hasMoreTokens(); // skip (
-    while (token.current_token != ")")
+    while (std::string(token.current_token) != ")")
     {
         std::string type = token.current_token; // type
         token.hasMoreTokens();                  // varName
@@ -360,7 +363,7 @@ void analyzer::CompilationEngine::CompileTerm()
         token.hasMoreTokens(); // skip )
     }
 
-    else if (type == "symbol" && (token.current_token == "-" || token.current_token == "~")) // redundant check for symbols
+    else if (type == "symbol" && (std::string(token.current_token) == "-" || std::string(token.current_token) == "~")) // redundant check for symbols
     {
         std::string op = token.current_token;
         token.hasMoreTokens(); // skip unaryOp
@@ -419,7 +422,6 @@ void analyzer::CompilationEngine::CompileTerm()
             if (symbolTable.KindOf(identifier) == symbolKind::NONE) // function or constructor
             {
                 token.hasMoreTokens(); // skip .
-                token.hasMoreTokens(); // subroutineName
                 identifier = identifier + "." + token.current_token;
 
                 token.hasMoreTokens(); // skip (
@@ -437,7 +439,6 @@ void analyzer::CompilationEngine::CompileTerm()
                                                                                        : throw std::runtime_error("Undefined variable: " + identifier);
                 vmWriter.WritePush(seg, symbolTable.IndexOf(identifier)); // push var as current object aka this
                 token.hasMoreTokens();                                    // skip .
-                token.hasMoreTokens();                                    // subroutineName
                 identifier = symbolTable.TypeOf(identifier) + "." + token.current_token;
 
                 token.hasMoreTokens(); // skip (

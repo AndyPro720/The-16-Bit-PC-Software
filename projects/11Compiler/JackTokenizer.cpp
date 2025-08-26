@@ -20,7 +20,7 @@ analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
 { // opens a file(s) and dumps the data in a string
     std::fstream filehandle;
 
-    filehandle.open(fileName, std::ifstream::in | std::ifstream::binary);
+    filehandle.open(inputFile, std::ifstream::in | std::ifstream::binary);
 
     filehandle.seekg(0, std::ios::end);      // grabs file size
     instructions.resize(filehandle.tellg()); // resize the string
@@ -29,8 +29,9 @@ analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
 
+    std::cout << "File read successfully: " << inputFile << std::endl;
     // print name for reference
-    std::string name = fileName;
+    std::string name = inputFile;
     name = name.substr(name.find('\\') + 2);
     name.resize(name.find('.'));
     std::cout << name << " read and processed" << std::endl;

@@ -12,7 +12,8 @@ analyzer::VMWriter::VMWriter(const std::string &inputFile)
     std::string outputFile = inputFile;
     outputFile.resize(outputFile.find('.'));
 
-    fhandle.open(outputFile + "_c" + ".vm", std::ofstream::out | std::ofstream::trunc);
+    fhandle.open(outputFile + ".vm", std::ofstream::out | std::ofstream::trunc);
+    std::cout << "VM output file created: " << outputFile + "_c" + ".vm" << std::endl;
 }
 
 void analyzer::VMWriter::WritePush(segment seg, int index)
