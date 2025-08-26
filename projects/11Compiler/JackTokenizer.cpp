@@ -34,7 +34,6 @@ analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
     std::string name = inputFile;
     name = name.substr(name.find('\\') + 2);
     name.resize(name.find('.'));
-    std::cout << name << " read and processed" << std::endl;
     fp = &instructions[0];
 }
 

@@ -17,8 +17,9 @@ void analyzer::CompilationEngine::CompileClass()
 {
     if (token.hasMoreTokens() && std::string(token.current_token) == "class")
     {
-        token.hasMoreTokens(); // class, ignore
+        token.hasMoreTokens();
         className = token.current_token;
+        token.hasMoreTokens();
     }
     else
     {
@@ -27,7 +28,7 @@ void analyzer::CompilationEngine::CompileClass()
     }
 
     token.hasMoreTokens(); // skip {
-    while (token.hasMoreTokens() && std::string(token.current_token) != "}")
+    while (std::string(token.current_token) != "}")
     { // compile class or subroutine dec
         if (std::string(token.current_token) == "static" || std::string(token.current_token) == "field")
             CompileClassVarDec();
@@ -160,7 +161,6 @@ void analyzer::CompilationEngine::CompileLet()
 { // let varName[expression]? = expression;
 
     token.hasMoreTokens(); // skip let
-    token.hasMoreTokens();
     std::string varName = token.current_token;
 
     segment seg = (symbolTable.KindOf(varName) == symbolKind::ARG)      ? segment::ARG
@@ -207,8 +207,8 @@ void analyzer::CompilationEngine::CompileIf()
     // statement 2
     // (l2)
 
+    token.hasMoreTokens(); // skip if
     token.hasMoreTokens(); // skip (
-    token.hasMoreTokens();
     CompileExpression();
     token.hasMoreTokens(); // skip )
 
@@ -219,16 +219,16 @@ void analyzer::CompilationEngine::CompileIf()
     CompileStatements();          // statement 1
     token.hasMoreTokens();        // skip }
 
-    if (token.hasMoreTokens() && std::string(token.current_token) == "else")
+    if (std::string(token.current_token) == "else")
     {
         std::string endIf = ("ENDIF" + std::to_string(labelCount++));
         vmWriter.WriteGoto(endIf);       // goto l2
         vmWriter.WriteLabel(falseLabel); // (l1)
-        token.hasMoreTokens();
-        token.hasMoreTokens();      // skip {
-        CompileStatements();        // statement 2
-        token.hasMoreTokens();      // skip }
-        vmWriter.WriteLabel(endIf); // (l2)
+        token.hasMoreTokens();           // skip else
+        token.hasMoreTokens();           // skip {
+        CompileStatements();             // statement 2
+        token.hasMoreTokens();           // skip }
+        vmWriter.WriteLabel(endIf);      // (l2)
     }
     else
     {
@@ -277,7 +277,7 @@ void analyzer::CompilationEngine::CompileDo()
 void analyzer::CompilationEngine::CompileReturn()
 { // return expression?;
 
-    token.hasMoreTokens();
+    token.hasMoreTokens(); // skip return
 
     if (std::string(token.current_token) != ";")
         CompileExpression();
@@ -341,7 +341,7 @@ void analyzer::CompilationEngine::CompileTerm()
         token.hasMoreTokens();
     }
 
-    else if (type == "keywordConstant") // true, false, null, this
+    else if (type == "keyword") // true, false, null, this
     {
         if (std::string(token.current_token) == "true")
         {
@@ -423,6 +423,7 @@ void analyzer::CompilationEngine::CompileTerm()
             {
                 token.hasMoreTokens(); // skip .
                 identifier = identifier + "." + token.current_token;
+                token.hasMoreTokens(); // skip name
 
                 token.hasMoreTokens(); // skip (
                 if (std::string(token.current_token) != ")")
@@ -440,6 +441,7 @@ void analyzer::CompilationEngine::CompileTerm()
                 vmWriter.WritePush(seg, symbolTable.IndexOf(identifier)); // push var as current object aka this
                 token.hasMoreTokens();                                    // skip .
                 identifier = symbolTable.TypeOf(identifier) + "." + token.current_token;
+                token.hasMoreTokens(); // skip name
 
                 token.hasMoreTokens(); // skip (
                 if (std::string(token.current_token) != ")")
