@@ -1,4 +1,4 @@
-/* VMWriter.cpp is invoked by the CompilationEngine to write VM commands into a .vm file.
+/* VMWriter.cpp is invoked by the CompilationEngine to write VM commands into the output .vm file.
     Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with Hack, the custom 16-Bit-PC

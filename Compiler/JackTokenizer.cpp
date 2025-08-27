@@ -37,7 +37,9 @@ analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
 }
 
 bool analyzer::JackTokenizer::hasMoreTokens(int flag)
-{
+{ // extracts the next token and stores in current_token, returns false if EOF reached
+  // additional flag to store(peek) or backtrack to previous state
+
     std::fill(current_token, current_token + 100, 0); // clear string
     wp = &current_token[0];
 
@@ -82,7 +84,7 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
 
         if (*fp == '\n' || *fp == '\r') // ignore line breaks
         {
-            fp++; // remove asterik!?
+            fp++;
             continue;
         }
 

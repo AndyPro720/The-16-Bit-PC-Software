@@ -1,4 +1,4 @@
-/* JackCompiler takes input a Jack file / directory and provides parsed/analyzed output in XML files
+/* JackCompiler takes input a Jack file / directory and provides a compiled VM file
  * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
