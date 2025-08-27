@@ -1,10 +1,10 @@
 /* Jack Tokenizer extracts tokens from supplied Jack files, along with few other nifity functions
- * Run via JackAnalyzer.exe
+ * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
-#include "JackAnalyzer.h"
+#include "JackCompiler.h"
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -16,13 +16,11 @@ namespace // private functions declaration
     bool isIdentifier(char id[]);
 }
 
-analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
+analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
 { // opens a file(s) and dumps the data in a string
-    std::string fileName;
-    std::getline(path, fileName);
     std::fstream filehandle;
 
-    filehandle.open(fileName, std::ifstream::in | std::ifstream::binary);
+    filehandle.open(inputFile, std::ifstream::in | std::ifstream::binary);
 
     filehandle.seekg(0, std::ios::end);      // grabs file size
     instructions.resize(filehandle.tellg()); // resize the string
@@ -31,10 +29,10 @@ analyzer::JackTokenizer::JackTokenizer(std::stringstream &path)
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
 
-    filename_g = fileName;
-    fileName = fileName.substr(fileName.find('\\') + 2);
-    fileName.resize(fileName.find('.'));
-    std::cout << fileName << " read and processed" << std::endl;
+    // print name for reference
+    std::string name = inputFile;
+    name = name.substr(name.find('\\') + 2);
+    name.resize(name.find('.'));
     fp = &instructions[0];
 }
 
@@ -46,9 +44,10 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
     if (flag == 1) // store state
         bp = fp;
 
-    else if (flag == 2) // backtrack to last state
+    else if (flag == 2) // backtrack to last stored state
     {
         fp = bp;
+        hasMoreTokens(); //  update current_token
         return true;
     }
 
@@ -96,28 +95,7 @@ bool analyzer::JackTokenizer::hasMoreTokens(int flag)
         else if (isSymbol(*fp)) // if symbol
         {
 
-            std::string placeholder = "null";
-
-            if (*fp == '<')
-                placeholder = "&lt;";
-
-            else if (*fp == '>')
-                placeholder = "&gt;";
-#if 0
-            else if (*fp == '\"')
-                placeholder = "&quot;";
-#endif
-            else if (*fp == '&')
-                placeholder = "&amp;";
-
-            if (placeholder != "null")
-            {
-                placeholder.copy(current_token, sizeof(current_token) - 1);
-                current_token[sizeof(current_token) - 1] = '\0';
-                fp++;
-            }
-            else
-                *wp++ = *fp++;
+            *wp++ = *fp++; // grab a symbol
 
             type = "symbol";
             break;

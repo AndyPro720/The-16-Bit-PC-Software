@@ -1,13 +1,13 @@
-/* JackAnalyzer takes input a Jack file / directory and provides parsed/analyzed output in XML files
- * Run via JackAnalyzer.exe
+/* JackCompiler takes input a Jack file / directory and provides parsed/analyzed output in XML files
+ * Run via JackCompiler.exe
 
 Intended to be run for Jack the object oriented language, created in tandem with  Hack, the custom 16-Bit-PC
 */
 
 #include <filesystem>
-#include "JackAnalyzer.h"
+#include "JackCompiler.h"
 
-analyzer::JackAnalyzer::JackAnalyzer()
+analyzer::JackCompiler::JackCompiler()
 { // intializes file / dir for injection
     std::string filename;
     std::cout << "\n Enter file name with extension, or directory name to begin translation \n Enter exit to terminate \n ";
@@ -49,15 +49,21 @@ analyzer::JackAnalyzer::JackAnalyzer()
 }
 
 int main()
-{
-    analyzer::JackAnalyzer input;
+{ // Sends files to tokenizer and vmwriter, while also sets up compilation engine
+    analyzer::JackCompiler input;
     do
     {
-        analyzer::CompilationEngine parser(input.path);
+        std::string fileName;
+        std::getline(input.path, fileName); // fetch next file (string pointer mainains state)
 
-        parser.Close(1);
+        analyzer::JackTokenizer tokenizer(fileName);
+        analyzer::VMWriter vmWriter(fileName);
+        analyzer::CompilationEngine engine(tokenizer, vmWriter);
 
-    } while (--input.fileCount != 0); // if directory
+        std::cout << fileName << " Compiled successfully" << std::endl;
 
+    } while (--input.fileCount != 0); // for directory
+
+    std::cout << "All files compiled successfully, stored in the same directory" << std::endl;
     return 0;
 }

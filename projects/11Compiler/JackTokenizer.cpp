@@ -29,7 +29,6 @@ analyzer::JackTokenizer::JackTokenizer(const std::string inputFile)
     filehandle.read(&instructions[0], instructions.size()); // copy all data to instructions
     filehandle.close();
 
-    std::cout << "File read successfully: " << inputFile << std::endl;
     // print name for reference
     std::string name = inputFile;
     name = name.substr(name.find('\\') + 2);
