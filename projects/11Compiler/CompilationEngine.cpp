@@ -75,7 +75,7 @@ void analyzer::CompilationEngine::CompileSubroutineDec()
     token.hasMoreTokens(); // skip )
 
     token.hasMoreTokens();                            // skip {
-    while (std::string(token.current_token) == "var") // fetch nVars for function label
+    while (std::string(token.current_token) == "var") // fetch nlocals for function label
     {
         CompileVarDec();
     }
