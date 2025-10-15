@@ -32,16 +32,16 @@ class Math {
     let sum = 0;
 
    //edge cases 
-    if (x == 0 ) {
+    if (x = 0 ) {
         return 0;
     }
-    if (y == 0) {
+    if (y = 0) {
         return 0;
     }
     
     let i = 0;
     while (i < 16) {
-        if (bit(y, i) == 1) {  //check if the ith bit is set
+        if (bit(y, i) = 1) {  //check if the ith bit is set
             sum = sum + x; //add shifted multiplicand to sum
         }
        let x = x + x; //left shift
@@ -51,13 +51,47 @@ class Math {
     return sum;
     }
 
-    /** Returns the integer part of x/y.
-     *  When a Jack compiler detects the multiplication operator '/' in the 
-     *  program's code, it handles it by invoking this method. In other words,
-     *  the Jack expressions x/y and divide(x,y) return the same value.
-     */
-    function int divide(int x, int y) {
+/** Divides two integers. Handles negative numbers. */
+function int divide(int x, int y) {
+    var int q;
+
+    if (y = 0) {
+        do Sys.error(3); // Error for division by zero
+        return 0;
     }
+
+    let q = Math._div(Math.abs(x), Math.abs(y));
+
+    if ((x < 0) = (y < 0)) {
+        return q;
+    }
+    else {
+        return -q;
+    }
+}
+
+/** Recursively divides two positive integers. (Helper function) */
+function int _div(int x, int y) {
+    var int q, sum;
+
+    if ((y > x) | (y < 0)) {
+        return 0;
+    }
+    }
+    else {
+        let q = Math._div(x, y + y);
+    }
+
+    let sum = q + q; // 2*q.
+
+    if ((x - (sum * y))) < y) {
+        return sum;
+    }
+
+    else {
+        return sum + 1;
+    }
+} 
 
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
