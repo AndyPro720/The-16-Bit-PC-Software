@@ -1,28 +1,54 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/12/Math.jack
-
 /**
  * A library of commonly used mathematical functions.
  * Note: Jack compilers implement multiplication and division using OS method calls.
  */
+
 class Math {
+    static Array twoToThe;
 
     /** Initializes the library. */
     function void init() {
+        var int n, i;
+        let twoToThe = Array.new(16);
+        
+        let n = 0;
+        let i = 1;
+        while (n < 16) {
+            let twoToThe[n] = i;
+            let i = i + i;
+            let n = n + 1;
+        }
     }
 
     /** Returns the absolute value of x. */
     function int abs(int x) {
     }
 
-    /** Returns the product of x and y. 
-     *  When a Jack compiler detects the multiplication operator '*' in the 
-     *  program's code, it handles it by invoking this method. In other words,
-     *  the Jack expressions x*y and multiply(x,y) return the same value.
-     */
-    function int multiply(int x, int y) {
+    /** Returns the product of x and y */
+    function int multiply(int x, int y) 
+    { 
+
+    var int sum, i;
+    let sum = 0;
+
+   //edge cases 
+    if (x == 0 ) {
+        return 0;
+    }
+    if (y == 0) {
+        return 0;
+    }
+    
+    let i = 0;
+    while (i < 16) {
+        if (bit(y, i) == 1) {  //check if the ith bit is set
+            sum = sum + x; //add shifted multiplicand to sum
+        }
+       let x = x + x; //left shift
+       let i = i + 1;
+    }
+    
+    return sum;
     }
 
     /** Returns the integer part of x/y.
@@ -44,4 +70,17 @@ class Math {
     /** Returns the smaller number. */
     function int min(int a, int b) {
     }
+    
+    /** Returns ture if ith bit of x is 1, false otherwise */
+    function boolean bit(int x, int i) {
+       if (x & twoToThe[i]) {
+           return true;
+       }
+       else {
+           return false;
+       } 
+    } 
+   
+
+}
 }
