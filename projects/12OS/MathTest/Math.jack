@@ -100,7 +100,7 @@ class Math {
         var int y, j, potentialRoot, square;
 
         if (x < 0) {
-        do Sys.error(3); // Error code  for invalid argument to sqrt
+        do Sys.error(4); // Error code  for invalid argument to sqrt
         return 0;
         }
         let y = 0;
