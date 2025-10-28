@@ -1,0 +1,82 @@
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+    static array RAM;  // RAM[0..32767] holds the computer's main memory
+    static int freeList; //points to start of free memory linked list
+
+    function void init() {
+        let RAM = 0; //points to start of RAM
+        let freeList = 2048;
+        let RAM[2048] = 14336; //size of heap 
+        let RAM[2049] = null; //end of linked list
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return RAM[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let RAM[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+        var int listSize, list, oldNext, listSize, newList;
+        if (~(size > 0)) { // <= 0
+            do Sys.error(5); // Invalid memory request
+            return 0; 
+        }
+        let list = freeList;
+        let newList = null;
+        let oldNext = null; 
+        let size = size + 2; //account for size and next pointer
+        
+        while(~(list = null)) {
+            let listSize = RAM[list]; //peek
+
+            if (~(listSize < size)) { //>=
+                //create new list
+                if (~((listSize - size) < 2)) { //if not perfect fit; min size 2 words
+                   let newList = list + size; //grab next list address
+                   let RAM[newList] = listSize - size; //update size for new list
+                   let RAM[newList + 1] = RAM[list+1]; //update next pointer for new list
+                   if (~(oldNext = null)) { //if not first in free list
+                       let RAM[oldNext] = newList; //point previous list to new list 
+                   }
+                   else { //first in free list
+                       let freeList = newList; 
+                   }
+                }
+                else { //if perfect fit
+                   if (~(oldNext = null)) { //if not first in free list
+                    let RAM[oldNext] = RAM[list + 1]; //address of previous lists' next pointer
+                   }
+                   else {
+                       let freeList = RAM[list + 1]; //update free list pointer
+                   }
+                }
+               return list + 2;
+            }
+            else {
+                let oldNext = list + 1; //address of previous lists' next pointer
+                let list = RAM[list + 1]; //move to next freeList 
+            }
+            // end of list
+            do Sys.error(6); // Heap overflow
+            //run defrag
+            return 0; 
+        }       
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+    }    
+}
